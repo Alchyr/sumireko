@@ -1,0 +1,23 @@
+{
+  "sumireko:Lemegeton": {
+    "NAME": "Lemegeton",
+    "FLAVOR": "Lemegeton",
+    "DESCRIPTIONS": [
+      "Whenever you draw a card, replace it with a random card. The cost remains the same."
+    ]
+  },
+  "sumireko:SeaCrystal": {
+    "NAME": "Sea Crystal",
+    "FLAVOR": "Sea Crystal",
+    "DESCRIPTIONS": [
+      "At the start of your turn, draw until your hand is full. At the end of your turn, lose 1 HP for each card in your hand."
+    ]
+  },
+  "sumireko:OccultBall": {
+    "NAME": "Occult Ball",
+    "FLAVOR": "A mystical object, said to grant wishes... well, it's really not that powerful.",
+    "DESCRIPTIONS": [
+      "At the start of every third turn, make a card in your hand #ysumireko:Occult for the rest of combat."
+    ]
+  }
+}

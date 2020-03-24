@@ -1,0 +1,35 @@
+{
+  "sumireko:SealCardUse": {
+    "TEXT": [
+      "No #rSeal #rSlots remaining."
+    ]
+  },
+  "sumireko:RuleCancel": {
+    "TEXT": [
+      "Make Occult"
+    ]
+  },
+  "sumireko:Shanghai": {
+    "TEXT": [
+      "Shanghai"
+    ],
+    "EXTRA_TEXT": [
+      "Deals #b",
+      " damage to the closest enemy at the end of each turn, then loses #b1 #yCharge"
+    ]
+  },
+  "sumireko:Hourai": {
+    "TEXT": [
+      "Hourai"
+    ],
+    "EXTRA_TEXT": [
+      "Deals #b",
+      " damage to ALL enemies in a line at the end of each turn, then loses #b1 #yCharge"
+    ]
+  },
+  "sumireko:CostIncrease": {
+    "TEXT": [
+      "Increase the Cost"
+    ]
+  }
+}

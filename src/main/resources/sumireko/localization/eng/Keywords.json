@@ -1,0 +1,48 @@
+[
+  {
+    "PROPER_NAME": "Seal",
+    "NAMES": [
+      "seal",
+      "seals",
+      "seal:"
+    ],
+    "DESCRIPTION": "When this card is played, it is placed in the next available #ySeal slot. Duplicate #ySeals have their effect increased. #ySeals are triggered at the end of your turn, then discarded. You may have up to 5 #ySeals at once."
+  },
+  {
+    "ID": "occult",
+    "PROPER_NAME": "Occult",
+    "NAMES": [
+      "Occult",
+      "occult"
+    ],
+    "DESCRIPTION": "Occult cards can be played disregarding any conditions for playability."
+  },
+  {
+    "PROPER_NAME": "Locking",
+    "NAMES": [
+      "locking"
+    ],
+    "DESCRIPTION": "#yLocking cards become #yUnplayable once played."
+  },
+  {
+    "PROPER_NAME": "Locked",
+    "NAMES": [
+      "locked"
+    ],
+    "DESCRIPTION": "This card cannot be played."
+  },
+  {
+    "PROPER_NAME": "Fragile",
+    "NAMES": [
+      "fragile"
+    ],
+    "DESCRIPTION": "Fragile #ySeals are #yExhausted when triggered."
+  },
+  {
+    "PROPER_NAME": "Final",
+    "NAMES": [
+      "final"
+    ],
+    "DESCRIPTION": "Final cards cannot be #yUpgraded or made #yOccult."
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "sumireko:Prowess": {
+    "NAME": "Prowess",
+    "DESCRIPTIONS": [
+      "The effects of ALL #ySeals are increased by #b",
+      "."
+    ]
+  },
+  "sumireko:PerfectParadox": {
+    "NAME": "Perfect Paradox",
+    "DESCRIPTIONS": [
+      "Whenever you play a card you should not be able to, gain #b",
+      " #yBlock."
+    ]
+  },
+  "sumireko:Metaphysics": {
+    "NAME": "Metaphysics",
+    "DESCRIPTIONS": [
+      "Whenever you play a #ySeal, gain #b",
+      " temporary #yStrength."
+    ]
+  }
+}

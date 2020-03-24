@@ -1,0 +1,67 @@
+package sumireko.cards.uncommon;
+
+import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.CardLibrary;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.unlock.UnlockTracker;
+import sumireko.abstracts.BaseCard;
+import sumireko.patches.occult.OccultFields;
+import sumireko.util.CardInfo;
+
+import java.util.Map;
+
+import static sumireko.SumirekoMod.makeID;
+
+public class Telephotography extends BaseCard {
+    private final static CardInfo cardInfo = new CardInfo(
+            "Telephotography",
+            0,
+            CardType.SKILL,
+            CardTarget.NONE,
+            CardRarity.UNCOMMON);
+    // skill
+
+    public static final String ID = makeID(cardInfo.cardName);
+
+
+    public Telephotography() {
+        super(cardInfo, true);
+
+        setExhaust(true, false);
+    }
+
+    @Override
+    public void use(AbstractPlayer p, AbstractMonster m) {
+        AbstractCard c = randomAttack();
+        OccultFields.isOccult.set(c, true);
+        addToBot(new MakeTempCardInHandAction(c));
+    }
+
+    @Override
+    public AbstractCard makeCopy() {
+        return new Telephotography();
+    }
+
+    private static AbstractCard randomAttack()
+    {
+        CardGroup anyCard = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
+
+        for (Map.Entry<String, AbstractCard> c : CardLibrary.cards.entrySet())
+        {
+            if (c.getValue().type == CardType.ATTACK &&
+                (!UnlockTracker.isCardLocked(c.getKey()) ||
+                 Settings.treatEverythingAsUnlocked())
+            )
+                anyCard.addToBottom(c.getValue());
+
+        }
+
+        anyCard.shuffle(AbstractDungeon.cardRng);
+        return anyCard.getRandomCard(true).makeCopy();
+    }
+}
