@@ -21,6 +21,7 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.clapper.util.classutil.*;
+import sumireko.actions.MirrorAction;
 import sumireko.character.Sumireko;
 import sumireko.enums.CharacterEnums;
 import sumireko.patches.occult.OccultDescription;
@@ -28,6 +29,7 @@ import sumireko.relics.OccultBall;
 import sumireko.util.CardFilter;
 import sumireko.util.KeywordWithProper;
 import sumireko.util.TextureLoader;
+import sumireko.variables.DamageAllVariable;
 import sumireko.variables.SealVariable;
 
 import java.io.File;
@@ -84,10 +86,10 @@ public class SumirekoMod implements
     public static final String BADGE_IMAGE = makeImagePath("badge.png");
 
     // Atlas and JSON files for the Animations
-    public static final String SKELETON_ATLAS = makeCharacterPath("alice.atlas");
+    //public static final String SKELETON_ATLAS = makeCharacterPath("alice.atlas");
 
-    public static final String STAND_JSON = makeCharacterPath("alice_stand.json");
-    public static final String ATTACK_JSON = makeCharacterPath("alice_attack.json");
+    //public static final String STAND_JSON = makeCharacterPath("alice_stand.json");
+    //public static final String ATTACK_JSON = makeCharacterPath("alice_attack.json");
 
     //makePaths
     public static String makePath(String resourcePath) {
@@ -179,6 +181,7 @@ public class SumirekoMod implements
     public void receiveEditCards() {
         //add variables
         BaseMod.addDynamicVariable(new SealVariable());
+        BaseMod.addDynamicVariable(new DamageAllVariable());
 
         //add cards
         try
@@ -235,10 +238,18 @@ public class SumirekoMod implements
 
             if (keywords != null) {
                 for (KeywordWithProper keyword : keywords) {
-                    if (keyword.ID.equals("occult"))
+                    switch (keyword.ID)
                     {
-                        //may need editing to function properly for other languages
-                        OccultDescription.occultKeyword = modID + ":" + keyword.NAMES[0] + ". NL ";
+                        case "occult":
+                            //may need editing to function properly for other languages
+                            KeywordWithProper.occult = modID + ":" + keyword.NAMES[0] + " NL ";
+                            break;
+                        case "fragile":
+                            KeywordWithProper.fragile = " NL " + modID + ":" + keyword.NAMES[0];
+                            break;
+                        case "unplayable":
+                            KeywordWithProper.unplayable = keyword.NAMES[0];
+                            continue;
                     }
                     BaseMod.addKeyword(modID, keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
                 }
@@ -252,9 +263,18 @@ public class SumirekoMod implements
 
             if (keywords != null) {
                 for (KeywordWithProper keyword : keywords) {
-                    if (keyword.ID.equals("occult"))
+                    switch (keyword.ID)
                     {
-                        OccultDescription.occultKeyword = modID + ":" + keyword.NAMES[0] + " NL ";
+                        case "occult":
+                            //may need editing to function properly for other languages
+                            KeywordWithProper.occult = modID + ":" + keyword.NAMES[0] + " NL ";
+                            break;
+                        case "fragile":
+                            KeywordWithProper.fragile = " NL " + modID + ":" + keyword.NAMES[0];
+                            break;
+                        case "unplayable":
+                            KeywordWithProper.unplayable = keyword.NAMES[0];
+                            continue;
                     }
                     BaseMod.addKeyword(modID, keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
                 }

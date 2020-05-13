@@ -4,6 +4,20 @@
       "No #rSeal #rSlots remaining."
     ]
   },
+  "sumireko:MysteryUpgrades": {
+    "TEXT": [
+      "Deal !D! damage. NL ",
+      "Gain !B! Block. NL ",
+      "Deal !SUMIREKO:D_ALL! damage to ALL enemies. NL ",
+      " Deal !SEAL! damage to a random enemy.",
+      " Apply !SEAL! Weak.",
+      " Apply !SEAL! Vulnerable.",
+      " ALL enemies lose !SEAL! Strength this turn.",
+      " Increases the effect of adjacent sumireko:Seals by !SEAL!.",
+      "sumireko:Occult. NL ",
+      "Draw !M! cards. NL "
+    ]
+  },
   "sumireko:RuleCancel": {
     "TEXT": [
       "Make Occult"

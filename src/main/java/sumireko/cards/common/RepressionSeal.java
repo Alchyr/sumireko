@@ -49,7 +49,7 @@ public class RepressionSeal extends SealCard {
 
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-        if (target != null)
+        if (target != null && this.sealValue > 0)
             pretendApplyPower(target, getWeak(target, this.sealValue), this.sealValue);
     }
 

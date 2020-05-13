@@ -49,16 +49,12 @@ public class CursedSeal extends SealCard {
     @Override
     public void applyFinalBaseAdjacencyEffect(SealCard c) { //Seals that negate other seals are not "buff" seals
         //Buff seals will be modified first, including by non-buff seals. So, this will negate all neighboring buff seals.
-        c.sealValue = 0;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.negateSeal();
     }
     @Override
     public void applyFinalAdjacencyEffect(SealCard c) { //Seals that negate other seals are not "buff" seals
         //Buff seals will be modified first, including by non-buff seals. So, this will negate all neighboring buff seals.
-        c.sealValue = 0;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.negateSeal();
     }
 
     @Override

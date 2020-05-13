@@ -70,16 +70,12 @@ public class ExtensionSeal extends SealCard {
 
     @Override
     public void applyFinalBaseAdjacencyEffect(SealCard c) {
-        c.sealValue *= this.baseSealValue;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.multiplySealValue(this.baseSealValue);
     }
 
     @Override
     public void applyFinalAdjacencyEffect(SealCard c) {
-        c.sealValue *= this.sealValue;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.multiplySealValue(this.sealValue);
     }
 
     @Override

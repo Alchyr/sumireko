@@ -26,7 +26,7 @@ public class OccultSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 3;
+    private static final int SEAL = 2;
     private static final int UPG_SEAL = 2;
 
     public OccultSeal() {
@@ -44,16 +44,12 @@ public class OccultSeal extends SealCard {
 
     @Override
     public void applyBaseAdjacencyEffect(SealCard c) {
-        c.sealValue += this.baseSealValue;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.modifySealValue(this.baseSealValue);
     }
 
     @Override
     public void applyAdjacencyEffect(SealCard c) {
-        c.sealValue += this.sealValue;
-        if (c.sealValue != c.baseSealValue)
-            c.isSealModified = true;
+        c.modifySealValue(this.sealValue);
     }
 
     @Override

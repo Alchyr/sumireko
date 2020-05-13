@@ -1,5 +1,13 @@
 [
   {
+    "ID": "unplayable",
+    "PROPER_NAME": "Unplayable",
+    "NAMES": [
+      "Unplayable"
+    ],
+    "DESCRIPTION": "This is in the localization files for the sake of being able to easily determine how Unplayable will be written in card text."
+  },
+  {
     "PROPER_NAME": "Seal",
     "NAMES": [
       "seal",
@@ -12,7 +20,7 @@
     "ID": "occult",
     "PROPER_NAME": "Occult",
     "NAMES": [
-      "Occult",
+      "Occult.",
       "occult"
     ],
     "DESCRIPTION": "Occult cards can be played disregarding any conditions for playability."
@@ -32,8 +40,10 @@
     "DESCRIPTION": "This card cannot be played."
   },
   {
+    "ID": "fragile",
     "PROPER_NAME": "Fragile",
     "NAMES": [
+      "Fragile.",
       "fragile"
     ],
     "DESCRIPTION": "Fragile #ySeals are #yExhausted when triggered."

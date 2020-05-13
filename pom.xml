@@ -19,12 +19,19 @@
         <dependency>
             <groupId>com.megacrit.cardcrawl</groupId>
             <artifactId>slaythespire</artifactId>
-            <version>1.2</version>
+            <version>2.0</version>
             <scope>system</scope>
 
-            <systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0.jar</systemPath><!---->
-            <!--<systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0-patched.jar</systemPath>-->
+            <systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0.jar</systemPath>
         </dependency>
+        <!--<dependency>
+            <groupId>com.megacrit.cardcrawlpatched</groupId>
+            <artifactId>slaythespirepatched</artifactId>
+            <version>patched</version>
+            <scope>system</scope>
+
+            <systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0-patched.jar</systemPath>
+        </dependency>-->
         <dependency>
             <groupId>com.evacipated.cardcrawl</groupId>
             <artifactId>modthespire</artifactId>
@@ -32,19 +39,12 @@
             <scope>system</scope>
             <systemPath>${Steam.path}/workshop/content/646570/1605060445/ModTheSpire.jar</systemPath>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>basemod</groupId>
             <artifactId>basemod</artifactId>
             <version>5.19.0</version>
             <scope>system</scope>
             <systemPath>${Steam.path}/workshop/content/646570/1605833019/BaseMod.jar</systemPath>
-        </dependency>-->
-        <dependency>
-            <groupId>basemod</groupId>
-            <artifactId>basemod</artifactId>
-            <version>5.19.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/../lib/BaseMod.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.evacipated.cardcrawl.mod</groupId>

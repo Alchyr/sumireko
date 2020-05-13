@@ -1,6 +1,7 @@
 package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
+import com.megacrit.cardcrawl.actions.unique.DiscoveryAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -10,9 +11,12 @@ import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import sumireko.abstracts.BaseCard;
+import sumireko.patches.CustomDiscoveryPatch;
 import sumireko.patches.occult.OccultFields;
 import sumireko.util.CardInfo;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -32,14 +36,23 @@ public class Telephotography extends BaseCard {
     public Telephotography() {
         super(cardInfo, true);
 
-        setExhaust(true, false);
+        setExhaust(true);
+        setMagic(3);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        AbstractCard c = randomAttack();
-        OccultFields.isOccult.set(c, true);
-        addToBot(new MakeTempCardInHandAction(c));
+        if (upgraded) {
+            DiscoveryAction a = new DiscoveryAction();
+            CustomDiscoveryPatch.Fields.customDiscoveryCards.set(a, randomAttacks(this.magicNumber));
+            addToBot(a);
+        }
+        else
+        {
+            AbstractCard c = randomAttack();
+            OccultFields.isOccult.set(c, true);
+            addToBot(new MakeTempCardInHandAction(c));
+        }
     }
 
     @Override
@@ -63,5 +76,31 @@ public class Telephotography extends BaseCard {
 
         anyCard.shuffle(AbstractDungeon.cardRng);
         return anyCard.getRandomCard(true).makeCopy();
+    }
+    private static ArrayList<AbstractCard> randomAttacks(int amount)
+    {
+        CardGroup anyCard = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
+
+        for (Map.Entry<String, AbstractCard> c : CardLibrary.cards.entrySet())
+        {
+            if (c.getValue().type == CardType.ATTACK &&
+                    (!UnlockTracker.isCardLocked(c.getKey()) ||
+                            Settings.treatEverythingAsUnlocked())
+            )
+                anyCard.addToBottom(c.getValue());
+
+        }
+
+        anyCard.shuffle(AbstractDungeon.cardRng);
+
+        ArrayList<AbstractCard> cards = new ArrayList<>();
+        while (cards.size() < amount && !anyCard.isEmpty())
+        {
+            AbstractCard c = anyCard.getRandomCard(true).makeCopy();
+
+            cards.add(c);
+            anyCard.removeCard(c);
+        }
+        return cards;
     }
 }

@@ -15,9 +15,12 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.VulnerablePower;
 import com.megacrit.cardcrawl.powers.WeakPower;
 import sumireko.SumirekoMod;
+import sumireko.cards.common.Crush;
 import sumireko.enums.CharacterEnums;
 import sumireko.util.CardInfo;
 import sumireko.util.TextureLoader;
+
+import java.util.HashMap;
 
 import static sumireko.SumirekoMod.makeID;
 
@@ -50,6 +53,7 @@ public abstract class BaseCard extends CustomCard {
     public BaseCard(CardInfo cardInfo, boolean upgradesDescription)
     {
         this(cardInfo.cardName, cardInfo.cardCost, cardInfo.cardType, cardInfo.cardTarget, cardInfo.cardRarity, upgradesDescription);
+
     }
 
     public BaseCard(String cardName, int cost, CardType cardType, CardTarget target, CardRarity rarity, boolean upgradesDescription)
@@ -77,6 +81,32 @@ public abstract class BaseCard extends CustomCard {
         this.magicUpgrade = 0;
 
         initializeCard();
+    }
+
+    public static CardTarget combineTargets(CardTarget a, CardTarget b)
+    {
+        return resultMap.getOrDefault(targetMap.getOrDefault(a, 8) | targetMap.getOrDefault(b, 8), a);
+    }
+
+    private static final HashMap<CardTarget, Integer> targetMap;
+    private static final HashMap<Integer, CardTarget> resultMap;
+
+    static {
+        targetMap = new HashMap<>();
+        targetMap.put(CardTarget.NONE, 0); //0
+        targetMap.put(CardTarget.SELF, 1); //1
+        targetMap.put(CardTarget.ENEMY, 2); //10
+        targetMap.put(CardTarget.SELF_AND_ENEMY, 3); //11
+        targetMap.put(CardTarget.ALL_ENEMY, 6); //110
+        targetMap.put(CardTarget.ALL, 7); //111
+
+        resultMap = new HashMap<>();
+        resultMap.put(0, CardTarget.NONE);
+        resultMap.put(1, CardTarget.SELF);
+        resultMap.put(2, CardTarget.ENEMY);
+        resultMap.put(3, CardTarget.SELF_AND_ENEMY);
+        resultMap.put(6, CardTarget.ALL_ENEMY);
+        resultMap.put(7, CardTarget.ALL);
     }
 
     public void loadFrames(String cardName, int frameCount, float frameRate)
@@ -256,6 +286,10 @@ public abstract class BaseCard extends CustomCard {
     protected void damageSingle(AbstractCreature target, int amount, DamageInfo.DamageType type, AbstractGameAction.AttackEffect effect)
     {
         addToBot(new DamageAction(target, new DamageInfo(AbstractDungeon.player, amount, type), effect));
+    }
+    protected void damageRandom(AbstractGameAction.AttackEffect effect)
+    {
+        addToBot(new AttackDamageRandomEnemyAction(this, effect));
     }
     protected void damageAll(AbstractGameAction.AttackEffect effect)
     {

@@ -21,11 +21,13 @@ import sumireko.effects.SealLineEffect;
 import sumireko.effects.SealPreviewGlow;
 import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.ModifySealPower;
+import sumireko.powers.ImprintPower;
 import sumireko.util.PretendMonster;
 import sumireko.util.PreviewIntent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.*;
@@ -33,15 +35,21 @@ import static sumireko.util.MathHelper.dist;
 
 public class SealSystem {
     public static SealCard[] aroundCards = new SealCard[4];
+    public static HashMap<String, Integer> cardCounts = new HashMap<>();
     public static SealCard centerCard = null;
+
+    private static SealCard hoveredCard = null;
+
     public static HashMap<SealCard, AbstractMonster> targets = new HashMap<>();
 
-    private static ArrayList<PreviewIntent> previewIntents = new ArrayList<>();
+    private static HashMap<AbstractMonster, PreviewIntent> previewIntents = new HashMap<>();
 
     public static int nextIndex = 0;
 
     private static float previewTime = 0.0f;
     private static float lineTime = 0.0f;
+
+    private static boolean recalculate = false;
 
     private static ArrayList<AbstractGameEffect> previewEffects = new ArrayList<>();
     private static ArrayList<AbstractGameEffect> lineEffects = new ArrayList<>();
@@ -61,6 +69,9 @@ public class SealSystem {
     private static final float BOTTOM_POS_X = CENTER_X;
     private static final float BOTTOM_POS_Y = CENTER_Y - 275.0f * Settings.scale;
 
+    private static final float HOVER_CENTERING_Y = 100.0f * Settings.scale;
+    private static final float HOVER_CENTERING_X = 66.0f * Settings.scale;
+
     private static final float SHORT_DISTANCE = dist(TOP_POS_X, RIGHT_POS_X, TOP_POS_Y, RIGHT_POS_Y);
     private static final float LONG_DISTANCE = dist(TOP_POS_X, BOTTOM_POS_X, TOP_POS_Y, BOTTOM_POS_Y);
 
@@ -69,8 +80,11 @@ public class SealSystem {
     public static void reset()
     {
         aroundCards = new SealCard[4];
+        cardCounts.clear();
         centerCard = null;
+        hoveredCard = null;
         nextIndex = 0;
+        recalculate = false;
         targets.clear();
         previewIntents.clear();
         previewEffects.clear();
@@ -127,117 +141,200 @@ public class SealSystem {
 
     public static void render(SpriteBatch sb)
     {
-        if (CardCrawlGame.isInARun())
+        if (recalculate)
+            calculateSeals();
+
+        previewTime -= Gdx.graphics.getDeltaTime();
+        lineTime -= Gdx.graphics.getDeltaTime();
+        boolean lines = lineTime < 0.0f;
+
+        boolean preview = previewTime < 0.0f && AbstractDungeon.player.hoveredCard instanceof SealCard;
+
+        int renderAmount = AbstractDungeon.player.hoveredCard instanceof SealCard ? nextIndex : nextIndex - 1;
+
+        if (lines)
         {
-            previewTime -= Gdx.graphics.getDeltaTime();
-            lineTime -= Gdx.graphics.getDeltaTime();
-            boolean lines = lineTime < 0.0f;
-
-            boolean preview = previewTime < 0.0f && AbstractDungeon.player.hoveredCard instanceof SealCard;
-
-            int renderAmount = AbstractDungeon.player.hoveredCard instanceof SealCard ? nextIndex : nextIndex - 1;
-
-            if (lines)
+            lineTime = LINE_DELAY;
+            for (int i = 0; i <= renderAmount; ++i)
             {
-                lineTime = LINE_DELAY;
-                for (int i = 0; i <= renderAmount; ++i)
+                switch (i)
                 {
-                    switch (i)
-                    {
-                        case 0:
-                            if (renderAmount >= 3)
-                                lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, SHORT_DISTANCE, 135));
+                    case 0:
+                        if (renderAmount >= 3)
+                            lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, SHORT_DISTANCE, 135));
 
-                            if (renderAmount >= 1 && renderAmount != 3)
-                                lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, BOTTOM_POS_X, BOTTOM_POS_Y, LONG_DISTANCE, 90));
+                        if (renderAmount >= 1 && renderAmount != 3)
+                            lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, BOTTOM_POS_X, BOTTOM_POS_Y, LONG_DISTANCE, 90));
 
-                            if (renderAmount >= 2)
-                                lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, LEFT_POS_X, LEFT_POS_Y, SHORT_DISTANCE, 45));
-                            break;
-                        case 1:
-                            if (renderAmount >= 3)
-                                lineEffects.add(new SealLineEffect(BOTTOM_POS_X, BOTTOM_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, SHORT_DISTANCE, 45));
+                        if (renderAmount >= 2)
+                            lineEffects.add(new SealLineEffect(TOP_POS_X, TOP_POS_Y, LEFT_POS_X, LEFT_POS_Y, SHORT_DISTANCE, 45));
+                        break;
+                    case 1:
+                        if (renderAmount >= 3)
+                            lineEffects.add(new SealLineEffect(BOTTOM_POS_X, BOTTOM_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, SHORT_DISTANCE, 45));
 
-                            if (renderAmount >= 2)
-                                lineEffects.add(new SealLineEffect(BOTTOM_POS_X, BOTTOM_POS_Y, LEFT_POS_X, LEFT_POS_Y, SHORT_DISTANCE, 135));
-                            break;
-                        case 2:
-                            if (renderAmount >= 4)
-                                lineEffects.add(new SealLineEffect(LEFT_POS_X, LEFT_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, LONG_DISTANCE, 0));
-                            break;
-                    }
+                        if (renderAmount >= 2)
+                            lineEffects.add(new SealLineEffect(BOTTOM_POS_X, BOTTOM_POS_Y, LEFT_POS_X, LEFT_POS_Y, SHORT_DISTANCE, 135));
+                        break;
+                    case 2:
+                        if (renderAmount >= 4)
+                            lineEffects.add(new SealLineEffect(LEFT_POS_X, LEFT_POS_Y, RIGHT_POS_X, RIGHT_POS_Y, LONG_DISTANCE, 0));
+                        break;
                 }
             }
+        }
 
-            for (AbstractGameEffect e : lineEffects)
-            {
-                e.update();
-                e.render(sb);
-            }
-            for (AbstractGameEffect e : previewEffects)
-            {
-                e.update();
-                e.render(sb);
-            }
+        for (AbstractGameEffect e : lineEffects)
+        {
+            e.update();
+            e.render(sb);
+        }
+        for (AbstractGameEffect e : previewEffects)
+        {
+            e.update();
+            e.render(sb);
+        }
 
-            boolean centerPreview = true;
-            for (int i = 0; i < 4; ++i)
+
+        if (hoveredCard != null)
+        {
+            hoveredCard.updateHoverLogic();
+            if (AbstractDungeon.isScreenUp || AbstractDungeon.player.isDraggingCard)
             {
-                if (aroundCards[i] == null)
+                hoveredCard.unhover();
+            }
+            hoveredCard.update();
+
+            if (!hoveredCard.publicHovered)
+            {
+                if (hoveredCard == centerCard)
                 {
-                    //render next card position preview based on where it is null
-                    if (preview) {
-                        previewTime = PREVIEW_DELAY;
-                        switch(i)
-                        {
-                            case 0:
-                                previewEffects.add(new SealPreviewGlow(TOP_POS_X, TOP_POS_Y, SUMIREKO_COLOR_DIM));
-                                break;
-                            case 1:
-                                previewEffects.add(new SealPreviewGlow(BOTTOM_POS_X, BOTTOM_POS_Y, SUMIREKO_COLOR_DIM));
-                                break;
-                            case 2:
-                                previewEffects.add(new SealPreviewGlow(LEFT_POS_X, LEFT_POS_Y, SUMIREKO_COLOR_DIM));
-                                break;
-                            case 3:
-                                previewEffects.add(new SealPreviewGlow(RIGHT_POS_X, RIGHT_POS_Y, SUMIREKO_COLOR_DIM));
-                                break;
-                        }
-                    }
-                    centerPreview = false;
-                    break;
+                    hoveredCard.targetDrawScale = 0.66f;
                 }
-
-                aroundCards[i].update();
-                aroundCards[i].render(sb);
+                else
+                {
+                    hoveredCard.targetDrawScale = 0.5f;
+                }
+                updatePositions();
+                hoveredCard = null;
             }
+        }
 
-            if (centerCard != null)
+
+        boolean centerPreview = true;
+        for (int i = 0; i < 4; ++i)
+        {
+            if (aroundCards[i] == null)
             {
-                centerCard.update();
-                centerCard.render(sb);
-            }
-            else if (centerPreview)
-            {
-                //render next card position preview in center
+                //render next card position preview based on where it is null
                 if (preview) {
                     previewTime = PREVIEW_DELAY;
-                    previewEffects.add(new SealPreviewGlow(CENTER_X, CENTER_Y, SUMIREKO_COLOR));
+                    switch(i)
+                    {
+                        case 0:
+                            previewEffects.add(new SealPreviewGlow(TOP_POS_X, TOP_POS_Y, SUMIREKO_COLOR_DIM));
+                            break;
+                        case 1:
+                            previewEffects.add(new SealPreviewGlow(BOTTOM_POS_X, BOTTOM_POS_Y, SUMIREKO_COLOR_DIM));
+                            break;
+                        case 2:
+                            previewEffects.add(new SealPreviewGlow(LEFT_POS_X, LEFT_POS_Y, SUMIREKO_COLOR_DIM));
+                            break;
+                        case 3:
+                            previewEffects.add(new SealPreviewGlow(RIGHT_POS_X, RIGHT_POS_Y, SUMIREKO_COLOR_DIM));
+                            break;
+                    }
+                }
+                centerPreview = false;
+                break;
+            }
+
+            if (!AbstractDungeon.isScreenUp && hoveredCard == null && !AbstractDungeon.player.isDraggingCard)
+            {
+                boolean isHovered = aroundCards[i].publicHovered;
+                aroundCards[i].updateHoverLogic();
+                if (isHovered ^ aroundCards[i].publicHovered)
+                {
+                    if (aroundCards[i].publicHovered)
+                    {
+                        hoveredCard = aroundCards[i];
+                        switch (i)
+                        {
+                            case 0:
+                                hoveredCard.target_y -= HOVER_CENTERING_Y;
+                                break;
+                            case 1:
+                                hoveredCard.target_y += HOVER_CENTERING_Y;
+                                break;
+                            case 2:
+                                hoveredCard.target_x += HOVER_CENTERING_X;
+                                break;
+                            case 3:
+                                hoveredCard.target_x -= HOVER_CENTERING_X;
+                                break;
+                        }
+
+                        aroundCards[i].update();
+                        continue; //skip render, hovered card will be updated and rendered later so that it appears on top
+                    }
                 }
             }
 
-            for (PreviewIntent i : previewIntents)
+            aroundCards[i].update();
+            aroundCards[i].render(sb);
+        }
+
+        center: if (centerCard != null && centerCard != hoveredCard)
+        {
+            if (!AbstractDungeon.isScreenUp && hoveredCard == null && !AbstractDungeon.player.isDraggingCard)
             {
-                i.update();
-                i.render(sb);
+                centerCard.updateHoverLogic();
+                if (centerCard.publicHovered)
+                {
+                    hoveredCard = centerCard;
+                    centerCard.update();
+                    break center;
+                }
+            }
+            centerCard.update();
+            centerCard.render(sb);
+        }
+        else if (centerPreview)
+        {
+            //render next card position preview in center
+            if (preview) {
+                previewTime = PREVIEW_DELAY;
+                previewEffects.add(new SealPreviewGlow(CENTER_X, CENTER_Y, SUMIREKO_COLOR));
+            }
+        }
+
+        Iterator<PreviewIntent> i = previewIntents.values().iterator();
+
+        while (i.hasNext())
+        {
+            PreviewIntent h = i.next();
+            h.update();
+            h.render(sb);
+            if (!h.isValid)
+            {
+                i.remove();
+                recalculate = true;
             }
         }
     }
 
+    public static void renderHovered(SpriteBatch sb)
+    {
+        if (hoveredCard != null)
+            hoveredCard.render(sb);
+    }
+
     public static void calculateSeals()
     {
+        recalculate = false;
+
         //reset and count duplicates
-        HashMap<String, Integer> cardCounts = new HashMap<>();
+        cardCounts.clear();
         int i = 0;
         for (; i < 4; ++i)
         {
@@ -557,7 +654,6 @@ public class SealSystem {
 
 
         // Calculate preview result
-        previewIntents.clear();
 
         if (calculateIntentPreview && !AbstractDungeon.player.hasRelic(RunicDome.ID))
         {
@@ -566,6 +662,8 @@ public class SealSystem {
             for (AbstractMonster m : AbstractDungeon.getMonsters().monsters)
                 if (!m.halfDead && !m.isDying && !m.isEscaping)
                     previewMonsters.put(m, new PretendMonster(m));
+                else
+                    previewIntents.remove(m); //remove those that aren't valid.
 
             PretendMonster.prepareFakePlayerPowers();
 
@@ -585,21 +683,40 @@ public class SealSystem {
             for (Map.Entry<AbstractMonster, PretendMonster> m : previewMonsters.entrySet())
             {
                 m.getValue().calculateDamage();
-                previewIntents.add(new PreviewIntent(m.getKey(), m.getValue()));
+
+                PreviewIntent newIntent = new PreviewIntent(m.getKey(), m.getValue());
+
+                if (previewIntents.containsKey(m.getKey()))
+                {
+                    if (!previewIntents.get(m.getKey()).equals(newIntent))
+                        previewIntents.put(m.getKey(), newIntent);
+                }
+                else
+                {
+                    previewIntents.put(m.getKey(), newIntent);
+                }
             }
+        }
+        else
+        {
+            previewIntents.clear();
         }
     }
 
     public static void triggerEndOfTurn() {
+        int keepAmount = AbstractDungeon.player.hasPower(ImprintPower.POWER_ID) ? AbstractDungeon.player.getPower(ImprintPower.POWER_ID).amount : 0;
         if (centerCard != null)
         {
             centerCard.superFlash(Color.PURPLE);
             centerCard.triggerSealEffect(SealSystem.targets.get(centerCard));
 
-            if (centerCard.hasTag(CustomCardTags.FRAGILE_SEAL))
-                AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(centerCard, true));
-            else
-                AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(centerCard, true));
+            if (keepAmount < 5)
+                if (centerCard.hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new YeetSealAction(centerCard, true));
+                else if (centerCard.hasTag(CustomCardTags.FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(centerCard, true));
+                else
+                    AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(centerCard, true));
         }
 
         for (int i = 3; i >= 0; --i)
@@ -610,12 +727,13 @@ public class SealSystem {
             aroundCards[i].superFlash(Color.PURPLE);
             aroundCards[i].triggerSealEffect(SealSystem.targets.get(aroundCards[i]));
 
-            if (aroundCards[i].hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
-                AbstractDungeon.actionManager.addToBottom(new YeetSealAction(aroundCards[i], i));
-            else if (aroundCards[i].hasTag(CustomCardTags.FRAGILE_SEAL))
-                AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(aroundCards[i], i));
-            else
-                AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(aroundCards[i], i));
+            if (keepAmount < i + 1)
+                if (aroundCards[i].hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new YeetSealAction(aroundCards[i], i));
+                else if (aroundCards[i].hasTag(CustomCardTags.FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(aroundCards[i], i));
+                else
+                    AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(aroundCards[i], i));
         }
 
         AbstractDungeon.actionManager.addToBottom(new ResetSealSystemAction());

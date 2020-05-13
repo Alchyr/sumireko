@@ -12,4 +12,6 @@ public class CustomCardTags {
     public static AbstractCard.CardTags ULTRA_FRAGILE_SEAL; //a seal that vanishes after use completely. (for things that double card plays)
     @SpireEnum
     public static AbstractCard.CardTags FINAL; //cannot be upgraded or made occult. This is mainly for the Occult part of that.
+    @SpireEnum
+    public static AbstractCard.CardTags UNPLAYABLE; //for sumireko's unplayable cards that don't cost -2.
 }

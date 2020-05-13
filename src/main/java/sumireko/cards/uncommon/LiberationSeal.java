@@ -1,7 +1,7 @@
 package sumireko.cards.uncommon;
 
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
 import sumireko.actions.RandomOccultCardsAction;
@@ -13,10 +13,10 @@ import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class ReleaseSeal extends SealCard {
+public class LiberationSeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "ReleaseSeal",
-            1,
+            "LiberationSeal",
+            0,
             CardType.SKILL,
             CardTarget.NONE,
             CardRarity.UNCOMMON);
@@ -25,10 +25,10 @@ public class ReleaseSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 1;
+    private static final int SEAL = 2;
     private static final int UPG_SEAL = 1;
 
-    public ReleaseSeal() {
+    public LiberationSeal() {
         super(cardInfo, false);
 
         setSeal(SEAL, UPG_SEAL);
@@ -40,6 +40,13 @@ public class ReleaseSeal extends SealCard {
     public void triggerSealEffect(AbstractMonster target) {
         if (this.sealValue > 0)
             addToBot(new RandomOccultCardsAction(this.sealValue));
+
+        addToBot(new AbstractGameAction() {
+            @Override
+            public void update() {
+
+            }
+        });
     }
 
     @Override
@@ -49,6 +56,6 @@ public class ReleaseSeal extends SealCard {
 
     @Override
     public AbstractCard makeCopy() {
-        return new ReleaseSeal();
+        return new LiberationSeal();
     }
 }

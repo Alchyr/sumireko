@@ -20,6 +20,7 @@ import sumireko.effects.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 import static sumireko.SumirekoMod.logger;
 
@@ -42,14 +43,17 @@ public class PreviewIntent {
         }
     }
 
+    public boolean isValid;
     public boolean isAlive;
     public AbstractMonster.Intent intent;
+
+    private AbstractMonster.Intent baseIntent;
 
     public int damage;
     public boolean multihit;
     public int numHits;
 
-    private AbstractMonster source;
+    public AbstractMonster source;
     private BobEffect bobEffect;
     private float intentParticleTimer;
     private float intentAngle;
@@ -64,6 +68,8 @@ public class PreviewIntent {
     {
         this.source = source;
         intentColor = Color.WHITE.cpy();
+
+        baseIntent = source.intent;
 
         isAlive = !(m.canDie && m.currentHealth <= 0);
         if (m.split && isAlive && (float)m.currentHealth <= (float)m.maxHealth / 2.0F)
@@ -109,6 +115,8 @@ public class PreviewIntent {
         intentVfx = new ArrayList<>();
 
         intentColor.a = 0.0f;
+
+        isValid = true;
     }
 
     public void update() {
@@ -132,6 +140,11 @@ public class PreviewIntent {
             if (e.isDone) {
                 i.remove();
             }
+        }
+
+        if (baseIntent != source.intent) //if monster intent is different from baseIntent, the enemy's intent has changed somehow. (ex. stunning byrds)
+        {
+            isValid = false;
         }
     }
 
@@ -231,6 +244,23 @@ public class PreviewIntent {
         }
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PreviewIntent that = (PreviewIntent) o;
+        return isAlive == that.isAlive &&
+                damage == that.damage &&
+                multihit == that.multihit &&
+                numHits == that.numHits &&
+                intent == that.intent;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(intent, damage, multihit, numHits);
+    }
 
     private Texture getIntentImg() {
         switch(this.intent) {

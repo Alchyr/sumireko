@@ -20,6 +20,7 @@ import com.megacrit.cardcrawl.core.EnergyManager;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.ScreenShake;
 import com.megacrit.cardcrawl.localization.CharacterStrings;
+import com.megacrit.cardcrawl.monsters.exordium.SlimeBoss;
 import com.megacrit.cardcrawl.relics.Pocketwatch;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
@@ -102,18 +103,27 @@ public class Sumireko extends CustomPlayer {
             makeOrbPath("layer4d.png"),
             makeOrbPath("layer5d.png")};
 
+    private static String ATLAS = makeCharacterPath("sumirenko.atlas");
+    private static String JSON = makeCharacterPath("sumirenko.json");
+
     private static final String orbVfx = makeOrbPath("vfx.png");
 
     private HashMap<SpineAnimation, AnimationData> animationMap = new HashMap<>();
 
-    private static SpineAnimation stand = new SpineAnimation(SKELETON_ATLAS, STAND_JSON, 2.0f);
-    private static SpineAnimation attack = new SpineAnimation(SKELETON_ATLAS, ATTACK_JSON, 2.0f);
+    //private static SpineAnimation stand = new SpineAnimation(SKELETON_ATLAS, STAND_JSON, 2.0f);
+    //private static SpineAnimation attack = new SpineAnimation(SKELETON_ATLAS, ATTACK_JSON, 2.0f);
 
     private static final float SCALE_MOD = 1.5f;
 
     public Sumireko()
     {
-        super(NAMES[0], CharacterEnums.SUMIREKO, null, null, null, new SpriteAnimation(0.06f, frames, IMG_BACK));
+        super(NAMES[0], CharacterEnums.SUMIREKO, null, null, null, new AbstractAnimation() {
+            @Override
+            public Type type() {
+                return Type.NONE;
+            }
+        });
+                //new SpriteAnimation(0.06f, frames, IMG_BACK));
 
                 /*new AbstractAnimation() {
             @Override
@@ -130,7 +140,13 @@ public class Sumireko extends CustomPlayer {
                 20.0F, -10.0F, 220.0F, 290.0F,
                 new EnergyManager(ENERGY_PER_TURN));
 
-        //this.atlas = null;
+        loadAnimation(ATLAS, JSON, 1.0f);
+
+        this.stateData.setMix("idle", "attackUp", 0.2f);
+        this.stateData.setMix("attackUp", "idle", 0.4f);
+
+        this.state.setAnimation(0, "idle", true);
+
 
         this.img = TextureLoader.getTexture(IMG);
 
@@ -141,55 +157,6 @@ public class Sumireko extends CustomPlayer {
 
         dialogX = (drawX + 0.0F * Settings.scale); //location for text bubbles
         dialogY = (drawY + 220.0F * Settings.scale);
-    }
-
-    private void loadAnimation(SpineAnimation anim, String animationName)
-    {
-        SkeletonJson json = new SkeletonJson(this.atlas);
-
-        json.setScale(Settings.scale * SCALE_MOD);
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal(anim.skeletonUrl));
-        Skeleton skeleton = new Skeleton(skeletonData);
-        skeleton.setColor(Color.WHITE);
-        AnimationStateData stateData = new AnimationStateData(skeletonData);
-        AnimationState state = new AnimationState(stateData);
-
-        AnimationState.TrackEntry e = state.setAnimation(0, animationName, true);
-
-        animationMap.put(anim, new AnimationData(skeleton, stateData, state, e));
-    }
-
-    private void changeAnimation(SpineAnimation next, String animationName)
-    {
-        if (this.atlas == null || isDisposed(this.atlas))
-        {
-            this.atlas = new TextureAtlas(Gdx.files.internal(SKELETON_ATLAS));
-        }
-        this.animation = next;
-
-        if (!animationMap.containsKey(next))
-        {
-            SkeletonJson json = new SkeletonJson(this.atlas);
-
-            json.setScale(Settings.scale * SCALE_MOD);
-            SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal(next.skeletonUrl));
-            this.skeleton = new Skeleton(skeletonData);
-            this.skeleton.setColor(Color.WHITE);
-            this.stateData = new AnimationStateData(skeletonData);
-            this.state = new AnimationState(this.stateData);
-
-            AnimationState.TrackEntry e = state.setAnimation(0, animationName, true);
-
-            animationMap.put(next, new AnimationData(skeleton, stateData, state, e));
-        }
-        else
-        {
-            this.skeleton = animationMap.get(next).skeleton;
-            this.stateData = animationMap.get(next).stateData;
-            this.state = animationMap.get(next).state;
-        }
-
-        animationMap.get(next).trackEntry.setTime(0);
     }
 
     /*@Override
@@ -209,10 +176,6 @@ public class Sumireko extends CustomPlayer {
         }
     }*/
 
-    @Override
-    public void render(SpriteBatch sb) {
-        super.render(sb);
-    }
 
     /*@Override
     public void useFastAttackAnimation() {

@@ -3,19 +3,19 @@ package sumireko.patches.occult;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.evacipated.cardcrawl.modthespire.lib.SpirePrefixPatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import sumireko.util.KeywordWithProper;
 
 @SpirePatch(
         clz = AbstractCard.class,
         method = "initializeDescription"
 )
 public class OccultDescription {
-    public static String occultKeyword = "?????????? NL ";
     @SpirePrefixPatch
     public static void betterHaveTheKeyword(AbstractCard __instance)
     {
-        if (OccultFields.isOccult.get(__instance) && !__instance.rawDescription.contains(occultKeyword))
+        if (OccultFields.isOccult.get(__instance) && !__instance.rawDescription.contains(KeywordWithProper.occult))
         {
-            __instance.rawDescription = occultKeyword + __instance.rawDescription;
+            __instance.rawDescription = KeywordWithProper.occult + __instance.rawDescription;
         }
     }
 }

@@ -11,7 +11,9 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.*;
 import com.megacrit.cardcrawl.relics.ChampionsBelt;
 import com.megacrit.cardcrawl.relics.SneckoSkull;
+import sumireko.SealSystem;
 import sumireko.actions.SealAction;
+import sumireko.interfaces.ModifySealPower;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
 
@@ -26,6 +28,8 @@ public abstract class SealCard extends BaseCard {
     public boolean isSealModified;
     public boolean upgradedSeal;
 
+    public boolean publicHovered; //hovered is private and this just makes it easier rather than using reflection.
+
     public SealCard(CardInfo cardInfo, boolean upgradesDescription)
     {
         super(cardInfo, upgradesDescription);
@@ -34,30 +38,6 @@ public abstract class SealCard extends BaseCard {
         upgradedSeal = false;
         isSealModified = false;
     }
-/*
-    @Override
-    public void modifyCostForCombat(int amt) {
-
-    }
-    @Override
-    public void setCostForTurn(int amt) {
-
-    }
-    @Override
-    public void updateCost(int amt) {
-
-    }
-    @Override
-    public boolean freeToPlay() {
-        return false;
-    }
-
-    @Override
-    public void update() {
-        super.update();
-        this.costForTurn = this.cost = this.upgradeCost && this.upgraded ? this.costUpgrade : this.baseCost;
-        this.isCostModified = this.isCostModifiedForTurn = false;
-    }*/
 
     public void setSeal(int baseValue, int upgradeAmount)
     {
@@ -92,6 +72,11 @@ public abstract class SealCard extends BaseCard {
         isSealModified = false;
     }
 
+    public void negateSeal() {
+        sealValue = 0;
+        isSealModified = true;
+    }
+
     public void modifySealValue(int amount) {
         sealValue += amount;
         if (sealValue != baseSealValue)
@@ -102,6 +87,21 @@ public abstract class SealCard extends BaseCard {
         sealValue *= amount;
         if (sealValue != baseSealValue)
             isSealModified = true;
+    }
+
+    @Override
+    public void applyPowers() {
+        super.applyPowers();
+        sealValue = baseSealValue;
+
+        sealValue += SealSystem.cardCounts.containsKey(this.cardID) ? SealSystem.cardCounts.get(this.cardID) + 1 : 0;
+        isSealModified = sealValue != baseSealValue;
+
+        for (AbstractPower p : AbstractDungeon.player.powers)
+        {
+            if (p instanceof ModifySealPower)
+                ((ModifySealPower) p).modifySeal(this);
+        }
     }
 
     @Override
@@ -128,6 +128,17 @@ public abstract class SealCard extends BaseCard {
 
     }
 
+    @Override
+    public void hover() {
+        super.hover();
+        this.publicHovered = true;
+    }
+
+    @Override
+    public void unhover() {
+        super.unhover();
+        this.publicHovered = false;
+    }
 
     public static void pretendApplyPower(PretendMonster m, AbstractPower p, int stackAmount)
     {

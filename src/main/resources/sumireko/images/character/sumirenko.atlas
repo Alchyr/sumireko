@@ -1,0 +1,237 @@
+
+sumirenko.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+color
+  rotate: false
+  xy: 387, 517
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0003
+  rotate: false
+  xy: 1159, 1291
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0001
+  rotate: false
+  xy: 1159, 1033
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0006
+  rotate: false
+  xy: 387, 1291
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1000
+  rotate: false
+  xy: 387, 775
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0005
+  rotate: false
+  xy: 387, 259
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0009
+  rotate: false
+  xy: 773, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0006
+  rotate: false
+  xy: 773, 775
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1003
+  rotate: false
+  xy: 1159, 517
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0004
+  rotate: false
+  xy: 387, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0000
+  rotate: false
+  xy: 387, 1033
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0002
+  rotate: false
+  xy: 1, 259
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1002
+  rotate: false
+  xy: 773, 517
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0008
+  rotate: false
+  xy: 387, 1549
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0002
+  rotate: false
+  xy: 1545, 775
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0005
+  rotate: false
+  xy: 1545, 259
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0004
+  rotate: false
+  xy: 1, 775
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0001
+  rotate: false
+  xy: 773, 259
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0007
+  rotate: false
+  xy: 1, 1291
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0010
+  rotate: false
+  xy: 1, 1549
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0007
+  rotate: false
+  xy: 1, 517
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0000
+  rotate: false
+  xy: 773, 1549
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0003
+  rotate: false
+  xy: 1545, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+attack_up/attack_up0008
+  rotate: false
+  xy: 1545, 517
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0009
+  rotate: false
+  xy: 773, 1291
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1001
+  rotate: false
+  xy: 1159, 775
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1007
+  rotate: false
+  xy: 1, 1033
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0012
+  rotate: false
+  xy: 1159, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1006
+  rotate: false
+  xy: 1, 1
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1005
+  rotate: false
+  xy: 1545, 1033
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand0011
+  rotate: false
+  xy: 1159, 259
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+idle/stand1004
+  rotate: false
+  xy: 773, 1033
+  size: 384, 256
+  orig: 384, 256
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 1545, 1291
+  size: 190, 64
+  orig: 190, 64
+  offset: 0, 0
+  index: -1

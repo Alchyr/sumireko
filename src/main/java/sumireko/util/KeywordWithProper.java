@@ -1,6 +1,11 @@
 package sumireko.util;
 
 public class KeywordWithProper {
+    public static String unplayable;
+    public static String occult;
+    public static String fragile;
+
+
     public String ID;
     public String PROPER_NAME;
     public String DESCRIPTION;

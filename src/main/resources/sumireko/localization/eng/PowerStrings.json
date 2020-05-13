@@ -19,5 +19,44 @@
       "Whenever you play a #ySeal, gain #b",
       " temporary #yStrength."
     ]
+  },
+  "sumireko:Baggage": {
+    "NAME": "Baggage",
+    "DESCRIPTIONS": [
+      "At the end of your turn, Retain #yLocked cards and increase their cost by #b",
+      "."
+    ]
+  },
+  "sumireko:EsotericSecrets": {
+    "NAME": "Esoteric Secrets",
+    "DESCRIPTIONS": [
+      "Take #b",
+      " less damage from attacks for each #yLocked or #yUnplayable card in your hand."
+    ]
+  },
+  "sumireko:Fundamental": {
+    "NAME": "Fundamental",
+    "DESCRIPTIONS": [
+      "#yFinal cards are played #b",
+      " additional time.",
+      " additional times."
+    ]
+  },
+  "sumireko:Imprint": {
+    "NAME": "Imprint",
+    "DESCRIPTIONS": [
+      "Your first active #ySeal is not removed at the end of your turn.",
+      "Your first #b",
+      " active #ySeals are not removed at the end of your turn.",
+      "Your active #ySeals are not removed at the end of your turn."
+    ]
+  },
+  "sumireko:HonedTalent": {
+    "NAME": "Honed Talent",
+    "DESCRIPTIONS": [
+      "#yFinal cards deal #b",
+      " additional damage. Whenever you play a #yFinal card, increase this by #b",
+      "."
+    ]
   }
 }
