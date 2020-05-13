@@ -5,7 +5,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.abstracts.XCostAction;
+import sumireko.actions.XCostAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
