@@ -77,7 +77,7 @@ public class MysteryUpgrade {
 
     protected void applySingle(AbstractCreature c, AbstractPower power)
     {
-        addToBot(new ApplyPowerAction(c, AbstractDungeon.player, power, power.amount));
+         addToBot(new ApplyPowerAction(c, AbstractDungeon.player, power, power.amount));
     }
 
     protected WeakPower getWeak(AbstractCreature c, int amount)

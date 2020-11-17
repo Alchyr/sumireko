@@ -14,10 +14,12 @@ import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 import sumireko.util.mysteryupgrades.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -32,6 +34,8 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
     // skill
 
     public static final String ID = makeID(cardInfo.cardName);
+
+    //At most 3 different effects, with 2 different seal effects.
 
     private static ArrayList<MysteryUpgrade> possibleUpgrades;
 
@@ -64,10 +68,31 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
     public boolean isAllDamageModified;
 
 
+    //Seal intent stuff
+    public boolean damageSeal; //1
+    public boolean debuffSeal; //2
+    public boolean buffSeal; //4
+    public boolean strongDebuffSeal; //8
+
+    private static final HashMap<Integer, AbstractMonster.Intent> intentMap;
+    static {
+        intentMap = new HashMap<>();
+        intentMap.put(1, AbstractMonster.Intent.ATTACK);
+        intentMap.put(2, AbstractMonster.Intent.DEBUFF);
+        intentMap.put(3, AbstractMonster.Intent.ATTACK_DEBUFF);
+        intentMap.put(4, AbstractMonster.Intent.BUFF);
+        intentMap.put(5, AbstractMonster.Intent.ATTACK_BUFF);
+        intentMap.put(6, AbstractMonster.Intent.DEBUFF);
+        intentMap.put(8, AbstractMonster.Intent.STRONG_DEBUFF);
+        intentMap.put(9, AbstractMonster.Intent.ATTACK_DEBUFF);
+        intentMap.put(10, AbstractMonster.Intent.STRONG_DEBUFF);
+        intentMap.put(12, AbstractMonster.Intent.STRONG_DEBUFF); //7 and 11 are not possible as they require 3 different seal upgrades
+    }
+
 
     ///TODO: ODODODODEDO?
     // make rng biased towards effects you already have, causing you to cap at like 3 or 4 unique effects to avoid making text too much
-    // add multiple possibities for the basic magic upgrade instead of just draw? YOu can only get one upgrade that utilizes magic number. Predicate<MysterySeal> canSpawn?
+    // add multiple possibities for the basic magic upgrade instead of just draw? You can only get one upgrade that utilizes magic number. Predicate<MysterySeal> canSpawn?
 
     public MysterySeal() {
         this(true);
@@ -146,14 +171,16 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         return true;
     }
 
+    private boolean isBranchUpgrade = false;
     public void upgrade() {
         this.upgradeName();
 
         //only matters for display on upgrade screen. Set it to false for the normal upgrade, true on the branch upgrade.
         //If it's a random upgrade, it shouldn't be a grid select screen forUpgrade anyways.
+
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.GRID && AbstractDungeon.gridSelectScreen.forUpgrade)
         {
-            BranchingUpgradesPatch.BranchSelectFields.isBranchUpgrading.set(this, this.isBranchUpgrade());
+            isBranchUpgrade = getUpgradeType() == UpgradeType.BRANCH_UPGRADE;
         }
 
         if (upgrades.size() <= this.performedUpgrades)
@@ -181,57 +208,6 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         upgradeRefresh();
     }
 
-    /*@Override
-    public void setIsBranchUpgrade() {
-        BranchingUpgradesPatch.BranchingUpgradeField.isBranchUpgraded.set(this, true);
-        this.branchUpgrade();
-    }
-
-    @Override
-    public void branchUpgrade() {
-        this.upgradeName();
-
-        upgrades.add(altUpgrade);
-        altUpgrade.apply(this);
-
-        generateUpgrades();
-
-        upgradeRefresh();
-    }
-
-    @Override
-    public void displayBranchUpgrades() {
-        if (this.upgradedCost) {
-            this.isCostModified = true;
-        }
-
-        if (this.upgradedBlock) {
-            this.isBlockModified = true;
-            this.block = this.baseBlock;
-        }
-
-        if (this.upgradedDamage) {
-            this.isDamageModified = true;
-            this.damage = this.baseDamage;
-        }
-
-        if (this.upgradedMagicNumber) {
-            this.isMagicNumberModified = true;
-            this.magicNumber = this.baseMagicNumber;
-        }
-
-        if (this.upgradedSeal) {
-            this.isSealModified = true;
-            this.sealValue = this.baseSealValue;
-        }
-
-        if (this.upgradedAllDamage)
-        {
-            this.isAllDamageModified = true;
-            this.allDamage = this.baseAllDamage;
-        }
-    }*/
-
     private void refresh()
     {
         setDamage(0);
@@ -239,6 +215,11 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         setMagic(0);
         setSeal(0);
         setAllDamage(0);
+
+        damageSeal = false;
+        debuffSeal = false;
+        buffSeal = false;
+        strongDebuffSeal = false;
 
         for (MysteryUpgrade m : this.upgrades)
         {
@@ -350,9 +331,38 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
 
     private void generateUpgrades()
     {
+        MysteryUpgrade sealUpgrade = null, nonSealUpgrade = null;
+        boolean nonSealUpgradeCapped = false;
+        boolean sealUpgradesCapped = false;
+
+        for (MysteryUpgrade m : upgrades)
+        {
+            if (m.isSealEffect)
+            {
+                if (sealUpgrade == null)
+                    sealUpgrade = m;
+                else if (sealUpgrade != m) //Second unique seal upgrade.
+                    sealUpgradesCapped = true;
+            }
+            else
+            {
+                nonSealUpgrade = m;
+                nonSealUpgradeCapped = true;
+            }
+        }
+
+        if (sealUpgradesCapped && nonSealUpgradeCapped)
+        {
+            normalUpgrade = nonSealUpgrade;
+            altUpgrade = sealUpgrade;
+            return;
+        }
+
         ArrayList<MysteryUpgrade> dddddddddddddddddddddd = new ArrayList<>(possibleUpgrades);
 
-        dddddddddddddddddddddd.removeIf((m)->!m.canStack && upgrades.contains(m));
+        boolean finalNonSealUpgradeCapped = nonSealUpgradeCapped;
+        boolean finalSealUpgradesCapped = sealUpgradesCapped;
+        dddddddddddddddddddddd.removeIf((m)->(!m.canStack && upgrades.contains(m)) || (m.isSealEffect ? finalSealUpgradesCapped : finalNonSealUpgradeCapped)); //remove upgrades that cannot stack or upgrades that there is no room for
 
         normalUpgrade = dddddddddddddddddddddd.remove(AbstractDungeon.cardRng.random(dddddddddddddddddddddd.size() - 1));
         altUpgrade = dddddddddddddddddddddd.remove(AbstractDungeon.cardRng.random(dddddddddddddddddddddd.size() - 1));
@@ -360,9 +370,36 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
 
     private MysteryUpgrade getRandomUpgrade()
     {
+        MysteryUpgrade sealUpgrade = null, nonSealUpgrade = null;
+        boolean nonSealUpgradeCapped = false;
+        boolean sealUpgradesCapped = false;
+
+        for (MysteryUpgrade m : upgrades)
+        {
+            if (m.isSealEffect)
+            {
+                if (sealUpgrade == null)
+                    sealUpgrade = m;
+                else if (sealUpgrade != m) //Second unique seal upgrade.
+                    sealUpgradesCapped = true;
+            }
+            else
+            {
+                nonSealUpgrade = m;
+                nonSealUpgradeCapped = true;
+            }
+        }
+
+        if (sealUpgradesCapped && nonSealUpgradeCapped)
+        {
+            return MathUtils.randomBoolean() ? nonSealUpgrade : sealUpgrade;
+        }
+
         ArrayList<MysteryUpgrade> dddddddddddddddddddddd = new ArrayList<>(possibleUpgrades);
 
-        dddddddddddddddddddddd.removeIf((m)->!m.canStack && upgrades.contains(m));
+        boolean finalNonSealUpgradeCapped = nonSealUpgradeCapped;
+        boolean finalSealUpgradesCapped = sealUpgradesCapped;
+        dddddddddddddddddddddd.removeIf((m)->(!m.canStack && upgrades.contains(m)) || (m.isSealEffect ? finalSealUpgradesCapped : finalNonSealUpgradeCapped)); //remove upgrades that cannot stack or upgrades that there is no room for
 
         return dddddddddddddddddddddd.remove(MathUtils.random(dddddddddddddddddddddd.size() - 1));
     }
@@ -395,15 +432,17 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         this.allDamage = this.damage;
 
         this.isMultiDamage = false;
-        this.baseDamage = actualBaseDamage;
-        super.calculateCardDamage(mo);
+        this.damage = this.baseDamage = actualBaseDamage;
+        if (mo != null)
+        {
+            super.calculateCardDamage(mo);
+        }
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        for (int i = 0; i < sortedUpgrades.size(); ++i)
-        {
-            sortedUpgrades.get(i).use(this, p, m);
+        for (MysteryUpgrade sortedUpgrade : sortedUpgrades) {
+            sortedUpgrade.use(this, p, m);
         }
         super.use(p, m);
     }
@@ -441,14 +480,21 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
     }
 
     @Override
+    public void getIntent(SealIntent i) {
+        int key = (damageSeal ? 1 : 0) | (debuffSeal ? 2 : 0) | (buffSeal ? 4 : 0) | (strongDebuffSeal ? 8 : 0);
+
+        i.intent = intentMap.get(key);
+    }
+
+    @Override
     public void update() {
         if (AbstractDungeon.screen == AbstractDungeon.CurrentScreen.GRID && AbstractDungeon.gridSelectScreen.forUpgrade)
         {
             //If I don't do this, it will incorrectly assume the card is not branch upgrading due to upgrade count not being set to a negative number.
-            boolean isBranchUpgrading = BranchingUpgradesPatch.BranchSelectFields.isBranchUpgrading.get(AbstractDungeon.gridSelectScreen);
             super.update();
-            if (this.hb.hovered && InputHelper.justClickedLeft)
-                BranchingUpgradesPatch.BranchSelectFields.isBranchUpgrading.set(AbstractDungeon.gridSelectScreen, isBranchUpgrading);
+            if (hb.hovered && InputHelper.justClickedLeft) {
+                BranchingUpgradesPatch.BranchSelectFields.isBranchUpgrading.set(AbstractDungeon.gridSelectScreen, isBranchUpgrade);
+            }
         }
         else
         {

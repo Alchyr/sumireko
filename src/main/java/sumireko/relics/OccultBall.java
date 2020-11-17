@@ -13,6 +13,7 @@ public class OccultBall extends BaseRelic {
     {
         super(ID, IMG, RelicTier.STARTER, LandingSound.MAGICAL);
         this.counter = 3;
+
     }
 
     @Override

@@ -1,7 +1,10 @@
 package sumireko.powers;
 
+import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.core.AbstractCreature;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.AbstractPower;
+import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import sumireko.abstracts.BasePower;
 import sumireko.abstracts.SealCard;
 import sumireko.interfaces.ModifySealPower;
@@ -17,15 +20,43 @@ public class ProwessPower extends BasePower implements ModifySealPower {
     public ProwessPower(final AbstractCreature owner, int amount)
     {
         super(NAME, TYPE, TURN_BASED, owner, null, amount);
+
+        canGoNegative = true;
+        priority = -15;
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0] + amount + descriptions()[1];
+        if (this.amount > 0) {
+            this.description = descriptions()[0] + amount + descriptions()[2];
+            this.type = PowerType.BUFF;
+        } else {
+            int tmp = -this.amount;
+            this.description = descriptions()[1] + tmp + descriptions()[2];
+            this.type = PowerType.DEBUFF;
+        }
+    }
+
+    public void stackPower(int stackAmount) {
+        this.fontScale = 8.0F;
+        this.amount += stackAmount;
+        if (this.amount == 0) {
+            this.addToTop(new RemoveSpecificPowerAction(this.owner, this.owner, this));
+        }
+    }
+
+    public void reducePower(int reduceAmount) {
+        this.fontScale = 8.0F;
+        this.amount -= reduceAmount;
+        if (this.amount == 0) {
+            this.addToTop(new RemoveSpecificPowerAction(this.owner, this.owner, this));
+        }
     }
 
     @Override
     public void modifySeal(SealCard c) {
         c.sealValue += this.amount;
+        if (c.sealValue < 0)
+            c.sealValue = 0;
         if (c.sealValue != c.baseSealValue)
             c.isSealModified = true;
     }

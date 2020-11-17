@@ -11,6 +11,7 @@ import sumireko.abstracts.BaseCard;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -28,10 +29,10 @@ public class MurderSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 14;
+    private static final int DAMAGE = 16;
     private static final int UPG_DAMAGE = 4;
 
-    private static final int SEAL = 2;
+    private static final int SEAL = 4;
 
     public MurderSeal() {
         super(cardInfo, false);
@@ -54,6 +55,12 @@ public class MurderSeal extends SealCard {
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
 
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.amount = -this.sealValue;
+        i.intent = AbstractMonster.Intent.MAGIC;
     }
 
     @Override

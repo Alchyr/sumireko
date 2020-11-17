@@ -21,6 +21,8 @@ public class StrengthDownSealUpgrade extends MysteryUpgrade {
 
     @Override
     public void apply(MysterySeal c) {
+        c.strongDebuffSeal = true;
+
         if (c.target == AbstractCard.CardTarget.SELF)
         {
             c.target = AbstractCard.CardTarget.ALL;

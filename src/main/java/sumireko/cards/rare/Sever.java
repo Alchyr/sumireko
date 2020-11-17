@@ -52,7 +52,7 @@ public class Sever extends BaseCard {
         this.baseDamage = 0;
         if (mo != null)
         {
-            this.baseDamage = mo.maxHealth - mo.currentHealth;
+            this.baseDamage = Math.min(this.magicNumber, mo.maxHealth - mo.currentHealth);
 
             this.rawDescription = cardStrings.EXTENDED_DESCRIPTION[0];
             this.initializeDescription();

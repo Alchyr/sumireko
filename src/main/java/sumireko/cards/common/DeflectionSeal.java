@@ -9,6 +9,7 @@ import com.megacrit.cardcrawl.powers.FlameBarrierPower;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -57,6 +58,11 @@ public class DeflectionSeal extends SealCard {
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
 
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.DEFEND;
     }
 
     @Override

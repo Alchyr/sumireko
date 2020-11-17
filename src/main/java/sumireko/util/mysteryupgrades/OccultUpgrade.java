@@ -7,7 +7,7 @@ import sumireko.util.MysteryUpgrade;
 public class OccultUpgrade extends MysteryUpgrade {
     public OccultUpgrade()
     {
-        super(-1000, false, false);
+        super(1000, false, false);
     }
 
     @Override

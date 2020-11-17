@@ -9,16 +9,29 @@ import sumireko.enums.CustomCardTags;
 
 public class SealAction extends AbstractGameAction {
     private SealCard seal;
+    private MirrorAction source;
     private AbstractMonster m;
 
     public SealAction(SealCard c, AbstractMonster target)
     {
+        this.source = null;
         this.m = target;
+        this.seal = c;
+    }
+    public SealAction(SealCard c, MirrorAction source)
+    {
+        this.source = source;
+        this.m = null;
         this.seal = c;
     }
 
     @Override
     public void update() {
+        if (this.source != null)
+        {
+            this.m = this.source.m;
+        }
+
         SealSystem.addSeal(seal, this.m);
         seal.flash(Color.VIOLET);
 

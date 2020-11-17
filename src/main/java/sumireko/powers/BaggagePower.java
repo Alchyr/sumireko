@@ -1,11 +1,20 @@
 package sumireko.powers;
 
+import basemod.interfaces.CloneablePowerInterface;
+import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.OnReceivePowerPower;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.monsters.MonsterGroup;
 import com.megacrit.cardcrawl.powers.AbstractPower;
+import com.megacrit.cardcrawl.powers.StrengthPower;
+import com.megacrit.cardcrawl.relics.BurningBlood;
 import sumireko.abstracts.BasePower;
 import sumireko.interfaces.LockingCardInterface;
+
+import java.util.ArrayList;
 
 import static sumireko.SumirekoMod.makeID;
 
@@ -31,6 +40,11 @@ public class BaggagePower extends BasePower {
                 }
             }
         }
+    }
+
+    @Override
+    public float atDamageGive(float damage, DamageInfo.DamageType type, AbstractCard card) {
+        return super.atDamageGive(damage, type, card);
     }
 
     public void updateDescription() {

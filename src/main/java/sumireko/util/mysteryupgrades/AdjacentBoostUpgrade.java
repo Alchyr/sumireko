@@ -13,6 +13,8 @@ public class AdjacentBoostUpgrade extends MysteryUpgrade {
 
     @Override
     public void apply(MysterySeal c) {
+        c.buffSeal = true;
+
         c.baseSealValue += SEAL_UPGRADE;
         c.sealValue += SEAL_UPGRADE;
         c.upgradedSeal = true;

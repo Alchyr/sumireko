@@ -32,10 +32,12 @@ public class DiscardSealAction extends AbstractGameAction {
         if (isCenterCard)
         {
             SealSystem.centerCard = null;
+            SealSystem.sealIntents[4].current = null;
         }
-        else if (index >= 0 && index <= 4)
+        else if (index >= 0 && index < 4)
         {
             SealSystem.aroundCards[index] = null;
+            SealSystem.sealIntents[index].current = null;
         }
 
         AbstractDungeon.player.hand.moveToDiscardPile(c);

@@ -11,6 +11,7 @@ import sumireko.abstracts.SealCard;
 import sumireko.actions.SealAction;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -53,5 +54,10 @@ public class StrikeSeal extends SealCard {
         if (target != null)
             if (this.sealValue > 0)
                 target.damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.ATTACK;
     }
 }

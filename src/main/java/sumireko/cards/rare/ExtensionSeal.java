@@ -8,6 +8,7 @@ import sumireko.abstracts.LockingCard;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -76,6 +77,13 @@ public class ExtensionSeal extends SealCard {
     @Override
     public void applyFinalAdjacencyEffect(SealCard c) {
         c.multiplySealValue(this.sealValue);
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.BUFF;
+        i.multihit(this.sealValue);
+        i.amount = -1;
     }
 
     @Override

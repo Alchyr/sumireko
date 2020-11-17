@@ -43,8 +43,8 @@ import static sumireko.SumirekoMod.*;
 public class Sumireko extends CustomPlayer {
     //stats
     public static final int ENERGY_PER_TURN = 3;
-    public static final int STARTING_HP = 65;
-    public static final int MAX_HP = 65;
+    public static final int STARTING_HP = 70;
+    public static final int MAX_HP = 70;
     public static final int STARTING_GOLD = 99;
     public static final int CARD_DRAW = 5;
     public static final int ORB_SLOTS = 0;
@@ -123,14 +123,6 @@ public class Sumireko extends CustomPlayer {
                 return Type.NONE;
             }
         });
-                //new SpriteAnimation(0.06f, frames, IMG_BACK));
-
-                /*new AbstractAnimation() {
-            @Override
-            public Type type() {
-                return Type.NONE;
-            }
-        });*/
 
         initializeClass(null,
                 SHOULDER_1,
@@ -221,6 +213,7 @@ public class Sumireko extends CustomPlayer {
     @Override
     public void doCharSelectScreenSelectEffect() {
         CardCrawlGame.sound.playA(getCustomModeCharacterButtonSoundKey(), 1.25f);
+        CardCrawlGame.sound.playA("ATTACK_MAGIC_SLOW_1", -0.2f);
         CardCrawlGame.screenShake.shake(ScreenShake.ShakeIntensity.MED, ScreenShake.ShakeDur.SHORT,
                 false);
     }
@@ -232,7 +225,7 @@ public class Sumireko extends CustomPlayer {
 
     @Override
     public int getAscensionMaxHPLoss() {
-        return 4;
+        return 5;
     }
 
     @Override
@@ -261,17 +254,17 @@ public class Sumireko extends CustomPlayer {
 
     @Override
     public Color getCardTrailColor() {
-        return SUMIREKO_COLOR;
+        return SUMIREKO_COLOR.cpy();
     }
 
     @Override
     public Color getCardRenderColor() {
-        return SUMIREKO_COLOR;
+        return SUMIREKO_COLOR.cpy();
     }
 
     @Override
     public Color getSlashAttackColor() {
-        return SUMIREKO_COLOR;
+        return SUMIREKO_COLOR.cpy();
     }
 
     @Override

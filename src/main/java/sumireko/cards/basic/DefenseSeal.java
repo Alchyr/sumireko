@@ -11,6 +11,7 @@ import sumireko.abstracts.SealCard;
 import sumireko.actions.SealAction;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -50,5 +51,10 @@ public class DefenseSeal extends SealCard {
     @Override
     public AbstractCard makeCopy() {
         return new DefenseSeal();
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.DEFEND;
     }
 }

@@ -1,7 +1,6 @@
 package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.MakeTempCardInHandAction;
-import com.megacrit.cardcrawl.actions.unique.DiscoveryAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -11,11 +10,11 @@ import com.megacrit.cardcrawl.helpers.CardLibrary;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import sumireko.abstracts.BaseCard;
-import sumireko.patches.CustomDiscoveryPatch;
+import sumireko.actions.TelephotographyAction;
+import sumireko.enums.CustomCardTags;
 import sumireko.patches.occult.OccultFields;
 import sumireko.util.CardInfo;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -43,14 +42,18 @@ public class Telephotography extends BaseCard {
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         if (upgraded) {
-            DiscoveryAction a = new DiscoveryAction();
-            CustomDiscoveryPatch.Fields.customDiscoveryCards.set(a, randomAttacks(this.magicNumber));
-            addToBot(a);
+            addToBot(new TelephotographyAction(randomAttacks(this.magicNumber)));
         }
         else
         {
             AbstractCard c = randomAttack();
-            OccultFields.isOccult.set(c, true);
+
+            if (!c.hasTag(CustomCardTags.FINAL))
+            {
+                OccultFields.isOccult.set(c, true);
+                c.initializeDescription();
+            }
+
             addToBot(new MakeTempCardInHandAction(c));
         }
     }

@@ -1,15 +1,16 @@
-package sumireko.cards.rare;
+package sumireko.cards.uncommon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.BaseCard;
 import sumireko.abstracts.SealCard;
 import sumireko.actions.MirrorAction;
+import sumireko.actions.SealAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -20,8 +21,8 @@ public class MirrorSeal extends SealCard {
             "MirrorSeal",
             1,
             CardType.SKILL,
-            CardTarget.SELF,
-            CardRarity.RARE);
+            CardTarget.NONE,
+            CardRarity.UNCOMMON);
     // skill
 
     public static final String ID = makeID(cardInfo.cardName);
@@ -39,9 +40,16 @@ public class MirrorSeal extends SealCard {
     }
 
     @Override
+    public void upgrade() {
+        super.upgrade();
+        this.tags.remove(CustomCardTags.FRAGILE_SEAL);
+    }
+
+    @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new MirrorAction(this));
-        super.use(p, m);
+        MirrorAction mirror = new MirrorAction(this);
+        addToBot(mirror);
+        addToBot(new SealAction(this, mirror));
     }
 
     @Override
@@ -122,6 +130,12 @@ public class MirrorSeal extends SealCard {
     {
         if (copying != null)
             copying.applyFinalAdjacencyEffect(c);
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        copying.getIntent(i);
+        i.amount = copying.sealValue;
     }
 
     @Override

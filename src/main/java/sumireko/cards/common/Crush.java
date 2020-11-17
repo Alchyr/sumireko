@@ -29,6 +29,8 @@ public class Crush extends BaseCard {
 
         setDamage(DAMAGE);
 
+        isMultiDamage = true;
+
         tags.add(CustomCardTags.FINAL);
     }
 

@@ -12,6 +12,7 @@ import sumireko.actions.DamageRandomConditionalEnemyAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -75,6 +76,12 @@ public class ShockingSeal extends SealCard {
                 }
             }
         }
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.ATTACK;
+        i.multihit(7);
     }
 
     @Override

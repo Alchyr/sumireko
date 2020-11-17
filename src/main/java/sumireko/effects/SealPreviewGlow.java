@@ -10,21 +10,22 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
 
 public class SealPreviewGlow extends AbstractGameEffect {
-    private float x, y;
-    private TextureAtlas.AtlasRegion img;
-    private float scale;
+    private final float x, y;
+    private final TextureAtlas.AtlasRegion img;
+    private float scale, size;
 
-    public SealPreviewGlow(float x, float y, Color gColor) {
+    public SealPreviewGlow(float x, float y, float size, Color gColor) {
         this.x = x;
         this.y = y;
         this.img = ImageMaster.CARD_SKILL_BG_SILHOUETTE;
 
+        this.size = size * Settings.scale;
         this.duration = 1.5F;
         this.color = gColor.cpy();
     }
 
     public void update() {
-        this.scale = (1.0F + Interpolation.pow2Out.apply(0.03F, 0.11F, 1.3F - this.duration)) * 0.5f * Settings.scale;
+        this.scale = (1.0F + Interpolation.pow2Out.apply(0.03F, 0.11F, 1.3F - this.duration)) * size;
         this.color.a = this.duration / 2.0F;
         this.duration -= Gdx.graphics.getDeltaTime();
         if (this.duration < 0.0F) {

@@ -9,6 +9,7 @@ import sumireko.enums.CustomCardTags;
 import sumireko.patches.occult.OccultFields;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -58,5 +59,10 @@ public class OccultSeal extends SealCard {
 
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.BUFF;
     }
 }

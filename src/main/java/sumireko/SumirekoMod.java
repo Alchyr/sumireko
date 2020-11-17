@@ -10,7 +10,9 @@ import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.CardHelper;
 import com.megacrit.cardcrawl.localization.*;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
@@ -50,7 +52,8 @@ public class SumirekoMod implements
         EditCharactersSubscriber,
         PostInitializeSubscriber,
         PreStartGameSubscriber,
-        PostBattleSubscriber
+        PostBattleSubscriber,
+        OnStartBattleSubscriber
 {
     public static final Logger logger = LogManager.getLogger("Sumireko");
 
@@ -64,6 +67,7 @@ public class SumirekoMod implements
     //Character Color
     public static final Color SUMIREKO_COLOR = CardHelper.getColor(88.0f, 26.0f, 150.0f);
     public static final Color SUMIREKO_COLOR_DIM = CardHelper.getColor(53.0f, 12.0f, 94.0f);
+    public static final Color SUMIREKO_COLOR_BRIGHT = CardHelper.getColor(180.5f, 50.0f, 255.0f);
 
     //Card Assets
     private static final String ATTACK_BACK = makeCardPath("assets/bg_attack.png");
@@ -73,6 +77,8 @@ public class SumirekoMod implements
     private static final String ATTACK_BACK_PORTRAIT = makeCardPath("assets/bg_attack_p.png");
     private static final String SKILL_BACK_PORTRAIT = makeCardPath("assets/bg_skill_p.png");
     private static final String POWER_BACK_PORTRAIT = makeCardPath("assets/bg_power_p.png");
+
+
 
     private static final String ENERGY_ORB = makeCardPath("assets/energy_orb.png");
     private static final String ENERGY_ORB_PORTRAIT = makeCardPath("assets/energy_orb_p.png");
@@ -348,5 +354,19 @@ public class SumirekoMod implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         SealSystem.reset();
+    }
+
+    @Override
+    public void receiveOnBattleStart(AbstractRoom abstractRoom) {
+        SealSystem.setPosition(); //Sets positions based on where the player is.
+        if (hasSeals(AbstractDungeon.player))
+        {
+            SealSystem.enabled = true;
+        }
+    }
+
+    private boolean hasSeals(AbstractPlayer p) //Patch here for sumireko skillbook :)
+    {
+        return p instanceof Sumireko;
     }
 }

@@ -2,8 +2,30 @@
   "sumireko:Prowess": {
     "NAME": "Prowess",
     "DESCRIPTIONS": [
-      "The effects of ALL #ySeals are increased by #b",
+      "The effects of #ySeals are increased by #b",
+      "The effects of #ySeals are decreased by #b",
       "."
+    ]
+  },
+  "sumireko:ProwessDown": {
+    "NAME": "Prowess Down",
+    "DESCRIPTIONS": [
+      "At the end of this turn, lose #b",
+      " #yProwess."
+    ]
+  },
+  "sumireko:RetainSpecificCard": {
+    "NAME": "Retain Card",
+    "DESCRIPTIONS": [
+      "#yRetain ",
+      " until played."
+    ]
+  },
+  "sumireko:NaturalJinx": {
+    "NAME": "Natural Jinx",
+    "DESCRIPTIONS": [
+      "Whenever you play an #yOccult card, this enemy loses #b",
+      " HP."
     ]
   },
   "sumireko:PerfectParadox": {
@@ -31,7 +53,8 @@
     "NAME": "Esoteric Secrets",
     "DESCRIPTIONS": [
       "Take #b",
-      " less damage from attacks for each #yLocked or #yUnplayable card in your hand."
+      " less damage from attacks for each #yLocked or #yUnplayable card in your hand at the end of your turn. NL Currently #b",
+      " less damage."
     ]
   },
   "sumireko:Fundamental": {
@@ -40,6 +63,12 @@
       "#yFinal cards are played #b",
       " additional time.",
       " additional times."
+    ]
+  },
+  "sumireko:HeavyKnowledge": {
+    "NAME": "Heavy Knowledge",
+    "DESCRIPTIONS": [
+      "Whenever you draw a card that costs #b3 or more, make it #yOccult."
     ]
   },
   "sumireko:Imprint": {

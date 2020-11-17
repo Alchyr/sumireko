@@ -80,7 +80,7 @@ public class HandSelectAction extends AbstractGameAction {
                 return;
             }
 
-            if (validCards.size() >= this.amount)
+            if (validCards.size() <= this.amount)
             {
                 process.accept(validCards);
                 if (finale != null)
@@ -116,6 +116,7 @@ public class HandSelectAction extends AbstractGameAction {
                     this.p.hand.addToTop(c);
 
             returnCards();
+
             AbstractDungeon.handCardSelectScreen.wereCardsRetrieved = true;
         }
 

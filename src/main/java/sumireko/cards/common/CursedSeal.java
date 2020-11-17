@@ -12,6 +12,7 @@ import sumireko.abstracts.SealCard;
 import sumireko.actions.AllEnemyLoseHPAction;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -29,8 +30,8 @@ public class CursedSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 12;
-    private static final int UPG_MAGIC = 4;
+    private static final int MAGIC = 11;
+    private static final int UPG_MAGIC = 3;
 
 
     public CursedSeal() {
@@ -63,6 +64,12 @@ public class CursedSeal extends SealCard {
 
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.amount = -1;
+        i.intent = AbstractMonster.Intent.MAGIC;
     }
 
     @Override

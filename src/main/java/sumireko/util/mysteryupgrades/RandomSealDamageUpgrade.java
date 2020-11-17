@@ -20,6 +20,8 @@ public class RandomSealDamageUpgrade extends MysteryUpgrade {
 
     @Override
     public void apply(MysterySeal c) {
+        c.damageSeal = true;
+
         if (c.target == AbstractCard.CardTarget.SELF)
         {
             c.target = AbstractCard.CardTarget.ALL;

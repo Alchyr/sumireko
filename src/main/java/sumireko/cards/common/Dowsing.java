@@ -1,31 +1,30 @@
-package sumireko.cards.basic;
+package sumireko.cards.common;
 
-import com.megacrit.cardcrawl.actions.common.GainBlockAction;
+import com.megacrit.cardcrawl.actions.unique.DiscardPileToTopOfDeckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.XCostAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class XCostTestCard extends BaseCard {
+public class Dowsing extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "XCostTestCard",
-            -1,
+            "Dowsing",
+            1,
             CardType.SKILL,
             CardTarget.SELF,
-            CardRarity.BASIC);
+            CardRarity.COMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 7;
-    private static final int UPG_BLOCK = 2;
+    private static final int BLOCK = 8;
+    private static final int UPG_BLOCK = 3;
 
 
-    public XCostTestCard() {
+    public Dowsing() {
         super(cardInfo, false);
 
         setBlock(BLOCK, UPG_BLOCK);
@@ -33,16 +32,12 @@ public class XCostTestCard extends BaseCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new XCostAction(this, (effect, params)->{
-            for(int i = 0; i < effect; ++i) {
-                this.addToBot(new GainBlockAction(p, p, params[0]));
-            }
-            return true;
-        }, this.block));
+        block();
+        addToBot(new DiscardPileToTopOfDeckAction(p));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new XCostTestCard();
+        return new Dowsing();
     }
 }

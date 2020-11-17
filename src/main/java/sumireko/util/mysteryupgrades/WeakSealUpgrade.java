@@ -18,6 +18,8 @@ public class WeakSealUpgrade extends MysteryUpgrade {
 
     @Override
     public void apply(MysterySeal c) {
+        c.debuffSeal = true;
+
         if (c.target == AbstractCard.CardTarget.SELF || c.target == AbstractCard.CardTarget.ALL)
         {
             c.target = AbstractCard.CardTarget.SELF_AND_ENEMY;

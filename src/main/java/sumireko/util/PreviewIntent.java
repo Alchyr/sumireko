@@ -64,11 +64,14 @@ public class PreviewIntent {
 
     private Color intentColor;
 
+    private boolean isAttackIntent;
+
     public PreviewIntent(AbstractMonster source, PretendMonster m)
     {
         this.source = source;
         intentColor = Color.WHITE.cpy();
 
+        isAttackIntent = false;
         baseIntent = source.intent;
 
         isAlive = !(m.canDie && m.currentHealth <= 0);
@@ -103,6 +106,8 @@ public class PreviewIntent {
             }
             catch (Exception e)
             {
+                this.intentImg = this.getIntentImg();
+                this.intentBg = null;
                 e.printStackTrace();
             }
         }
@@ -150,13 +155,10 @@ public class PreviewIntent {
 
     public void render(SpriteBatch sb)
     {
-        if (isAlive)
-        {
-            this.renderIntentVfxBehind(sb);
-            this.renderIntent(sb);
-            this.renderIntentVfxAfter(sb);
-            this.renderDamageRange(sb);
-        }
+        this.renderIntentVfxBehind(sb);
+        this.renderIntent(sb);
+        this.renderIntentVfxAfter(sb);
+        this.renderDamageRange(sb);
     }
 
     public void renderIntent(SpriteBatch sb) {
@@ -205,45 +207,56 @@ public class PreviewIntent {
     }
 
     private void updateIntentVFX() {
-        if (intentColor.a > 0.0F && isAlive) {
-            if (this.intent != AbstractMonster.Intent.ATTACK_DEBUFF && this.intent != AbstractMonster.Intent.DEBUFF && this.intent != AbstractMonster.Intent.STRONG_DEBUFF && this.intent != AbstractMonster.Intent.DEFEND_DEBUFF) {
-                if (this.intent != AbstractMonster.Intent.ATTACK_BUFF && this.intent != AbstractMonster.Intent.BUFF && this.intent != AbstractMonster.Intent.DEFEND_BUFF) {
-                    if (this.intent == AbstractMonster.Intent.ATTACK_DEFEND) {
-                        this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                        if (this.intentParticleTimer < 0.0F) {
-                            this.intentParticleTimer = 0.5F;
-                            this.intentVfx.add(new FadedShieldParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
-                        }
-                    } else if (this.intent == AbstractMonster.Intent.UNKNOWN) {
-                        this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                        if (this.intentParticleTimer < 0.0F) {
-                            this.intentParticleTimer = 0.5F;
-                            this.intentVfx.add(new FadedUnknownParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
-                        }
-                    } else if (this.intent == AbstractMonster.Intent.STUN) {
-                        this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                        if (this.intentParticleTimer < 0.0F) {
-                            this.intentParticleTimer = 0.67F;
-                            this.intentVfx.add(new FadedStunStarEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
-                        }
+        if (intentColor.a > 0.0F) {
+            switch (this.intent)
+            {
+                case ATTACK_DEBUFF:
+                case DEBUFF:
+                case STRONG_DEBUFF:
+                case DEFEND_DEBUFF:
+                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
+                    if (this.intentParticleTimer < 0.0F) {
+                        this.intentParticleTimer = 1.0F;
+                        this.intentVfx.add(new FadedDebuffParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
                     }
-                } else {
+                    break;
+                case ATTACK_BUFF:
+                case BUFF:
+                case DEFEND_BUFF:
                     this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
                     if (this.intentParticleTimer < 0.0F) {
                         this.intentParticleTimer = 0.1F;
                         this.intentVfx.add(new FadedBuffParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
                     }
-                }
-            } else {
-                this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                if (this.intentParticleTimer < 0.0F) {
-                    this.intentParticleTimer = 1.0F;
-                    this.intentVfx.add(new FadedDebuffParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
-                }
+                    break;
+                case ATTACK_DEFEND:
+                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
+                    if (this.intentParticleTimer < 0.0F) {
+                        this.intentParticleTimer = 0.5F;
+                        this.intentVfx.add(new FadedShieldParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
+                    }
+                    break;
+                case UNKNOWN:
+                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
+                    if (this.intentParticleTimer < 0.0F) {
+                        this.intentParticleTimer = 0.5F;
+                        this.intentVfx.add(new FadedUnknownParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
+                    }
+                    break;
+                case STUN:
+                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
+                    if (this.intentParticleTimer < 0.0F) {
+                        this.intentParticleTimer = 0.67F;
+                        this.intentVfx.add(new FadedStunStarEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
+                    }
+                    break;
             }
         }
     }
 
+    public boolean shouldRender() {
+        return isAlive && (this.intent != source.intent || (isAttackIntent && this.damage != source.getIntentDmg()));
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -268,6 +281,7 @@ public class PreviewIntent {
             case ATTACK_BUFF:
             case ATTACK_DEBUFF:
             case ATTACK_DEFEND:
+                isAttackIntent = true;
                 return this.getAttackIntent();
             case BUFF:
                 return ImageMaster.INTENT_BUFF_L;

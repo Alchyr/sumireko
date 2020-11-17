@@ -21,16 +21,14 @@ public class MentalImaging extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
+    private static final int UPG_COST = 0;
+
 
     public MentalImaging() {
         super(cardInfo, false);
 
-        tags.add(CustomCardTags.FINAL);
+        setCostUpgrade(UPG_COST);
         setExhaust(true);
-    }
-
-    public boolean canUpgrade() {
-        return false;
     }
 
     @Override

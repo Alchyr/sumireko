@@ -18,6 +18,9 @@ public class EsotericSecretsPower extends BasePower {
     public static final AbstractPower.PowerType TYPE = AbstractPower.PowerType.BUFF;
     public static final boolean TURN_BASED = false;
 
+    private boolean useSavedValue = false;
+    private int savedReduction = 0;
+
     public EsotericSecretsPower(final AbstractCreature owner, int amount)
     {
         super(NAME, TYPE, TURN_BASED, owner, null, amount);
@@ -28,22 +31,39 @@ public class EsotericSecretsPower extends BasePower {
         return damage - getReduction();
     }
 
+    @Override
+    public void atEndOfTurnPreEndTurnCards(boolean isPlayer) {
+        if (isPlayer)
+        {
+            useSavedValue = true;
+        }
+    }
+
+    @Override
+    public void atStartOfTurn() {
+        useSavedValue = false;
+    }
+
     private int getReduction()
     {
-        int amt = 0;
+        if (useSavedValue)
+            return savedReduction;
+
+        savedReduction = 0;
         for (AbstractCard c : AbstractDungeon.player.hand.group)
         {
             if ((c instanceof LockingCardInterface && ((LockingCardInterface) c).isLocked()) ||
-                c.rawDescription.contains(KeywordWithProper.unplayable) && c.cost == -2 ||
+                c.rawDescription.contains(KeywordWithProper.unplayable) ||
             c.hasTag(CustomCardTags.UNPLAYABLE))
             {
-                amt += this.amount;
+                savedReduction += this.amount;
             }
         }
-        return amt;
+        updateDescription();
+        return savedReduction;
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0] + amount + descriptions()[1];
+        this.description = descriptions()[0] + amount + descriptions()[1] + savedReduction + descriptions()[2];
     }
 }

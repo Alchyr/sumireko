@@ -21,7 +21,7 @@ public class InstantBarrier extends LockingCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 14;
+    private static final int BLOCK = 12;
 
     public InstantBarrier() {
         super(cardInfo, true);

@@ -8,6 +8,7 @@ import sumireko.actions.RandomOccultCardsAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -52,6 +53,11 @@ public class LiberationSeal extends SealCard {
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
 
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.UNKNOWN;
     }
 
     @Override

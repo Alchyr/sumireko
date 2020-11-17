@@ -11,6 +11,7 @@ import sumireko.SealSystem;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -64,6 +65,12 @@ public class ExplosionSeal extends SealCard {
                 monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
             }
         }
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.amount = -1;
+        i.intent = AbstractMonster.Intent.MAGIC;
     }
 
     @Override

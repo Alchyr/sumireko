@@ -7,7 +7,7 @@ import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 
 public class DrawCardUpgrade extends MysteryUpgrade {
-    private static final int MAGIC_UPGRADE = 3;
+    private static final int MAGIC_UPGRADE = 2;
 
     public DrawCardUpgrade()
     {

@@ -15,7 +15,7 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.VulnerablePower;
 import com.megacrit.cardcrawl.powers.WeakPower;
 import sumireko.SumirekoMod;
-import sumireko.cards.common.Crush;
+import sumireko.cards.rare.ExtensionSeal;
 import sumireko.enums.CharacterEnums;
 import sumireko.util.CardInfo;
 import sumireko.util.TextureLoader;
@@ -53,7 +53,6 @@ public abstract class BaseCard extends CustomCard {
     public BaseCard(CardInfo cardInfo, boolean upgradesDescription)
     {
         this(cardInfo.cardName, cardInfo.cardCost, cardInfo.cardType, cardInfo.cardTarget, cardInfo.cardRarity, upgradesDescription);
-
     }
 
     public BaseCard(String cardName, int cost, CardType cardType, CardTarget target, CardRarity rarity, boolean upgradesDescription)

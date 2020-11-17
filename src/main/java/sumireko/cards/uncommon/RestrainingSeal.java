@@ -10,6 +10,7 @@ import sumireko.actions.LoseStrengthThisTurnAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Map;
 
@@ -27,8 +28,8 @@ public class RestrainingSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 4;
-    private static final int UPG_SEAL = 2;
+    private static final int SEAL = 6;
+    private static final int UPG_SEAL = 3;
 
     public RestrainingSeal() {
         super(cardInfo, false);
@@ -56,6 +57,11 @@ public class RestrainingSeal extends SealCard {
                 pretendApplyPower(m.getValue(), new StrengthPower(m.getValue(), -this.sealValue), -this.sealValue);
             }
         }
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = AbstractMonster.Intent.STRONG_DEBUFF;
     }
 
     @Override

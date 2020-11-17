@@ -61,6 +61,7 @@ public class RuleCancelAction extends AbstractGameAction {
                 validCards.getTopCard().superFlash(Color.VIOLET);
                 addToTop(new HandCheckAction());
                 this.isDone = true;
+                return;
             }
 
             invalidCards.addAll(p.hand.group);

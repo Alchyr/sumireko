@@ -2,6 +2,7 @@ package sumireko.abstracts;
 
 import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.BetterOnApplyPowerPower;
+import com.megacrit.cardcrawl.actions.unique.SwordBoomerangAction;
 import com.megacrit.cardcrawl.actions.utility.TextAboveCreatureAction;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
@@ -16,6 +17,7 @@ import sumireko.actions.SealAction;
 import sumireko.interfaces.ModifySealPower;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;
+import sumireko.util.SealIntent;
 
 import java.util.Collections;
 import java.util.Map;
@@ -127,6 +129,8 @@ public abstract class SealCard extends BaseCard {
     {
 
     }
+
+    public abstract void getIntent(SealIntent i);
 
     @Override
     public void hover() {
