@@ -4,14 +4,14 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.powers.EsotericSecretsPower;
+import sumireko.powers.GravityPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class EsotericSecrets extends BaseCard {
+public class Gravity extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "EsotericSecrets",
+            "Gravity",
             1,
             CardType.POWER,
             CardTarget.SELF,
@@ -20,24 +20,24 @@ public class EsotericSecrets extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 0;
 
-    private static final int MAGIC = 4;
+    private static final int MAGIC = 1;
 
-    public EsotericSecrets() {
-        super(cardInfo, false);
 
-        setCostUpgrade(UPG_COST);
+    public Gravity() {
+        super(cardInfo, true);
+
         setMagic(MAGIC);
+        setInnate(false, true);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        applySelf(new EsotericSecretsPower(p, this.magicNumber));
+        applySelf(new GravityPower(p, this.magicNumber));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new EsotericSecrets();
+        return new Gravity();
     }
 }

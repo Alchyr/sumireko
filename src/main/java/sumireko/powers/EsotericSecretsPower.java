@@ -4,6 +4,8 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.GameDictionary;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import sumireko.abstracts.BasePower;
 import sumireko.enums.CustomCardTags;
@@ -32,6 +34,14 @@ public class EsotericSecretsPower extends BasePower {
     }
 
     @Override
+    public void onCardDraw(AbstractCard card) {
+        for (AbstractMonster m : AbstractDungeon.getMonsters().monsters)
+        {
+            m.applyPowers();
+        }
+    }
+
+    @Override
     public void atEndOfTurnPreEndTurnCards(boolean isPlayer) {
         if (isPlayer)
         {
@@ -53,7 +63,7 @@ public class EsotericSecretsPower extends BasePower {
         for (AbstractCard c : AbstractDungeon.player.hand.group)
         {
             if ((c instanceof LockingCardInterface && ((LockingCardInterface) c).isLocked()) ||
-                c.rawDescription.contains(KeywordWithProper.unplayable) ||
+                    c.rawDescription.toLowerCase().contains(GameDictionary.UNPLAYABLE.NAMES[0]) ||
             c.hasTag(CustomCardTags.UNPLAYABLE))
             {
                 savedReduction += this.amount;

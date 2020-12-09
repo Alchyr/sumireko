@@ -1,43 +1,40 @@
-package sumireko.cards.uncommon;
+package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.powers.EsotericSecretsPower;
+import sumireko.powers.SixthSensePower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class EsotericSecrets extends BaseCard {
+public class SixthSense extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "EsotericSecrets",
+            "SixthSense",
             1,
             CardType.POWER,
-            CardTarget.SELF,
-            CardRarity.UNCOMMON);
-    // power
+            CardTarget.NONE,
+            CardRarity.RARE);
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 0;
+    private static final int MAGIC = 2;
 
-    private static final int MAGIC = 4;
+    public SixthSense() {
+        super(cardInfo, true);
 
-    public EsotericSecrets() {
-        super(cardInfo, false);
-
-        setCostUpgrade(UPG_COST);
         setMagic(MAGIC);
+        setInnate(false, true);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        applySelf(new EsotericSecretsPower(p, this.magicNumber));
+        applySelf(new SixthSensePower(p, this.magicNumber));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new EsotericSecrets();
+        return new SixthSense();
     }
 }

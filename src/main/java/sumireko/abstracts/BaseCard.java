@@ -52,12 +52,17 @@ public abstract class BaseCard extends CustomCard {
 
     public BaseCard(CardInfo cardInfo, boolean upgradesDescription)
     {
-        this(cardInfo.cardName, cardInfo.cardCost, cardInfo.cardType, cardInfo.cardTarget, cardInfo.cardRarity, upgradesDescription);
+        this(cardInfo, upgradesDescription, COLOR);
     }
 
-    public BaseCard(String cardName, int cost, CardType cardType, CardTarget target, CardRarity rarity, boolean upgradesDescription)
+    public BaseCard(CardInfo cardInfo, boolean upgradesDescription, CardColor color)
     {
-        super(makeID(cardName), "", TextureLoader.getAndLoadCardTextureString(cardName, cardType), cost, "", cardType, COLOR, rarity, target);
+        this(cardInfo.cardName, cardInfo.cardCost, cardInfo.cardType, cardInfo.cardTarget, cardInfo.cardRarity, upgradesDescription, color);
+    }
+
+    public BaseCard(String cardName, int cost, CardType cardType, CardTarget target, CardRarity rarity, boolean upgradesDescription, CardColor color)
+    {
+        super(makeID(cardName), "", TextureLoader.getAndLoadCardTextureString(cardName, cardType), cost, "", cardType, color, rarity, target);
 
         cardStrings = CardCrawlGame.languagePack.getCardStrings(cardID);
 
@@ -277,6 +282,10 @@ public abstract class BaseCard extends CustomCard {
     protected void damageSingle(AbstractCreature target, AbstractGameAction.AttackEffect effect)
     {
         addToBot(new DamageAction(target, new DamageInfo(AbstractDungeon.player, this.damage, this.damageTypeForTurn), effect));
+    }
+    protected void damageSingle(AbstractCreature target, AbstractGameAction.AttackEffect effect, boolean isFast)
+    {
+        addToBot(new DamageAction(target, new DamageInfo(AbstractDungeon.player, this.damage, this.damageTypeForTurn), effect, isFast));
     }
     protected void damageSingle(AbstractCreature target, int amount, AbstractGameAction.AttackEffect effect)
     {

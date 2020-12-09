@@ -1,21 +1,18 @@
-/*package sumireko.cards.rare;
+package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.SelfRestraintAction;
-import sumireko.enums.CustomCardTags;
+import sumireko.actions.RandomOccultCardsAction;
+import sumireko.powers.MadnessPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-CARD REJECTED
-does not make sense for the character
-
-public class SelfRestraint extends BaseCard {
+public class VisionOfMadness extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "SelfRestraint",
+            "VisionOfMadness",
             3,
             CardType.SKILL,
             CardTarget.NONE,
@@ -24,29 +21,24 @@ public class SelfRestraint extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    public SelfRestraint() {
-        super(cardInfo, true);
+    private static final int MAGIC = 8;
+    private static final int UPG_MAGIC = -3;
 
-        tags.add(CustomCardTags.UNPLAYABLE);
-    }
 
-    public boolean canUse(AbstractPlayer p, AbstractMonster m) {
-        return false;
-    }
+    public VisionOfMadness() {
+        super(cardInfo, false);
 
-    @Override
-    public void upgrade() {
-        selfRetain = true;
-        super.upgrade();
+        setMagic(MAGIC, UPG_MAGIC);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new SelfRestraintAction());
+        addToBot(new RandomOccultCardsAction(999)); //I'm too lazy to write a new action.
+        applySelf(new MadnessPower(p, this.magicNumber));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new SelfRestraint();
+        return new VisionOfMadness();
     }
-}*/
+}

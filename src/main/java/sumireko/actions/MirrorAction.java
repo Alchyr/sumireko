@@ -7,6 +7,7 @@ import sumireko.SealSystem;
 import sumireko.abstracts.SealCard;
 import sumireko.cards.uncommon.MirrorSeal;
 import sumireko.effects.UltraFlashVfx;
+import sumireko.enums.CustomCardTags;
 import sumireko.util.KeywordWithProper;
 
 public class MirrorAction extends AbstractGameAction {
@@ -30,16 +31,21 @@ public class MirrorAction extends AbstractGameAction {
             {
                 toCopy = ((MirrorSeal) toCopy).copying;
             }
-            SealCard copy = (SealCard)toCopy.makeStatEquivalentCopy();
 
-            if (!s.upgraded)
+            if (toCopy != null)
             {
-                copy.rawDescription += KeywordWithProper.fragile;
-                copy.initializeDescription();
-            }
+                SealCard copy = (SealCard)toCopy.makeStatEquivalentCopy();
 
-            s.copying = copy;
-            s.cardID = copy.cardID;
+                if (!s.upgraded && !copy.hasTag(CustomCardTags.FRAGILE_SEAL))
+                {
+                    copy.tags.add(CustomCardTags.FRAGILE_SEAL);
+                    copy.rawDescription += KeywordWithProper.fragile;
+                    copy.initializeDescription();
+                }
+
+                s.copying = copy;
+                s.cardID = copy.cardID;
+            }
         }
 
         this.isDone = true;

@@ -1,10 +1,9 @@
 package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.LockingCard;
 import sumireko.abstracts.SealCard;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
@@ -15,66 +14,57 @@ import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class ExtensionSeal extends SealCard {
+public class AmplificationSeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "ExtensionSeal",
+            "AmplificationSeal",
             2,
             CardType.SKILL,
             CardTarget.NONE,
             CardRarity.RARE);
-    // skill
 
     public static final String ID = makeID(cardInfo.cardName);
 
+    private static final int UPG_COST = 1;
+
     private static final int SEAL = 2;
 
-    public ExtensionSeal() {
-        super(cardInfo, true);
-
-        setSeal(SEAL);
+    public AmplificationSeal() {
+        super(cardInfo, false);
 
         tags.add(CustomCardTags.FRAGILE_SEAL);
-    }
-
-    @Override
-    public void upgrade() {
-        super.upgrade();
-        tags.remove(CustomCardTags.FRAGILE_SEAL);
-    }
-
-    @Override
-    public boolean canUse(AbstractPlayer p, AbstractMonster m) {
-        return false;
+        setCostUpgrade(UPG_COST);
+        setSeal(SEAL);
     }
 
     @Override
     public void triggerSealEffect(AbstractMonster target) {
-
+        // :)
     }
 
     @Override
     public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+
     }
 
     @Override
-    public void applyFinalBaseAdjacencyEffect(SealCard c) {
-        c.multiplySealValue(this.baseSealValue);
-    }
+    public float modifyDamage(DamageInfo.DamageType type, float damage) {
+        if (type == DamageInfo.DamageType.NORMAL) {
+            return damage * this.sealValue;
+        }
 
-    @Override
-    public void applyFinalAdjacencyEffect(SealCard c) {
-        c.multiplySealValue(this.sealValue);
+        return damage;
     }
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.BUFF;
+        i.intent = AbstractMonster.Intent.MAGIC;
         i.multihit(this.sealValue);
         i.amount = -1;
+        //"x#"
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new ExtensionSeal();
+        return new AmplificationSeal();
     }
 }

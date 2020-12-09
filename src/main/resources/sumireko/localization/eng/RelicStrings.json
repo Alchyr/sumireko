@@ -13,6 +13,13 @@
       "At the start of your turn, draw until your hand is full. At the end of your turn, lose 1 HP for each card in your hand."
     ]
   },
+  "sumireko:FuturisticGrimoire": {
+    "NAME": "Futuristic Grimoire",
+    "FLAVOR": "Isn't this yours? Though, it looks a bit different.",
+    "DESCRIPTIONS": [
+      "#yFinal cards can be upgraded."
+    ]
+  },
   "sumireko:OccultBall": {
     "NAME": "Occult Ball",
     "FLAVOR": "A mystical object, said to grant wishes... well, it's really not that powerful.",

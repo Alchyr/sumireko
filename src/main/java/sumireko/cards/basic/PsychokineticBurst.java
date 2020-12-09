@@ -28,6 +28,11 @@ public class PsychokineticBurst extends LockingCard {
     }
 
     @Override
+    public float getTitleFontSize() {
+        return 18.0f;
+    }
+
+    @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         super.use(p, m);
 

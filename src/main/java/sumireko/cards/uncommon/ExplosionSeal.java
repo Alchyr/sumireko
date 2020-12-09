@@ -29,8 +29,8 @@ public class ExplosionSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 6;
-    private static final int UPG_SEAL = 2;
+    private static final int SEAL = 7;
+    private static final int UPG_SEAL = 3;
 
     public ExplosionSeal() {
         super(cardInfo, false);

@@ -1,6 +1,7 @@
 package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
+import com.megacrit.cardcrawl.actions.common.AttackDamageRandomEnemyAction;
 import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -35,25 +36,22 @@ public class Magnify extends BaseCard {
         addToBot(new HandSelectAction(1, (c) -> true, cards -> {
             for (AbstractCard c : cards)
             {
-                c.modifyCostForCombat(Math.max(c.costForTurn, 0));
+                c.modifyCostForCombat(Math.max((upgraded ? 2 : 1 ) * c.costForTurn, 0));
                 int block = c.cost == -1 ? EnergyPanel.getCurrentEnergy() : (Math.max(c.costForTurn, 0));
                 if (block > 0)
                     AbstractDungeon.actionManager.addToTop(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, block));
 
 
-                if (upgraded)
+                boolean newRetain = true;
+                for (AbstractPower pw : AbstractDungeon.player.powers)
                 {
-                    boolean newRetain = true;
-                    for (AbstractPower pw : AbstractDungeon.player.powers)
-                    {
-                        if (pw instanceof RetainSpecificCardPower && c.uuid.equals(((RetainSpecificCardPower) pw).card.uuid)) {
-                            newRetain = false;
-                            break;
-                        }
+                    if (pw instanceof RetainSpecificCardPower && c.uuid.equals(((RetainSpecificCardPower) pw).card.uuid)) {
+                        newRetain = false;
+                        break;
                     }
-                    if (newRetain)
-                        addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RetainSpecificCardPower(AbstractDungeon.player, c)));
                 }
+                if (newRetain)
+                    addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RetainSpecificCardPower(AbstractDungeon.player, c)));
             }
         }, cardStrings.EXTENDED_DESCRIPTION[0]));
     }

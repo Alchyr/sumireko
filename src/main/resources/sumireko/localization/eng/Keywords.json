@@ -1,13 +1,5 @@
 [
   {
-    "ID": "unplayable",
-    "PROPER_NAME": "Unplayable",
-    "NAMES": [
-      "Unplayable"
-    ],
-    "DESCRIPTION": "This is in the localization files for the sake of being able to easily determine how Unplayable will be written in card text."
-  },
-  {
     "PROPER_NAME": "Seal",
     "NAMES": [
       "seal",

@@ -22,6 +22,7 @@ public class SealIntent {
 
     public AbstractMonster.Intent intent;
 
+    public String specialText;
     public int amount;
     public boolean multihit;
     public int numHits;
@@ -111,7 +112,7 @@ public class SealIntent {
         if (this.multihit) {
             FontHelper.renderFontLeftTopAligned(sb, FontHelper.topPanelInfoFont, (amount == -1 ? "" : Integer.toString(this.amount)) + "x" + this.numHits, x - 30.0F * Settings.scale, y + this.bobEffect.y + 64.0f - 12.0F * Settings.scale, this.intentColor);
         } else if (amount != -1) {
-            FontHelper.renderFontLeftTopAligned(sb, FontHelper.topPanelInfoFont, Integer.toString(this.amount), x - 30.0F * Settings.scale, y + this.bobEffect.y + 64.0f - 12.0F * Settings.scale, this.intentColor);
+            FontHelper.renderFontLeftTopAligned(sb, FontHelper.topPanelInfoFont, this.amount + specialText, x - 30.0F * Settings.scale, y + this.bobEffect.y + 64.0f - 12.0F * Settings.scale, this.intentColor);
         }
     }
 
@@ -236,6 +237,7 @@ public class SealIntent {
     public void setSeal(SealCard c) {
         this.amount = c.sealValue;
         this.multihit = false;
+        this.specialText = "";
         c.getIntent(this);
 
         if (c != current)

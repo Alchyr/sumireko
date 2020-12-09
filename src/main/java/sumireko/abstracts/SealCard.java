@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.BetterOnApplyPowerPower;
 import com.megacrit.cardcrawl.actions.unique.SwordBoomerangAction;
 import com.megacrit.cardcrawl.actions.utility.TextAboveCreatureAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -128,6 +130,11 @@ public abstract class SealCard extends BaseCard {
     public void applyFinalAdjacencyEffect(SealCard c) //multiply/divide
     {
 
+    }
+
+    public float modifyDamage(DamageInfo.DamageType type, float damage)
+    {
+        return damage;
     }
 
     public abstract void getIntent(SealIntent i);

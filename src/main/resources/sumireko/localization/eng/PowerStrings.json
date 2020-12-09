@@ -21,6 +21,28 @@
       " until played."
     ]
   },
+  "sumireko:Recall": {
+    "NAME": "Recall",
+    "DESCRIPTIONS": [
+      "Gain [E] the next time you draw ",
+      "."
+    ]
+  },
+  "sumireko:SixthSense": {
+    "NAME": "SixthSense",
+    "DESCRIPTIONS": [
+      "At the end of your turn, you may #yRetain any cards you shouldn't be able to play.",
+      "Retain"
+    ]
+  },
+  "sumireko:PerfectMemory": {
+    "NAME": "Perfect Memory",
+    "DESCRIPTIONS": [
+      "The next card you play this turn is placed on top of your draw pile. Gain [E] the next time you draw it.",
+      "The next #b",
+      " cards you play this turn are placed on top of your draw pile. Gain [E] the next time you draw a played card."
+    ]
+  },
   "sumireko:NaturalJinx": {
     "NAME": "Natural Jinx",
     "DESCRIPTIONS": [

@@ -12,7 +12,7 @@ import static sumireko.SumirekoMod.makeID;
 public class SpiritualStress extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "SpiritualStress",
-            4,
+            5,
             CardType.ATTACK,
             CardTarget.ENEMY,
             CardRarity.RARE);
@@ -20,7 +20,7 @@ public class SpiritualStress extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 6;
+    private static final int UPG_COST = 8;
 
     public SpiritualStress() {
         super(cardInfo, false);

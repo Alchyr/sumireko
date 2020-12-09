@@ -33,6 +33,14 @@
             <systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0-patched.jar</systemPath>
         </dependency>-->
         <dependency>
+            <groupId>blackbird</groupId>
+            <artifactId>blackbird</artifactId>
+            <version>0.0.0</version>
+            <scope>system</scope>
+
+            <systemPath>${Steam.path}/common/SlayTheSpire/mods/GOOD_NIGHT_WORLD.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>com.evacipated.cardcrawl</groupId>
             <artifactId>modthespire</artifactId>
             <version>${ModTheSpire.version}</version>

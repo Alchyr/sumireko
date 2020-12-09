@@ -17,8 +17,8 @@ import sumireko.abstracts.SealCard;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class SealCardDestination {
-    private static UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("SealCardUse"));
+public class CardDestination {
+    private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("SealCardUse"));
 
     @SpirePatch(
             clz = UseCardAction.class,

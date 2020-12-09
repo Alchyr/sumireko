@@ -23,6 +23,7 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.clapper.util.classutil.*;
+import sumireko._R̥̼̳͙̣͈̽̔͗͐ͅÈC̜̫̤̪͔ͨO̻͖̱̰̬̝̺ͮ͂̑̍̽Ṉ͕̹͎̖͚̱ͬ͛Ṡ̢͈̥͈̘̜ͩͨͥͦ́Ṫ͍̈́ͬ̔͒̐̆͢R͙͕̯͓̥̺̜͂U͚͍̇̀͒̽ͦC̙̳͓͉̙̑͗T̳̖̃͒̈̈́̏̀._IMPROVE;
 import sumireko.actions.MirrorAction;
 import sumireko.character.Sumireko;
 import sumireko.enums.CharacterEnums;
@@ -253,9 +254,6 @@ public class SumirekoMod implements
                         case "fragile":
                             KeywordWithProper.fragile = " NL " + modID + ":" + keyword.NAMES[0];
                             break;
-                        case "unplayable":
-                            KeywordWithProper.unplayable = keyword.NAMES[0];
-                            continue;
                     }
                     BaseMod.addKeyword(modID, keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
                 }
@@ -278,9 +276,6 @@ public class SumirekoMod implements
                         case "fragile":
                             KeywordWithProper.fragile = " NL " + modID + ":" + keyword.NAMES[0];
                             break;
-                        case "unplayable":
-                            KeywordWithProper.unplayable = keyword.NAMES[0];
-                            continue;
                     }
                     BaseMod.addKeyword(modID, keyword.PROPER_NAME, keyword.NAMES, keyword.DESCRIPTION);
                 }
@@ -354,6 +349,7 @@ public class SumirekoMod implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         SealSystem.reset();
+        _IMPROVE._clean();
     }
 
     @Override

@@ -65,6 +65,15 @@ public class MirrorSeal extends SealCard {
     }
 
     @Override
+    public boolean hasTag(CardTags tagToCheck) {
+        if (copying != null)
+        {
+            return copying.hasTag(tagToCheck);
+        }
+        return super.hasTag(tagToCheck);
+    }
+
+    @Override
     public void resetSealValue() {
         super.resetSealValue();
         if (copying != null)
@@ -134,8 +143,11 @@ public class MirrorSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        copying.getIntent(i);
-        i.amount = copying.sealValue;
+        if (copying != null)
+        {
+            copying.getIntent(i);
+            i.amount = copying.sealValue;
+        }
     }
 
     @Override
