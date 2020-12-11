@@ -29,7 +29,7 @@ public class ExplosionSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 7;
+    private static final int SEAL = 9;
     private static final int UPG_SEAL = 3;
 
     public ExplosionSeal() {
@@ -39,21 +39,9 @@ public class ExplosionSeal extends SealCard {
     }
 
     @Override
-    public void applyFinalBaseAdjacencyEffect(SealCard c) { //Seals that negate other seals are not "buff" seals
-        //Buff seals will be modified first, including by non-buff seals. So, this will negate all neighboring buff seals.
-        c.negateSeal();
-    }
-    @Override
-    public void applyFinalAdjacencyEffect(SealCard c) { //Seals that negate other seals are not "buff" seals
-        //Buff seals will be modified first, including by non-buff seals. So, this will negate all neighboring buff seals.
-        c.negateSeal();
-    }
-
-    @Override
     public void triggerSealEffect(AbstractMonster target) {
         if (this.sealValue > 0)
-            for (int i = 0; i < SealSystem.nextIndex; ++i)
-                damageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
+            damageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
     }
 
     @Override
@@ -68,9 +56,13 @@ public class ExplosionSeal extends SealCard {
     }
 
     @Override
+    public void centerMultiplier() {
+        multiplySealValue(2);
+    }
+
+    @Override
     public void getIntent(SealIntent i) {
-        i.amount = -1;
-        i.intent = AbstractMonster.Intent.MAGIC;
+        i.intent = AbstractMonster.Intent.ATTACK;
     }
 
     @Override

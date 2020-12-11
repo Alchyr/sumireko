@@ -1,6 +1,7 @@
 package sumireko.util;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -96,27 +97,25 @@ public class TextureLoader {
                 break;
         }
 
-        if (textures.get(textureString) == null) {
-            try {
-                loadTexture(textureString);
-            } catch (GdxRuntimeException e) {
-                switch (cardType) {
-                    case ATTACK:
-                        textureString = makeImagePath("cards/attacks/default.png");
-                        break;
-                    case SKILL:
-                        textureString = makeImagePath("cards/skills/default.png");
-                        break;
-                    case POWER:
-                        textureString = makeImagePath("cards/powers/default.png");
-                        break;
-                    default:
-                        textureString = makeImagePath("missing.png");
-                        break;
-                }
+        FileHandle h = Gdx.files.internal(textureString);
+        if (!h.exists())
+        {
+            switch (cardType) {
+                case ATTACK:
+                    textureString = makeImagePath("cards/attacks/default.png");
+                    break;
+                case SKILL:
+                    textureString = makeImagePath("cards/skills/default.png");
+                    break;
+                case POWER:
+                    textureString = makeImagePath("cards/powers/default.png");
+                    break;
+                default:
+                    textureString = makeImagePath("missing.png");
+                    break;
             }
         }
-        //no exception, file exists
+
         return textureString;
     }
 
@@ -142,40 +141,12 @@ public class TextureLoader {
         return textureString;
     }
 
-    public static String getAndLoadCardTextureString(final String cardName, final AbstractCard.CardType cardType)
-    {
-        String textureString = getCardTextureString(cardName, cardType);
-
-        if (textures.get(textureString) == null) {
-            try {
-                loadTexture(textureString);
-            } catch (GdxRuntimeException e) {
-                switch (cardType) {
-                    case ATTACK:
-                        textureString = makeImagePath("cards/attacks/default.png");
-                        break;
-                    case SKILL:
-                        textureString = makeImagePath("cards/skills/default.png");
-                        break;
-                    case POWER:
-                        textureString = makeImagePath("cards/powers/default.png");
-                        break;
-                    default:
-                        textureString = makeImagePath("missing.png");
-                        break;
-                }
-            }
-        }
-        //no exception, file exists
-        return textureString;
-    }
-
     private static void loadTexture(final String textureString) throws GdxRuntimeException {
         loadTexture(textureString, false);
     }
 
     private static void loadTexture(final String textureString, boolean linearFilter) throws GdxRuntimeException {
-        Texture texture =  new Texture(textureString);
+        Texture texture = new Texture(textureString);
         if (linearFilter)
         {
             texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);

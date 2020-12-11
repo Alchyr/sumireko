@@ -28,13 +28,17 @@ public class SixthSensePower extends BasePower {
                     (cards) -> {
                         for (AbstractCard c : cards)
                             c.retain = true;
-                    }, null, descriptions()[1],
+                    }, null, descriptions()[3],
                     true, true, true
             ));
         }
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0];
+        if (this.amount == 1) {
+            this.description = descriptions()[0] + this.amount + descriptions()[1];
+        } else {
+            this.description = descriptions()[0] + this.amount + descriptions()[2];
+        }
     }
 }

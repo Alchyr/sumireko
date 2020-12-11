@@ -6,18 +6,16 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.monsters.ending.CorruptHeart;
 import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
-import com.megacrit.cardcrawl.vfx.combat.MindblastEffect;
 import com.megacrit.cardcrawl.vfx.combat.ViceCrushEffect;
 import sumireko.abstracts.BaseCard;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class GravityCrunch extends BaseCard {
+public class MassMash extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "GravityCrunch",
+            "MassMash",
             2,
             CardType.ATTACK,
             CardTarget.ENEMY,
@@ -31,7 +29,7 @@ public class GravityCrunch extends BaseCard {
     private static final int UPG_MAGIC = 1;
 
 
-    public GravityCrunch() {
+    public MassMash() {
         super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
@@ -98,6 +96,6 @@ public class GravityCrunch extends BaseCard {
     }
 
     public AbstractCard makeCopy() {
-        return new GravityCrunch();
+        return new MassMash();
     }
 }

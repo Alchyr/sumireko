@@ -97,13 +97,13 @@
     "NAME": "Dream",
     "DESCRIPTION": "Gain !B! Block. NL Next turn, draw !M! cards."
   },
-  "sumireko:BeyondReality": {
+  "sumireko:MindEye": {
     "NAME": "Mind's Eye",
-    "DESCRIPTION": "sumireko:Locking. NL Put a card from your draw pile into your hand.",
-    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Put !M! cards from your draw pile into your hand.",
+    "DESCRIPTION": "sumireko:Locking. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
+    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn.",
     "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Put a card from your draw pile into your hand.",
-      "sumireko:Locked. NL Put !M! cards from your draw pile into your hand."
+      "sumireko:Locked. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
+      "sumireko:Locked. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn."
     ]
   },
   "sumireko:Symbolism": {
@@ -132,17 +132,17 @@
   },
   "sumireko:TelephonePole": {
     "NAME": "Telephone Pole",
-    "DESCRIPTION": "sumireko:Locking. NL Deal !D! damage.",
+    "DESCRIPTION": "sumireko:Locking. NL Gain !B! Block. NL Deal !D! damage.",
     "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Deal !D! damage."
+      "sumireko:Locked. NL Gain !B! Block. NL Deal !D! damage."
     ]
   },
   "sumireko:IronGirders": {
     "NAME": "Iron Girders",
     "DESCRIPTION": "Deal !D! damage twice. NL Increase this card's cost by 1 for the combat."
   },
-  "sumireko:GravityCrunch": {
-    "NAME": "Gravity Crunch",
+  "sumireko:MassMash": {
+    "NAME": "Mass Mash",
     "DESCRIPTION": "Deal damage equal to !M! times the total cost of cards in your hand.",
     "EXTENDED_DESCRIPTION": [
       " NL (Deals !D! damage.)"
@@ -176,7 +176,7 @@
   },
   "sumireko:ExplosionSeal": {
     "NAME": "Explosion Seal",
-    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to ALL enemies for each active sumireko:Seal. NL Sets the effects of adjacent sumireko:Seals to 0."
+    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to ALL enemies. NL If this is the center sumireko:Seal, it deals twice as much damage."
   },
   "sumireko:RestrainingSeal": {
     "NAME": "Restraining Seal",
@@ -338,6 +338,10 @@
     "NAME": "Amplification Seal",
     "DESCRIPTION": "sumireko:Seal: Your attacks deal !SEAL! times as much damage. NL sumireko:Fragile."
   },
+  "sumireko:Forcefield": {
+    "NAME": "Forcefield",
+    "DESCRIPTION": "Gain !B! Block. NL Increase the effects of sumireko:Seals by !M! this turn."
+  },
   "sumireko:PerfectMemory": {
     "NAME": "Perfect Memory",
     "DESCRIPTION": "Put the next card you play on top of your draw pile. NL Gain [E] the next time you draw it. NL sumireko:Final."
@@ -366,10 +370,6 @@
   "Below this point are cards which have not yet been implemented or are merely up for consideration.": {
     "NAME": "",
     "DESCRIPTION": ""
-  },
-  "sumireko:Forcefield": {
-    "NAME": "Forcefield",
-    "DESCRIPTION": "Gain !B! Block. NL Increase the effects of sumireko:Seals by !M! this turn."
   },
   "sumireko:IllusoryDouble": {
     "NAME": "Illusory Double",
@@ -455,7 +455,10 @@
     "UPGRADE_DESCRIPTION": "Glue cards that link some of these mechanics together. I think Final is fleshed out enough. Perhaps some minor synergy in the glue cards.",
     "EXTENDED_DESCRIPTION": [
       "Perhaps some more high cost stuff. Block + Damage card. Some Value cards.",
-      "Cards I wanna change: Repression Seal BOring. TOO boring. I'm still not happy with all the common attacks. Change one to a block + damage card?"
+      "Cards I wanna change: Repression Seal kinda BOring. TOO boring. Card Trick - A bit too annoying to use. Keep the card to top thing, but some other upside.",
+      "draw a card. Card to top. Card from draw to discard.",
+      "arrrrt.....?",
+      "Occult cards: particle effects. Glowy purple particles that flow upwards and fade out."
     ]
   }
 }

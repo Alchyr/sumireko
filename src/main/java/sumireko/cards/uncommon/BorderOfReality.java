@@ -23,7 +23,7 @@ public class BorderOfReality extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 14;
+    private static final int BLOCK = 15;
 
     private boolean reducedForCombat = false;
     private int originalBlock;

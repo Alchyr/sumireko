@@ -25,7 +25,7 @@ public class AdjacentBoostUpgrade extends MysteryUpgrade {
 
     @Override
     public void applyBaseAdjacencyEffect(MysterySeal source, SealCard c) {
-        c.modifySealValue(source.baseSealValue);
+        c.modifySealValue(source.tempSealValue);
     }
 
     @Override

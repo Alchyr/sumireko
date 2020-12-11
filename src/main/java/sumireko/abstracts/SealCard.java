@@ -29,6 +29,8 @@ public abstract class SealCard extends BaseCard {
     public int sealValue;
     public int sealUpgrade;
 
+    public int tempSealValue; //used during calculation.
+
     public boolean isSealModified;
     public boolean upgradedSeal;
 
@@ -115,6 +117,11 @@ public abstract class SealCard extends BaseCard {
         isSealModified = false;
     }
 
+    //called before base methods are called
+    public void lockBaseValue() {
+        tempSealValue = sealValue;
+    }
+
     public void applyBaseAdjacencyEffect(SealCard c) //add/subtract
     {
 
@@ -128,6 +135,11 @@ public abstract class SealCard extends BaseCard {
 
     }
     public void applyFinalAdjacencyEffect(SealCard c) //multiply/divide
+    {
+
+    }
+
+    public void centerMultiplier() //right now, exclusively explosion seal.
     {
 
     }

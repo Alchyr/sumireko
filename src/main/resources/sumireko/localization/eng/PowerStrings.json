@@ -31,7 +31,9 @@
   "sumireko:SixthSense": {
     "NAME": "SixthSense",
     "DESCRIPTIONS": [
-      "At the end of your turn, you may #yRetain any cards you shouldn't be able to play.",
+      "At the end of your turn, you may #yRetain #b",
+      " card you shouldn't be able to play.",
+      " cards you shouldn't be able to play.",
       "Retain"
     ]
   },
@@ -41,6 +43,14 @@
       "The next card you play this turn is placed on top of your draw pile. Gain [E] the next time you draw it.",
       "The next #b",
       " cards you play this turn are placed on top of your draw pile. Gain [E] the next time you draw a played card."
+    ]
+  },
+  "sumireko:Gravity": {
+    "NAME": "Gravity",
+    "DESCRIPTIONS": [
+      "Whenever you draw a #yLocked or #yUnplayable card, draw a card.",
+      "Whenever you draw a #yLocked or #yUnplayable card, draw #b",
+      " cards."
     ]
   },
   "sumireko:NaturalJinx": {
@@ -55,6 +65,14 @@
     "DESCRIPTIONS": [
       "Whenever you play a card you should not be able to, gain #b",
       " #yBlock."
+    ]
+  },
+  "sumireko:LockCycle": {
+    "NAME": "Lock Cycle",
+    "DESCRIPTIONS": [
+      "At the start of your turn, draw #b",
+      " additional card for each card in your hand at the end of the previous turn.",
+      " additional cards for each card in your hand at the end of the previous turn."
     ]
   },
   "sumireko:Metaphysics": {

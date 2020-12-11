@@ -3,6 +3,8 @@ package sumireko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -447,7 +449,35 @@ public class SealSystem {
     public static void renderHovered(SpriteBatch sb)
     {
         if (hoveredCard != null)
+        {
+            //render reticle of targets
+            AbstractMonster m = targets.get(hoveredCard);
+            if (m != null)
+            {
+                m.renderReticle(sb);
+            }
+
+            switch (hoveredCard.target)
+            {
+                case SELF:
+                case SELF_AND_ENEMY:
+                    AbstractDungeon.player.renderReticle(sb);
+                    break;
+                case ALL:
+                    AbstractDungeon.player.renderReticle(sb);
+                case ALL_ENEMY:
+                    for (AbstractMonster mo : AbstractDungeon.getCurrRoom().monsters.monsters)
+                    {
+                        if (mo != m && !mo.isDeadOrEscaped())
+                        {
+                            mo.renderReticle(sb);
+                        }
+                    }
+                    break;
+            }
+
             hoveredCard.render(sb);
+        }
     }
 
     public static void calculateSeals()
@@ -487,28 +517,44 @@ public class SealSystem {
             }
         }
 
-        //duplicate bonus
+        //duplicate bonus and flat powers bonus
         for (i = 0; i < 4; ++i)
         {
             if (aroundCards[i] == null)
                 break;
 
             aroundCards[i].modifySealValue(cardCounts.get(aroundCards[i].cardID));
+
+            for (AbstractPower p : AbstractDungeon.player.powers)
+            {
+                if (p instanceof ModifySealPower)
+                    ((ModifySealPower) p).modifySeal(aroundCards[i]);
+            }
+
+            aroundCards[i].lockBaseValue(); //This saves the current value as the value to be used for base adjacency bonuses.
         }
-        if (centerCard != null)
+        if (centerCard != null) {
             centerCard.modifySealValue(cardCounts.get(centerCard.cardID));
 
+            for (AbstractPower p : AbstractDungeon.player.powers) {
+                if (p instanceof ModifySealPower)
+                    ((ModifySealPower) p).modifySeal(centerCard);
+            }
+
+            centerCard.lockBaseValue();
+        }
 
         //adjacency and power bonuses.
         //modifiers are applied to BUFF_SEAL seals first, to maintain consistent results.
 
         for (i = 0; i < 4; ++i) //add/subtract
         {
+            // BUFF BUFF SEALS FROM THE SEALS AROUND THEM
             if (aroundCards[i] == null)
                 break;
 
             if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
-                continue;
+                continue; //Not a buff seal, move on.
 
             switch (i)
             {
@@ -549,12 +595,6 @@ public class SealSystem {
             {
                 centerCard.applyBaseAdjacencyEffect(aroundCards[i]);
             }
-
-            for (AbstractPower p : AbstractDungeon.player.powers)
-            {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(aroundCards[i]);
-            }
         }
         if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
         {
@@ -564,12 +604,6 @@ public class SealSystem {
                     break;
 
                 aroundCards[i].applyBaseAdjacencyEffect(centerCard);
-            }
-
-            for (AbstractPower p : AbstractDungeon.player.powers)
-            {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(centerCard);
             }
         }
 
@@ -680,29 +714,15 @@ public class SealSystem {
             {
                 centerCard.applyAdjacencyEffect(aroundCards[i]);
             }
-
-            for (AbstractPower p : AbstractDungeon.player.powers)
-            {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(aroundCards[i]);
-            }
         }
         if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
         {
-            centerCard.modifySealValue(cardCounts.get(centerCard.cardID));
-
             for (i = 0; i < 4; ++i)
             {
                 if (aroundCards[i] == null)
                     break;
 
                 aroundCards[i].applyAdjacencyEffect(centerCard);
-            }
-
-            for (AbstractPower p : AbstractDungeon.player.powers)
-            {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(centerCard);
             }
         }
 
@@ -768,7 +788,7 @@ public class SealSystem {
                 aroundCards[i].applyFinalAdjacencyEffect(centerCard);
             }
 
-            centerCard.isSealModified = centerCard.sealValue != centerCard.baseSealValue;
+            centerCard.centerMultiplier();
         }
 
         for (i = 0; i < 4; ++i) //intents

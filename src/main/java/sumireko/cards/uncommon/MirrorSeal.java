@@ -2,6 +2,7 @@ package sumireko.cards.uncommon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
@@ -56,12 +57,14 @@ public class MirrorSeal extends SealCard {
     public void triggerOnExhaust() {
         copying = null;
         this.cardID = ID;
+        this.target = cardInfo.cardTarget;
     }
 
     @Override
     public void onMoveToDiscard() {
         copying = null;
         this.cardID = ID;
+        this.target = cardInfo.cardTarget;
     }
 
     @Override
@@ -111,6 +114,29 @@ public class MirrorSeal extends SealCard {
         super.multiplySealValue(amount);
         if (copying != null)
             copying.multiplySealValue(amount);
+    }
+
+    @Override
+    public void centerMultiplier() {
+        super.centerMultiplier();
+        if (copying != null)
+            copying.centerMultiplier();
+    }
+
+    @Override
+    public float modifyDamage(DamageInfo.DamageType type, float damage) {
+        if (copying != null)
+        {
+            return copying.modifyDamage(type, damage);
+        }
+        return super.modifyDamage(type, damage);
+    }
+
+    @Override
+    public void lockBaseValue() {
+        super.lockBaseValue();
+        if (copying != null)
+            copying.lockBaseValue();
     }
 
     @Override

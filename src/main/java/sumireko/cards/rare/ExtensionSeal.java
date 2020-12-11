@@ -58,7 +58,7 @@ public class ExtensionSeal extends SealCard {
 
     @Override
     public void applyFinalBaseAdjacencyEffect(SealCard c) {
-        c.multiplySealValue(this.baseSealValue);
+        c.multiplySealValue(this.tempSealValue);
     }
 
     @Override

@@ -10,8 +10,8 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <SlayTheSpire.version>01-27-2020</SlayTheSpire.version>
-        <ModTheSpire.version>3.15.0</ModTheSpire.version>
+        <SlayTheSpire.version>11-30-2020</SlayTheSpire.version>
+        <ModTheSpire.version>3.18.0</ModTheSpire.version>
         <Steam.path>C:/Program Files (x86)/Steam/steamapps</Steam.path>
     </properties>
 
@@ -32,14 +32,14 @@
 
             <systemPath>${Steam.path}/common/SlayTheSpire/desktop-1.0-patched.jar</systemPath>
         </dependency>-->
-        <dependency>
+        <!--<dependency>
             <groupId>blackbird</groupId>
             <artifactId>blackbird</artifactId>
             <version>0.0.0</version>
             <scope>system</scope>
 
             <systemPath>${Steam.path}/common/SlayTheSpire/mods/GOOD_NIGHT_WORLD.jar</systemPath>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.evacipated.cardcrawl</groupId>
             <artifactId>modthespire</artifactId>

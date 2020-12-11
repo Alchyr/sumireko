@@ -74,6 +74,8 @@ public class OccultBallAction extends AbstractGameAction {
                 source.setCounter(3);
                 addToTop(new HandCheckAction());
                 this.isDone = true;
+
+                return; //sorry skyson, forgot this return
             }
 
             invalidCards.addAll(p.hand.group);

@@ -27,8 +27,8 @@ public class PerfectMemoryPower extends BasePower {
         if (this.justApplied) {
             this.justApplied = false;
         } else {
+            this.flash();
             if (card.type != AbstractCard.CardType.POWER) {
-                this.flash();
                 action.reboundCard = true;
             }
 

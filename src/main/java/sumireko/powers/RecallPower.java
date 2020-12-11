@@ -24,6 +24,7 @@ public class RecallPower extends BasePower implements NonStackablePower {
         super(NAME, TYPE, TURN_BASED, owner, null, -1);
 
         this.card = c;
+        updateDescription();
     }
 
     @Override
@@ -37,6 +38,13 @@ public class RecallPower extends BasePower implements NonStackablePower {
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0] + FontHelper.colorString(card.name, "y") + descriptions()[1];
+        if (card != null)
+        {
+            this.description = descriptions()[0] + FontHelper.colorString(card.name, "y") + descriptions()[1];
+        }
+        else
+        {
+            this.description = "";
+        }
     }
 }

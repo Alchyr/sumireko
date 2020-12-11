@@ -23,6 +23,7 @@ import sumireko.util.TextureLoader;
 import java.util.HashMap;
 
 import static sumireko.SumirekoMod.makeID;
+import static sumireko.util.TextureLoader.getCardTextureString;
 
 
 public abstract class BaseCard extends CustomCard {
@@ -62,7 +63,7 @@ public abstract class BaseCard extends CustomCard {
 
     public BaseCard(String cardName, int cost, CardType cardType, CardTarget target, CardRarity rarity, boolean upgradesDescription, CardColor color)
     {
-        super(makeID(cardName), "", TextureLoader.getAndLoadCardTextureString(cardName, cardType), cost, "", cardType, color, rarity, target);
+        super(makeID(cardName), "", getCardTextureString(cardName, cardType), cost, "", cardType, color, rarity, target);
 
         cardStrings = CardCrawlGame.languagePack.getCardStrings(cardID);
 

@@ -8,6 +8,7 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import sumireko.abstracts.BasePower;
+import sumireko.patches.occult.OccultFields;
 
 import static sumireko.SumirekoMod.makeID;
 
@@ -23,8 +24,11 @@ public class NaturalJinxPower extends BasePower {
     }
 
     public void onAfterUseCard(AbstractCard card, UseCardAction action) {
-        this.flash();
-        this.addToBot(new LoseHPAction(this.owner, AbstractDungeon.player, this.amount, AbstractGameAction.AttackEffect.POISON));
+        if (OccultFields.isOccult.get(card))
+        {
+            this.flash();
+            this.addToBot(new LoseHPAction(this.owner, AbstractDungeon.player, this.amount, AbstractGameAction.AttackEffect.POISON));
+        }
     }
 
     public void updateDescription() {

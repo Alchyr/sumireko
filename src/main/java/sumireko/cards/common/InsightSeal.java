@@ -56,7 +56,7 @@ public class InsightSeal extends SealCard {
 
     @Override
     public void applyBaseAdjacencyEffect(SealCard c) {
-        c.modifySealValue(this.baseSealValue);
+        c.modifySealValue(this.tempSealValue);
     }
 
     @Override

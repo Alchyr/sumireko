@@ -1,50 +1,51 @@
-package sumireko.cards.common;
+package sumireko.cards.uncommon;
 
-import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.abstracts.LockingCard;
+import sumireko.powers.ProwessDownPower;
+import sumireko.powers.ProwessPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class TelephonePole extends LockingCard {
+public class Forcefield extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "TelephonePole",
+            "Forcefield",
             1,
-            CardType.ATTACK,
-            CardTarget.SELF_AND_ENEMY,
-            CardRarity.COMMON);
-    // attack
+            CardType.SKILL,
+            CardTarget.SELF,
+            CardRarity.UNCOMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 9;
-    private static final int UPG_DAMAGE = 3;
-
-    private static final int BLOCK = 4;
+    private static final int BLOCK = 8;
     private static final int UPG_BLOCK = 1;
 
-    public TelephonePole() {
+    private static final int MAGIC = 2;
+    private static final int UPG_MAGIC = 1;
+
+
+    public Forcefield() {
         super(cardInfo, false);
 
-        setDamage(DAMAGE, UPG_DAMAGE);
         setBlock(BLOCK, UPG_BLOCK);
+        setMagic(MAGIC, UPG_MAGIC);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        super.use(p, m);
-
         block();
-        damageSingle(m, AbstractGameAction.AttackEffect.SMASH);
+
+
+        applySelf(new ProwessPower(p, this.magicNumber));
+        applySelf(new ProwessDownPower(p, this.magicNumber));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new TelephonePole();
+        return new Forcefield();
     }
 }

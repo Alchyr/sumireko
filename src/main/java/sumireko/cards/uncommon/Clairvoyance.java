@@ -20,7 +20,7 @@ import static sumireko.SumirekoMod.makeID;
 public class Clairvoyance extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Clairvoyance",
-            1,
+            0,
             CardType.SKILL,
             CardTarget.SELF,
             CardRarity.UNCOMMON);
@@ -28,8 +28,8 @@ public class Clairvoyance extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 11;
-    private static final int UPG_BLOCK = 4;
+    private static final int BLOCK = 7;
+    private static final int UPG_BLOCK = 3;
 
 
     public Clairvoyance() {

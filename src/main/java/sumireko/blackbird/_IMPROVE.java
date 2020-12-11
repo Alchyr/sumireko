@@ -1,4 +1,4 @@
-package sumireko._R̥̼̳͙̣͈̽̔͗͐ͅÈC̜̫̤̪͔ͨO̻͖̱̰̬̝̺ͮ͂̑̍̽Ṉ͕̹͎̖͚̱ͬ͛Ṡ̢͈̥͈̘̜ͩͨͥͦ́Ṫ͍̈́ͬ̔͒̐̆͢R͙͕̯͓̥̺̜͂U͚͍̇̀͒̽ͦC̙̳͓͉̙̑͗T̳̖̃͒̈̈́̏̀;
+package sumireko.blackbird;
 
 import basemod.ReflectionHacks;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -28,7 +28,7 @@ public class _IMPROVE extends AbstractGameAction {
     private AbstractMonster _materia;
 
     public static AbstractGameAction _readjust(AbstractMonster m, AbstractCreature source) {
-        return new __GOODNIGHT._R̥̼̳͙̣͈̽̔͗͐ͅÈC̜̫̤̪͔ͨO̻͖̱̰̬̝̺ͮ͂̑̍̽Ṉ͕̹͎̖͚̱ͬ͛Ṡ̢͈̥͈̘̜ͩͨͥͦ́Ṫ͍̈́ͬ̔͒̐̆͢R͙͕̯͓̥̺̜͂U͚͍̇̀͒̽ͦC̙̳͓͉̙̑͗T̳̖̃͒̈̈́̏̀._IMPROVE(m, source);
+        return new _IMPROVE(m, source, 5.0f);
     }
 
     private float strength;

@@ -11,7 +11,7 @@ import sumireko.enums.CustomCardTags;
 import sumireko.util.KeywordWithProper;
 
 public class MirrorAction extends AbstractGameAction {
-    private MirrorSeal s;
+    private final MirrorSeal s;
     public AbstractMonster m;
 
     public MirrorAction(MirrorSeal s)
@@ -45,6 +45,7 @@ public class MirrorAction extends AbstractGameAction {
 
                 s.copying = copy;
                 s.cardID = copy.cardID;
+                s.target = copy.target;
             }
         }
 
