@@ -39,9 +39,9 @@ public class PerfectMemoryPower extends BasePower {
 
     public void updateDescription() {
         if (this.amount > 1) {
-            this.description = descriptions()[1] + this.amount + descriptions()[2];
+            this.description = DESCRIPTIONS[1] + this.amount + DESCRIPTIONS[2];
         } else {
-            this.description = descriptions()[0];
+            this.description = DESCRIPTIONS[0];
         }
     }
 }

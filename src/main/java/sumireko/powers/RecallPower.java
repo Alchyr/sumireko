@@ -40,7 +40,7 @@ public class RecallPower extends BasePower implements NonStackablePower {
     public void updateDescription() {
         if (card != null)
         {
-            this.description = descriptions()[0] + FontHelper.colorString(card.name, "y") + descriptions()[1];
+            this.description = DESCRIPTIONS[0] + FontHelper.colorString(card.name, "y") + DESCRIPTIONS[1];
         }
         else
         {

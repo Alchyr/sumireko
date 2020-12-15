@@ -27,11 +27,11 @@ public class ProwessPower extends BasePower implements ModifySealPower {
 
     public void updateDescription() {
         if (this.amount > 0) {
-            this.description = descriptions()[0] + amount + descriptions()[2];
+            this.description = DESCRIPTIONS[0] + amount + DESCRIPTIONS[2];
             this.type = PowerType.BUFF;
         } else {
             int tmp = -this.amount;
-            this.description = descriptions()[1] + tmp + descriptions()[2];
+            this.description = DESCRIPTIONS[1] + tmp + DESCRIPTIONS[2];
             this.type = PowerType.DEBUFF;
         }
     }

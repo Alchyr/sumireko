@@ -22,10 +22,7 @@ public abstract class BasePower extends AbstractPower {
 
     protected static Map<String, PowerStrings> powerStrings = new HashMap<>();
 
-    protected String[] descriptions()
-    {
-        return powerStrings.get(this.ID).DESCRIPTIONS;
-    }
+    protected String[] DESCRIPTIONS;
 
     public BasePower(String NAME, PowerType powerType, boolean isTurnBased, AbstractCreature owner, AbstractCreature source, int amount) {
         this(NAME, powerType, isTurnBased, owner, source, amount, "");
@@ -37,6 +34,7 @@ public abstract class BasePower extends AbstractPower {
         if (!powerStrings.containsKey(this.ID))
             powerStrings.put(this.ID, getPowerStrings(this.ID));
         this.name = powerStrings.get(this.ID).NAME;
+        this.DESCRIPTIONS = powerStrings.get(this.ID).DESCRIPTIONS;
 
         this.owner = owner;
         this.source = source;

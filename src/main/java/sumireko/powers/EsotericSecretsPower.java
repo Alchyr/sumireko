@@ -74,6 +74,6 @@ public class EsotericSecretsPower extends BasePower {
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0] + amount + descriptions()[1] + savedReduction + descriptions()[2];
+        this.description = DESCRIPTIONS[0] + amount + DESCRIPTIONS[1] + savedReduction + DESCRIPTIONS[2];
     }
 }

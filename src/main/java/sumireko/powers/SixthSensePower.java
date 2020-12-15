@@ -28,7 +28,7 @@ public class SixthSensePower extends BasePower {
                     (cards) -> {
                         for (AbstractCard c : cards)
                             c.retain = true;
-                    }, null, descriptions()[3],
+                    }, null, DESCRIPTIONS[3],
                     true, true, true
             ));
         }
@@ -36,9 +36,9 @@ public class SixthSensePower extends BasePower {
 
     public void updateDescription() {
         if (this.amount == 1) {
-            this.description = descriptions()[0] + this.amount + descriptions()[1];
+            this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[1];
         } else {
-            this.description = descriptions()[0] + this.amount + descriptions()[2];
+            this.description = DESCRIPTIONS[0] + this.amount + DESCRIPTIONS[2];
         }
     }
 }

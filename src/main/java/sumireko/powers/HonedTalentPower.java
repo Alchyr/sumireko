@@ -29,7 +29,7 @@ public class HonedTalentPower extends BasePower {
     }
 
     public void updateDescription() {
-        this.description = descriptions()[0] + currentBuff + descriptions()[1] + amount + descriptions()[2];
+        this.description = DESCRIPTIONS[0] + currentBuff + DESCRIPTIONS[1] + amount + DESCRIPTIONS[2];
     }
 
     @Override

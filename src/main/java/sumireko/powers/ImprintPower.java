@@ -27,15 +27,15 @@ public class ImprintPower extends BasePower {
     public void updateDescription() {
         if (this.amount == 1)
         {
-            this.description = descriptions()[0];
+            this.description = DESCRIPTIONS[0];
         }
         else if (this.amount >= 5)
         {
-            this.description = descriptions()[3];
+            this.description = DESCRIPTIONS[3];
         }
         else
         {
-            this.description = descriptions()[1] + amount + descriptions()[2];
+            this.description = DESCRIPTIONS[1] + amount + DESCRIPTIONS[2];
         }
     }
 }

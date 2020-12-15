@@ -23,11 +23,11 @@ public class LockCyclePower extends BasePower {
     public void updateDescription() {
         if (this.amount == 1)
         {
-            this.description = descriptions()[0] + amount + descriptions()[1];
+            this.description = DESCRIPTIONS[0] + amount + DESCRIPTIONS[1];
         }
         else
         {
-            this.description = descriptions()[0] + amount + descriptions()[2];
+            this.description = DESCRIPTIONS[0] + amount + DESCRIPTIONS[2];
         }
     }
 
