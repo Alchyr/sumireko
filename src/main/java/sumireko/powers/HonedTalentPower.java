@@ -37,7 +37,8 @@ public class HonedTalentPower extends BasePower {
         if (card.hasTag(CustomCardTags.FINAL))
         {
             this.flash();
-            this.currentBuff += this.amount;
+            this.currentBuff += this.amount; //why didn't i just make this a twoamountpower
+            updateDescription();
         }
     }
 

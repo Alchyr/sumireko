@@ -21,7 +21,7 @@ public class VisionOfMadness extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 8;
+    private static final int MAGIC = 7;
     private static final int UPG_MAGIC = -3;
 
 

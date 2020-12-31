@@ -1,5 +1,6 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
+import basemod.AutoAdd;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.animations.VFXAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -98,4 +99,4 @@ public class MassMash extends BaseCard {
     public AbstractCard makeCopy() {
         return new MassMash();
     }
-}
+}*/

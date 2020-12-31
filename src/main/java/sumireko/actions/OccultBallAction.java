@@ -69,7 +69,7 @@ public class OccultBallAction extends AbstractGameAction {
             if (validCards.size() == 1)
             {
                 OccultFields.isOccult.set(validCards.getTopCard(), true);
-                validCards.getTopCard().superFlash(Color.VIOLET);
+                validCards.getTopCard().superFlash(Color.VIOLET.cpy());
                 source.flash();
                 source.setCounter(3);
                 addToTop(new HandCheckAction());
@@ -101,7 +101,7 @@ public class OccultBallAction extends AbstractGameAction {
             for (AbstractCard c : AbstractDungeon.handCardSelectScreen.selectedCards.group) {
                 this.p.hand.addToTop(c);
                 OccultFields.isOccult.set(c, true);
-                c.superFlash(Color.VIOLET);
+                c.superFlash(Color.VIOLET.cpy());
                 c.initializeDescription();
             }
 

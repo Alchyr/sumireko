@@ -3,14 +3,10 @@ package sumireko.cards.uncommon;
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.actions.watcher.ChooseOneAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.optionCards.BecomeAlmighty;
-import com.megacrit.cardcrawl.cards.optionCards.FameAndFortune;
-import com.megacrit.cardcrawl.cards.optionCards.LiveForever;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
 import sumireko.actions.ClairvoyanceAction;
-import sumireko.actions.EscapeArtistAction;
 import sumireko.util.CardInfo;
 
 import java.util.ArrayList;
@@ -20,31 +16,32 @@ import static sumireko.SumirekoMod.makeID;
 public class Clairvoyance extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Clairvoyance",
-            0,
+            1,
             CardType.SKILL,
-            CardTarget.SELF,
+            CardTarget.NONE,
             CardRarity.UNCOMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 7;
-    private static final int UPG_BLOCK = 3;
+    private static final int UPG_COST = 0;
 
+    private static final int BUFF = 1;
 
     public Clairvoyance() {
         super(cardInfo, false);
 
-        setBlock(BLOCK, UPG_BLOCK);
+        setCostUpgrade(UPG_COST);
+        setMagic(BUFF);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         ArrayList<AbstractCard> choices = new ArrayList<>();
-        choices.add(new AttackChoice(this.block));
-        choices.add(new SkillChoice(this.block));
-        choices.add(new PowerChoice(this.block));
-        choices.add(new OtherChoice(this.block));
+        choices.add(new AttackChoice(this.magicNumber));
+        choices.add(new SkillChoice(this.magicNumber));
+        choices.add(new PowerChoice(this.magicNumber));
+        choices.add(new OtherChoice(this.magicNumber));
 
         addToBot(new ChooseOneAction(choices));
     }
@@ -65,10 +62,10 @@ public class Clairvoyance extends BaseCard {
 
         private static final String ID = makeID(cardInfo.cardName);
 
-        public AttackChoice(int block) {
+        public AttackChoice(int buff) {
             super(cardInfo, false);
 
-            this.misc = block;
+            this.misc = buff;
         }
 
         @Override
@@ -94,10 +91,10 @@ public class Clairvoyance extends BaseCard {
 
         private static final String ID = makeID(cardInfo.cardName);
 
-        public SkillChoice(int block) {
+        public SkillChoice(int buff) {
             super(cardInfo, false);
 
-            this.misc = block;
+            this.misc = buff;
         }
 
         @Override
@@ -123,10 +120,10 @@ public class Clairvoyance extends BaseCard {
 
         private static final String ID = makeID(cardInfo.cardName);
 
-        public PowerChoice(int block) {
+        public PowerChoice(int buff) {
             super(cardInfo, false);
 
-            this.misc = block;
+            this.misc = buff;
         }
 
         @Override
@@ -152,10 +149,10 @@ public class Clairvoyance extends BaseCard {
 
         private static final String ID = makeID(cardInfo.cardName);
 
-        public OtherChoice(int block) {
+        public OtherChoice(int buff) {
             super(cardInfo, false);
 
-            this.misc = block;
+            this.misc = buff;
         }
 
         @Override

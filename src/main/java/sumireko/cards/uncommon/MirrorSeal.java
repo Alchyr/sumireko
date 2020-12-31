@@ -10,6 +10,7 @@ import sumireko.actions.MirrorAction;
 import sumireko.actions.SealAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -90,9 +91,11 @@ public class MirrorSeal extends SealCard {
     }
 
     @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+    public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
         if (copying != null)
-            copying.instantSealEffect(target, pretendMonsters);
+            return copying.instantSealEffect(target, pretendMonsters);
+
+        return null;
     }
 
     @Override

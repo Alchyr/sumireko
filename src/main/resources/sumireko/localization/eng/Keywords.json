@@ -18,6 +18,13 @@
     "DESCRIPTION": "Occult cards can be played disregarding any conditions for playability."
   },
   {
+    "PROPER_NAME": "Prowess",
+    "NAMES": [
+      "prowess"
+    ],
+    "DESCRIPTION": "Prowess increases the effects of #ySeals."
+  },
+  {
     "PROPER_NAME": "Locking",
     "NAMES": [
       "locking"

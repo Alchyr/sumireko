@@ -15,15 +15,15 @@ public class TelephonePole extends LockingCard {
             "TelephonePole",
             1,
             CardType.ATTACK,
-            CardTarget.SELF_AND_ENEMY,
+            CardTarget.ENEMY,
             CardRarity.COMMON);
     // attack
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 9;
-    private static final int UPG_DAMAGE = 3;
+    private static final int DAMAGE = 12;
+    private static final int UPG_DAMAGE = 4;
 
     private static final int BLOCK = 4;
     private static final int UPG_BLOCK = 1;
@@ -32,14 +32,14 @@ public class TelephonePole extends LockingCard {
         super(cardInfo, false);
 
         setDamage(DAMAGE, UPG_DAMAGE);
-        setBlock(BLOCK, UPG_BLOCK);
+        //setBlock(BLOCK, UPG_BLOCK);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
         super.use(p, m);
 
-        block();
+        //block();
         damageSingle(m, AbstractGameAction.AttackEffect.SMASH);
     }
 

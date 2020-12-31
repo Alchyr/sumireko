@@ -3,6 +3,8 @@ package sumireko.util;
 import basemod.interfaces.CloneablePowerInterface;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.evacipated.cardcrawl.mod.stslib.patches.core.AbstractCreature.TempHPField;
+import com.evacipated.cardcrawl.mod.stslib.patches.tempHp.PlayerDamage;
 import com.megacrit.cardcrawl.blights.Spear;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -19,6 +21,7 @@ import sumireko.abstracts.SealCard;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static sumireko.SumirekoMod.logger;
 
@@ -75,6 +78,8 @@ public class PretendMonster extends AbstractCreature {
             maxHealth = base.maxHealth;
             currentHealth = base.currentHealth;
             currentBlock = base.currentBlock;
+
+            TempHPField.tempHp.set(this, TempHPField.tempHp.get(base));
 
             baseDamage = base.getIntentBaseDmg();
             renderMultiple = (boolean) isMultiDmg.get(base);
@@ -172,6 +177,11 @@ public class PretendMonster extends AbstractCreature {
         }
 
         damageAmount = this.decrementBlock(info, damageAmount);
+        int[] temp = new int[] { damageAmount };
+
+        PlayerDamage.Insert(this, info, temp, new boolean[] { false });
+
+        damageAmount = temp[0];
 
         //on attack hooks are too risky.
         for (AbstractPower p : enemyPowers)
@@ -204,6 +214,7 @@ public class PretendMonster extends AbstractCreature {
     }
 
 
+    private final static HashSet<Class<? extends AbstractPower>> noSourcePowers = new HashSet<>();
     private static ArrayList<AbstractPower> getCopyList(AbstractCreature fakeOwner, ArrayList<AbstractPower> powers)
     {
         ArrayList<AbstractPower> copyList = new ArrayList<>();
@@ -214,16 +225,21 @@ public class PretendMonster extends AbstractCreature {
             {
                 AbstractPower copy = ((CloneablePowerInterface) p).makeCopy();
                 copy.owner = fakeOwner;
-                try
+
+                if (!noSourcePowers.contains(copy.getClass()))
                 {
-                    Field f = copy.getClass().getDeclaredField("source");
-                    f.setAccessible(true);
-                    f.set(copy, dummySource);
-                }
-                catch (Exception e)
-                {
-                    //haha this is gonna cause so many exceptions but otherwise this could fuck with so much stuff
-                    //not everyone will even use "source" for powers that need one, but might as well try.
+                    try
+                    {
+                        Field f = copy.getClass().getDeclaredField("source");
+                        f.setAccessible(true);
+                        f.set(copy, dummySource);
+                    }
+                    catch (Exception e)
+                    {
+                        noSourcePowers.add(copy.getClass());
+                        //haha this is gonna cause so many exceptions but otherwise this could fuck with so much stuff
+                        //not everyone will even use "source" for powers that need one, but might as well try.
+                    }
                 }
                 copyList.add(copy);
             }

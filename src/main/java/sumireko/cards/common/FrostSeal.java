@@ -1,9 +1,9 @@
 package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
@@ -16,58 +16,54 @@ import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class EchoSeal extends SealCard {
+public class FrostSeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "EchoSeal",
+            "FrostSeal",
             1,
-            CardType.ATTACK,
-            CardTarget.ENEMY,
+            CardType.SKILL,
+            CardTarget.ALL,
             CardRarity.COMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 5;
-    private static final int UPG_DAMAGE = 2;
-
     private static final int SEAL = 5;
     private static final int UPG_SEAL = 2;
 
-    public EchoSeal() {
+    public FrostSeal() {
         super(cardInfo, false);
 
-        setDamage(DAMAGE, UPG_DAMAGE);
         setSeal(SEAL, UPG_SEAL);
-    }
-
-    @Override
-    public void use(AbstractPlayer p, AbstractMonster m) {
-        damageSingle(m, AbstractGameAction.AttackEffect.BLUNT_LIGHT);
-        super.use(p, m);
     }
 
     @Override
     public void triggerSealEffect(AbstractMonster target) {
         if (this.sealValue > 0)
-            damageSingle(target, this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.BLUNT_HEAVY);
+        {
+            addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, this.sealValue));
+            damageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
+        }
     }
 
     @Override
     public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-        if (target != null)
-            if (this.sealValue > 0)
-                target.damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-
+        if (this.sealValue > 0)
+        {
+            for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
+            {
+                monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+            }
+        }
         return null;
     }
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.ATTACK;
+        i.intent = AbstractMonster.Intent.ATTACK_DEFEND;
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new EchoSeal();
+        return new FrostSeal();
     }
 }

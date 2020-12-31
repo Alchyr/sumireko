@@ -16,7 +16,7 @@ import static sumireko.SumirekoMod.makeID;
 public class Sever extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Sever",
-            3,
+            2,
             CardType.ATTACK,
             CardTarget.ENEMY,
             CardRarity.RARE);

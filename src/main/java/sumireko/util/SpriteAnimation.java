@@ -62,7 +62,7 @@ public class SpriteAnimation extends AbstractAnimation {
     }
 
     public void renderSprite(SpriteBatch sb, float x, float y) {
-        this.frameTime -= Gdx.graphics.getDeltaTime();
+        this.frameTime -= Gdx.graphics.getRawDeltaTime(); //sorry superfastmode :)
         while (this.frameTime < 0)
         {
             this.frameTime += this.perFrame;

@@ -21,18 +21,18 @@ public class EscapeArtist extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 0;
-
+    private static final int MAGIC = 1;
+    private static final int UPG_MAGIC = 1;
 
     public EscapeArtist() {
-        super(cardInfo, false);
+        super(cardInfo, true);
 
-        setCostUpgrade(UPG_COST);
+        setMagic(MAGIC, UPG_MAGIC);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new DrawCardAction(1, new EscapeArtistAction()));
+        addToBot(new DrawCardAction(this.upgraded ? this.magicNumber : 1, new EscapeArtistAction()));
     }
 
     @Override

@@ -103,8 +103,8 @@ public class Sumireko extends CustomPlayer {
             makeOrbPath("layer4d.png"),
             makeOrbPath("layer5d.png")};
 
-    private static String ATLAS = makeCharacterPath("sumirenko.atlas");
-    private static String JSON = makeCharacterPath("sumirenko.json");
+    //private static String ATLAS = makeCharacterPath("sumirenko.atlas");
+    //private static String JSON = makeCharacterPath("sumirenko.json");
 
     private static final String orbVfx = makeOrbPath("vfx.png");
 
@@ -117,12 +117,7 @@ public class Sumireko extends CustomPlayer {
 
     public Sumireko()
     {
-        super(NAMES[0], CharacterEnums.SUMIREKO, null, null, null, new AbstractAnimation() {
-            @Override
-            public Type type() {
-                return Type.NONE;
-            }
-        });
+        super(NAMES[0], CharacterEnums.SUMIREKO, null, null, null, new SpriteAnimation(0.06f, frames, IMG_BACK));
 
         initializeClass(null,
                 SHOULDER_1,
@@ -132,12 +127,12 @@ public class Sumireko extends CustomPlayer {
                 20.0F, -10.0F, 220.0F, 290.0F,
                 new EnergyManager(ENERGY_PER_TURN));
 
-        loadAnimation(ATLAS, JSON, 1.0f);
+        //loadAnimation(ATLAS, JSON, 1.0f);
 
-        this.stateData.setMix("idle", "attackUp", 0.2f);
-        this.stateData.setMix("attackUp", "idle", 0.4f);
+        //this.stateData.setMix("idle", "attackUp", 0.2f);
+        //this.stateData.setMix("attackUp", "idle", 0.4f);
 
-        this.state.setAnimation(0, "idle", true);
+        //this.state.setAnimation(0, "idle", true);
 
 
         this.img = TextureLoader.getTexture(IMG);

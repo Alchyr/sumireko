@@ -1,4 +1,4 @@
-package sumireko.cards.rare;
+package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -15,7 +15,7 @@ public class SixthSense extends BaseCard {
             1,
             CardType.POWER,
             CardTarget.NONE,
-            CardRarity.RARE);
+            CardRarity.UNCOMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 

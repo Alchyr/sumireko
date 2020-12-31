@@ -38,6 +38,7 @@ public class SealAction extends AbstractGameAction {
         if (seal.purgeOnUse)
         {
             seal.tags.add(CustomCardTags.ULTRA_FRAGILE_SEAL);
+            seal.triggerOnGlowCheck();
         }
         this.isDone = true;
     }

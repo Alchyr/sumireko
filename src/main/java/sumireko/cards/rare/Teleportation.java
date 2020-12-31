@@ -12,7 +12,7 @@ import static sumireko.SumirekoMod.makeID;
 public class Teleportation extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Teleportation",
-            3,
+            2,
             CardType.SKILL,
             CardTarget.SELF,
             CardRarity.RARE);
@@ -24,7 +24,7 @@ public class Teleportation extends BaseCard {
     private static final int UPG_BLOCK = 5;
 
     private static final int MAGIC = 7;
-    private static final int UPG_MAGIC = -3;
+    private static final int UPG_MAGIC = -2;
 
 
     public Teleportation() {

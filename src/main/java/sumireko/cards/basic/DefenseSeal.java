@@ -2,14 +2,11 @@ package sumireko.cards.basic;
 
 import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.DamageInfo;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.SealAction;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -36,16 +33,14 @@ public class DefenseSeal extends SealCard {
         super(cardInfo, false);
 
         setSeal(SEAL, UPG_SEAL);
+
+        tags.add(CardTags.STARTER_DEFEND);
     }
 
     @Override
     public void triggerSealEffect(AbstractMonster target) {
         if (this.sealValue > 0)
             addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, this.sealValue));
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
     }
 
     @Override

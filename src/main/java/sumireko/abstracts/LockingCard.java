@@ -1,5 +1,6 @@
 package sumireko.abstracts;
 
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -23,7 +24,13 @@ public abstract class LockingCard extends BaseCard implements LockingCardInterfa
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        lockCard();
+        addToBot(new AbstractGameAction() {
+            @Override
+            public void update() {
+                lockCard();
+                this.isDone = true;
+            }
+        });
     }
 
     @Override

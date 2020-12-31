@@ -16,23 +16,31 @@ public class MentalImagingAction extends AbstractGameAction {
     private static final float DURATION_PER_CARD = 0.25F;
     private AbstractPlayer p;
 
-    public MentalImagingAction() {
+    private boolean upgraded;
+
+    public MentalImagingAction(boolean upgraded) {
         this.setValues(AbstractDungeon.player, source, amount);
         this.actionType = ActionType.DRAW;
         this.duration = DURATION_PER_CARD;
         this.p = AbstractDungeon.player;
+
+        this.upgraded = upgraded;
     }
 
     public void update() {
         if (this.duration == Settings.ACTION_DUR_FAST) {
             if (this.p.hand.group.size() == 1) {
-                this.addToTop(new MakeTempCardInHandAction(p.hand.getBottomCard().makeStatEquivalentCopy()));
+                AbstractCard c = p.hand.getBottomCard().makeStatEquivalentCopy();
+                if (upgraded && c.canUpgrade())
+                    c.upgrade();
+
+                this.addToTop(new MakeTempCardInHandAction(c));
                 this.isDone = true;
                 return;
             }
 
             if (this.p.hand.group.size() > 1) {
-                AbstractDungeon.handCardSelectScreen.open(TEXT[0], 1, false, false, false, false);
+                AbstractDungeon.handCardSelectScreen.open(TEXT[0], 1, false, false, false, upgraded);
                 this.tickDuration();
                 return;
             }
@@ -41,7 +49,12 @@ public class MentalImagingAction extends AbstractGameAction {
         if (!AbstractDungeon.handCardSelectScreen.wereCardsRetrieved) {
             for (AbstractCard c : AbstractDungeon.handCardSelectScreen.selectedCards.group) {
                 p.hand.addToTop(c);
-                this.addToTop(new MakeTempCardInHandAction(c.makeStatEquivalentCopy()));
+
+                c = c.makeStatEquivalentCopy();
+                if (upgraded && c.canUpgrade())
+                    c.upgrade();
+
+                this.addToTop(new MakeTempCardInHandAction(c));
             }
 
             AbstractDungeon.handCardSelectScreen.wereCardsRetrieved = true;

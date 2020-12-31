@@ -22,7 +22,7 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.clapper.util.classutil.*;
-import sumireko.blackbird._IMPROVE;
+import sumireko.blackbird.Improve;
 import sumireko.character.Sumireko;
 import sumireko.enums.CharacterEnums;
 import sumireko.relics.OccultBall;
@@ -116,9 +116,6 @@ public class SumirekoMod implements
     }
     public static String makeCharacterPath(String resourcePath) {
         return modID + "/images/character/" + resourcePath;
-    }
-    public static String makeDollPath(String resourcePath) {
-        return modID + "/images/dolls/" + resourcePath;
     }
     public static String makeEffectPath(String resourcePath) {
         return modID + "/images/effects/" + resourcePath;
@@ -346,7 +343,7 @@ public class SumirekoMod implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         SealSystem.reset();
-        _IMPROVE._clean();
+        Improve._clean();
     }
 
     @Override

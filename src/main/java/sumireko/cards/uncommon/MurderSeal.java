@@ -4,12 +4,13 @@ import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.BaseCard;
+import com.megacrit.cardcrawl.powers.IntangiblePower;
+import com.megacrit.cardcrawl.relics.TungstenRod;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -32,7 +33,7 @@ public class MurderSeal extends SealCard {
     private static final int DAMAGE = 16;
     private static final int UPG_DAMAGE = 4;
 
-    private static final int SEAL = 4;
+    private static final int SEAL = 2;
 
     public MurderSeal() {
         super(cardInfo, false);
@@ -53,8 +54,8 @@ public class MurderSeal extends SealCard {
     }
 
     @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-
+    public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+        return new HealthBarRender(AbstractDungeon.player, (AbstractDungeon.player.hasPower(IntangiblePower.POWER_ID) ? Math.min(this.sealValue, 1) : this.sealValue) - (AbstractDungeon.player.hasRelic(TungstenRod.ID) ? 1 : 0));
     }
 
     @Override

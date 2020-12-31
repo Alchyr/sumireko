@@ -3,13 +3,11 @@ package sumireko.cards.uncommon;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.SealSystem;
 import sumireko.abstracts.SealCard;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -45,7 +43,7 @@ public class ExplosionSeal extends SealCard {
     }
 
     @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+    public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
         if (this.sealValue > 0)
         {
             for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
@@ -53,6 +51,7 @@ public class ExplosionSeal extends SealCard {
                 monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
             }
         }
+        return null;
     }
 
     @Override

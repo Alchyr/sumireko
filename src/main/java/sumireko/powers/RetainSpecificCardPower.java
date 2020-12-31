@@ -1,6 +1,8 @@
 package sumireko.powers;
 
 import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.NonStackablePower;
+import com.megacrit.cardcrawl.actions.common.GainBlockAction;
+import com.megacrit.cardcrawl.actions.common.ReducePowerAction;
 import com.megacrit.cardcrawl.actions.common.RemoveSpecificPowerAction;
 import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -19,12 +21,17 @@ public class RetainSpecificCardPower extends BasePower implements NonStackablePo
     public static final boolean TURN_BASED = true;
     public AbstractCard card;
 
-    public RetainSpecificCardPower(final AbstractCreature owner, AbstractCard c)
+    public RetainSpecificCardPower(final AbstractCreature owner, AbstractCard c, int amount)
     {
-        super(NAME, TYPE, TURN_BASED, owner, null, -1);
+        super(NAME, TYPE, TURN_BASED, owner, null, amount);
 
         this.card = c;
         updateDescription();
+    }
+
+    @Override
+    public boolean isStackable(AbstractPower power) {
+        return (power instanceof RetainSpecificCardPower && ((RetainSpecificCardPower) power).card.uuid.equals(this.card.uuid));
     }
 
     public void atEndOfTurn(boolean isPlayer) {
@@ -37,11 +44,13 @@ public class RetainSpecificCardPower extends BasePower implements NonStackablePo
         }
     }
 
-    public void onAfterUseCard(AbstractCard card, UseCardAction action) {
+    @Override
+    public void onUseCard(AbstractCard card, UseCardAction action) {
         if (card.uuid.equals(this.card.uuid))
         {
             this.flash();
-            this.addToBot(new RemoveSpecificPowerAction(this.owner, this.owner, this));
+            this.addToTop(new GainBlockAction(this.owner, this.owner, this.amount));
+            this.addToBot(new ReducePowerAction(this.owner, this.owner, this, this.amount));
         }
     }
 

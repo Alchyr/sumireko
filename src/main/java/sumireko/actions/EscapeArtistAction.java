@@ -19,7 +19,7 @@ public class EscapeArtistAction extends AbstractGameAction {
             {
                 OccultFields.isOccult.set(c, true);
                 c.initializeDescription();
-                c.superFlash(Color.PURPLE);
+                c.superFlash(Color.PURPLE.cpy());
             }
         }
 

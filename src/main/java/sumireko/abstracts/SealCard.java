@@ -1,23 +1,19 @@
 package sumireko.abstracts;
 
-import com.badlogic.gdx.Gdx;
-import com.evacipated.cardcrawl.mod.stslib.powers.interfaces.BetterOnApplyPowerPower;
-import com.megacrit.cardcrawl.actions.unique.SwordBoomerangAction;
-import com.megacrit.cardcrawl.actions.utility.TextAboveCreatureAction;
+import com.badlogic.gdx.graphics.Color;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.*;
 import com.megacrit.cardcrawl.relics.ChampionsBelt;
-import com.megacrit.cardcrawl.relics.SneckoSkull;
 import sumireko.SealSystem;
 import sumireko.actions.SealAction;
+import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.ModifySealPower;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -65,8 +61,23 @@ public abstract class SealCard extends BaseCard {
         super.upgrade();
     }
 
-    public abstract void triggerSealEffect(AbstractMonster target);
-    public abstract void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters);
+    public void triggerSealEffect(AbstractMonster target) {
+
+    }
+    //health bar rendering for this is for something outside damage/hp loss inflicted to the pretend monster.
+    //aka, just murder seal's self-damage.
+    public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+        return null;
+    }
+
+    @Override
+    public void triggerOnGlowCheck() {
+        if (this.hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL)) {
+            this.glowColor = Color.RED.cpy();
+        } else {
+            this.glowColor = AbstractCard.BLUE_BORDER_GLOW_COLOR.cpy();
+        }
+    }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {

@@ -45,16 +45,6 @@ public class InsightSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
-
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-
-    }
-
-    @Override
     public void applyBaseAdjacencyEffect(SealCard c) {
         c.modifySealValue(this.tempSealValue);
     }

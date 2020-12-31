@@ -2,9 +2,7 @@ package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.LockingCard;
 import sumireko.abstracts.SealCard;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
@@ -45,15 +43,6 @@ public class ExtensionSeal extends SealCard {
     @Override
     public boolean canUse(AbstractPlayer p, AbstractMonster m) {
         return false;
-    }
-
-    @Override
-    public void triggerSealEffect(AbstractMonster target) {
-
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
     }
 
     @Override

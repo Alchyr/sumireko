@@ -13,7 +13,7 @@ import sumireko.SumirekoMod;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class _IMPROVE extends AbstractGameAction {
+public class Improve extends AbstractGameAction {
     private static ArrayList<Texture> tempTextures = new ArrayList<>();
 
     public static void _clean() {
@@ -28,12 +28,12 @@ public class _IMPROVE extends AbstractGameAction {
     private AbstractMonster _materia;
 
     public static AbstractGameAction _readjust(AbstractMonster m, AbstractCreature source) {
-        return new _IMPROVE(m, source, 5.0f);
+        return new Improve(m, source, 5.0f);
     }
 
     private float strength;
 
-    public _IMPROVE(AbstractMonster _target, AbstractCreature source, float strength) {
+    public Improve(AbstractMonster _target, AbstractCreature source, float strength) {
         this._materia = _target;// 32
         this.source = source;// 33
         this.actionType = ActionType.SPECIAL;

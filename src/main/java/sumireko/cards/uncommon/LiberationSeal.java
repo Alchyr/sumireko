@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -51,11 +51,6 @@ public class LiberationSeal extends SealCard {
     }
 
     @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-
-    }
-
-    @Override
     public void getIntent(SealIntent i) {
         i.intent = AbstractMonster.Intent.UNKNOWN;
     }
@@ -64,4 +59,4 @@ public class LiberationSeal extends SealCard {
     public AbstractCard makeCopy() {
         return new LiberationSeal();
     }
-}
+}*/

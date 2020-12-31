@@ -1,5 +1,6 @@
 package sumireko.relics;
 
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import sumireko.abstracts.BaseRelic;
 import sumireko.actions.OccultBallAction;
 
@@ -13,14 +14,21 @@ public class OccultBall extends BaseRelic {
     {
         super(ID, IMG, RelicTier.STARTER, LandingSound.MAGICAL);
         this.counter = 3;
-
     }
 
     @Override
     public void atTurnStartPostDraw() {
         this.flash();
         --this.counter;
-        if (this.counter <= 0)
-            addToBot(new OccultBallAction(this));
+        if (this.counter <= 0) {
+            OccultBall o = this;
+            addToBot(new AbstractGameAction() {
+                @Override
+                public void update() {
+                    addToBot(new OccultBallAction(o));
+                    this.isDone = true;
+                }
+            });
+        }
     }
 }

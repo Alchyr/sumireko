@@ -23,7 +23,7 @@ public class NaturalJinxPower extends BasePower {
         super(NAME, TYPE, TURN_BASED, owner, null, amount);
     }
 
-    public void onAfterUseCard(AbstractCard card, UseCardAction action) {
+    public void onUseCard(AbstractCard card, UseCardAction action) {
         if (OccultFields.isOccult.get(card))
         {
             this.flash();

@@ -58,7 +58,7 @@ public class RuleCancelAction extends AbstractGameAction {
             if (validCards.size() == 1)
             {
                 OccultFields.isOccult.set(validCards.getTopCard(), true);
-                validCards.getTopCard().superFlash(Color.VIOLET);
+                validCards.getTopCard().superFlash(Color.VIOLET.cpy());
                 addToTop(new HandCheckAction());
                 this.isDone = true;
                 return;
@@ -84,7 +84,7 @@ public class RuleCancelAction extends AbstractGameAction {
             for (AbstractCard c : AbstractDungeon.handCardSelectScreen.selectedCards.group) {
                 this.p.hand.addToTop(c);
                 OccultFields.isOccult.set(c, true);
-                c.superFlash(Color.VIOLET);
+                c.superFlash(Color.VIOLET.cpy());
                 c.initializeDescription();
             }
             addToTop(new HandCheckAction());

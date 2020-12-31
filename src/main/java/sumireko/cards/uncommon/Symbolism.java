@@ -10,7 +10,7 @@ import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class Symbolism extends LockingCard {
+public class Symbolism extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Symbolism",
             1,
@@ -27,13 +27,12 @@ public class Symbolism extends LockingCard {
     public Symbolism() {
         super(cardInfo, false);
 
+        setExhaust(true);
         setCostUpgrade(UPG_COST);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        super.use(p, m);
-
         gainEnergy(Math.min(5, SealSystem.nextIndex)); //nextIndex *shouldn't* be able to go above 5, but just in case.
     }
 

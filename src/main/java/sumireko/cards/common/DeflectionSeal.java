@@ -27,16 +27,16 @@ public class DeflectionSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 5;
-    private static final int UPG_MAGIC = 2;
+    private static final int BLOCK = 7;
+    private static final int UPG_BLOCK = 2;
 
-    private static final int SEAL = 5;
-    private static final int UPG_SEAL = 2;
+    private static final int SEAL = 4;
+    private static final int UPG_SEAL = 1;
 
     public DeflectionSeal() {
         super(cardInfo, false);
 
-        setMagic(MAGIC, UPG_MAGIC);
+        setBlock(BLOCK, UPG_BLOCK);
         setSeal(SEAL, UPG_SEAL);
     }
 
@@ -44,7 +44,7 @@ public class DeflectionSeal extends SealCard {
     public void use(AbstractPlayer p, AbstractMonster m) {
         //vfx of frost orb pieces flying outwards?
         //make a new power later
-        applySelf(new FlameBarrierPower(p, this.magicNumber));
+        block();
 
         super.use(p, m);
     }
@@ -52,17 +52,12 @@ public class DeflectionSeal extends SealCard {
     @Override
     public void triggerSealEffect(AbstractMonster target) {
         if (this.sealValue > 0)
-            addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, this.sealValue));
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-
+            applySelf(new FlameBarrierPower(AbstractDungeon.player, this.sealValue));
     }
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.DEFEND;
+        i.intent = AbstractMonster.Intent.MAGIC;
     }
 
     @Override

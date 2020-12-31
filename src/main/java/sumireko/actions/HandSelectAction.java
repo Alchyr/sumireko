@@ -82,6 +82,9 @@ public class HandSelectAction extends AbstractGameAction {
 
             if (validCards.size() <= this.amount)
             {
+                if (!returnSelected)
+                    AbstractDungeon.player.hand.group.removeAll(validCards);
+
                 process.accept(validCards);
                 if (finale != null)
                     finale.accept(validCards);
@@ -95,6 +98,8 @@ public class HandSelectAction extends AbstractGameAction {
             if (p.hand.isEmpty())
             {
                 returnCards();
+                if (!returnSelected)
+                    AbstractDungeon.player.hand.group.removeAll(validCards);
                 if (finale != null)
                     finale.accept(validCards);
                 this.isDone = true;

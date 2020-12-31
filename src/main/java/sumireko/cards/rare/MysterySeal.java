@@ -11,10 +11,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
-import sumireko.util.CardInfo;
-import sumireko.util.MysteryUpgrade;
-import sumireko.util.PretendMonster;
-import sumireko.util.SealIntent;
+import sumireko.util.*;
 import sumireko.util.mysteryupgrades.*;
 
 import java.util.ArrayList;
@@ -456,11 +453,12 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
     }
 
     @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
+    public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
         for (MysteryUpgrade m : sortedUpgrades)
         {
             m.instantSealEffect(this, target, pretendMonsters);
         }
+        return null;
     }
 
     @Override

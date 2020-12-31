@@ -1,8 +1,6 @@
 package sumireko.cards.basic;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
 import sumireko.enums.CustomCardTags;
@@ -51,14 +49,6 @@ public class OccultSeal extends SealCard {
     @Override
     public void applyAdjacencyEffect(SealCard c) {
         c.modifySealValue(this.sealValue);
-    }
-
-    @Override
-    public void triggerSealEffect(AbstractMonster target) {
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
     }
 
     @Override

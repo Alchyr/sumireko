@@ -23,7 +23,7 @@ public class HonedTalent extends BaseCard {
     public HonedTalent() {
         super(cardInfo, false);
 
-        setMagic(1);
+        setMagic(3);
         setCostUpgrade(1);
     }
 

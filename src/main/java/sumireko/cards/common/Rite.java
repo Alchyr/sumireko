@@ -13,7 +13,7 @@ import static sumireko.SumirekoMod.makeID;
 public class Rite extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Rite",
-            1,
+            0,
             CardType.ATTACK,
             CardTarget.ALL_ENEMY,
             CardRarity.COMMON);
@@ -21,7 +21,7 @@ public class Rite extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 7;
+    private static final int DAMAGE = 3;
 
     public Rite() {
         super(cardInfo, false);

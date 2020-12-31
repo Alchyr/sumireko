@@ -40,9 +40,9 @@
   "sumireko:PerfectMemory": {
     "NAME": "Perfect Memory",
     "DESCRIPTIONS": [
-      "The next card you play this turn is placed on top of your draw pile. Gain [E] the next time you draw it.",
-      "The next #b",
-      " cards you play this turn are placed on top of your draw pile. Gain [E] the next time you draw a played card."
+      "Put a copy of the next card you play onto the top of your draw pile.",
+      "Put #b",
+      " copies of the next card you play onto the top of your draw pile."
     ]
   },
   "sumireko:Gravity": {
@@ -58,6 +58,12 @@
     "DESCRIPTIONS": [
       "Whenever you play an #yOccult card, this enemy loses #b",
       " HP."
+    ]
+  },
+  "sumireko:TruePentagram": {
+    "NAME": "True Pentagram",
+    "DESCRIPTIONS": [
+      "All #ySeals are adjacent to each other."
     ]
   },
   "sumireko:PerfectParadox": {

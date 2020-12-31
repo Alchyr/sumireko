@@ -1,16 +1,14 @@
-package sumireko.cards.common;
+/*package sumireko.cards.common;
 
+import basemod.AutoAdd;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.SealSystem;
-import sumireko.abstracts.BaseCard;
 import sumireko.abstracts.SealCard;
 import sumireko.actions.AllEnemyLoseHPAction;
 import sumireko.util.CardInfo;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -18,6 +16,7 @@ import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
 
+@AutoAdd.Ignore
 public class CursedSeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
             "CursedSeal",
@@ -59,14 +58,6 @@ public class CursedSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
-    }
-
-    @Override
-    public void instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-    }
-
-    @Override
     public void getIntent(SealIntent i) {
         i.amount = -1;
         i.intent = AbstractMonster.Intent.MAGIC;
@@ -76,4 +67,4 @@ public class CursedSeal extends SealCard {
     public AbstractCard makeCopy() {
         return new CursedSeal();
     }
-}
+}*/

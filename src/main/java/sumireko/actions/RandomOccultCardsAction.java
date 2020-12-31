@@ -48,7 +48,7 @@ public class RandomOccultCardsAction extends AbstractGameAction {
             for (AbstractCard c : validCards)
             {
                 OccultFields.isOccult.set(c, true);
-                c.superFlash(Color.VIOLET);
+                c.superFlash(Color.VIOLET.cpy());
                 c.initializeDescription();
             }
         }
@@ -64,7 +64,7 @@ public class RandomOccultCardsAction extends AbstractGameAction {
                 AbstractCard c = cards.remove(AbstractDungeon.cardRandomRng.random(cards.size() - 1));
 
                 OccultFields.isOccult.set(c, true);
-                c.superFlash(Color.VIOLET);
+                c.superFlash(Color.VIOLET.cpy());
                 c.initializeDescription();
             }
         }

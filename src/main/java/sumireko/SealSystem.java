@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -22,6 +23,7 @@ import sumireko.effects.SealPreviewGlow;
 import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.ModifySealPower;
 import sumireko.powers.ImprintPower;
+import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.PreviewIntent;
 import sumireko.util.SealIntent;
@@ -51,6 +53,7 @@ public class SealSystem {
 
     public static final SealIntent[] sealIntents = { new SealIntent(), new SealIntent(), new SealIntent(), new SealIntent(), new SealIntent() };
     private static final HashMap<AbstractMonster, PreviewIntent> previewIntents = new HashMap<>();
+    public static final HashMap<AbstractCreature, HealthBarRender> healthBarRenders = new HashMap<>();
 
     public static int nextIndex = 0;
 
@@ -58,6 +61,7 @@ public class SealSystem {
     private static float lineTime = 0.0f;
 
     private static boolean recalculate = false;
+    private static boolean disableCalculation = false;
 
     private static final ArrayList<AbstractGameEffect> previewEffects = new ArrayList<>();
     private static final ArrayList<AbstractGameEffect> lineEffects = new ArrayList<>();
@@ -110,9 +114,11 @@ public class SealSystem {
         hoveredCard = null;
         nextIndex = 0;
         recalculate = false;
+        disableCalculation = false;
         targets.clear();
         previewIntents.clear();
         previewEffects.clear();
+        healthBarRenders.clear();
         lineEffects.clear();
         enabled = false;
         x = 0;
@@ -121,7 +127,9 @@ public class SealSystem {
     public static void refresh()
     {
         recalculate = false;
+        disableCalculation = false;
         previewIntents.clear();
+        healthBarRenders.clear();
     }
 
     public static void addSeal(SealCard c, AbstractMonster target)
@@ -361,7 +369,7 @@ public class SealSystem {
                 aroundCards[i].updateHoverLogic();
                 if (aroundCards[i].publicHovered)
                 {
-                    aroundCards[i].drawScale = HOVER_SCALE;
+                    aroundCards[i].drawScale = (SMALL_SCALE + HOVER_SCALE) / 2;
                     aroundCards[i].targetDrawScale = HOVER_SCALE;
 
                     if (!isHovered) //just hovered
@@ -400,7 +408,9 @@ public class SealSystem {
                 centerCard.updateHoverLogic();
                 if (centerCard.publicHovered)
                 {
-                    centerCard.drawScale = centerCard.targetDrawScale = HOVER_SCALE;
+                    centerCard.drawScale = (CENTER_SCALE + HOVER_SCALE) / 2;
+                    centerCard.targetDrawScale = HOVER_SCALE;
+
                     hoveredCard = centerCard;
                     centerCard.update();
                     break center;
@@ -482,313 +492,314 @@ public class SealSystem {
 
     public static void calculateSeals()
     {
-        recalculate = false;
-
-        //reset and count duplicates
-        cardCounts.clear();
         int i = 0;
-        for (; i < 4; ++i)
+        boolean calculateIntentPreview = aroundCards[0] != null;
+
+        if (!disableCalculation) //skip the calculation. Values can no longer change.
         {
-            if (aroundCards[i] == null)
-                break;
+            recalculate = false;
 
-            aroundCards[i].resetSealValue();
-
-            if (!cardCounts.containsKey(aroundCards[i].cardID))
+            //reset and count duplicates
+            cardCounts.clear();
+            for (; i < 4; ++i)
             {
-                cardCounts.put(aroundCards[i].cardID, 0);
-            }
-            else
-            {
-                cardCounts.put(aroundCards[i].cardID, cardCounts.get(aroundCards[i].cardID) + 1);
-            }
-        }
-        if (centerCard != null)
-        {
-            centerCard.resetSealValue();
-
-            if (!cardCounts.containsKey(centerCard.cardID))
-            {
-                cardCounts.put(centerCard.cardID, 0);
-            }
-            else
-            {
-                cardCounts.put(centerCard.cardID, cardCounts.get(centerCard.cardID) + 1);
-            }
-        }
-
-        //duplicate bonus and flat powers bonus
-        for (i = 0; i < 4; ++i)
-        {
-            if (aroundCards[i] == null)
-                break;
-
-            aroundCards[i].modifySealValue(cardCounts.get(aroundCards[i].cardID));
-
-            for (AbstractPower p : AbstractDungeon.player.powers)
-            {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(aroundCards[i]);
-            }
-
-            aroundCards[i].lockBaseValue(); //This saves the current value as the value to be used for base adjacency bonuses.
-        }
-        if (centerCard != null) {
-            centerCard.modifySealValue(cardCounts.get(centerCard.cardID));
-
-            for (AbstractPower p : AbstractDungeon.player.powers) {
-                if (p instanceof ModifySealPower)
-                    ((ModifySealPower) p).modifySeal(centerCard);
-            }
-
-            centerCard.lockBaseValue();
-        }
-
-        //adjacency and power bonuses.
-        //modifiers are applied to BUFF_SEAL seals first, to maintain consistent results.
-
-        for (i = 0; i < 4; ++i) //add/subtract
-        {
-            // BUFF BUFF SEALS FROM THE SEALS AROUND THEM
-            if (aroundCards[i] == null)
-                break;
-
-            if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
-                continue; //Not a buff seal, move on.
-
-            switch (i)
-            {
-                case 0:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[1] != null)
-                    {
-                        aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
+                if (aroundCards[i] == null)
                     break;
-                case 1:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[0] != null && centerCard == null)
-                    {
-                        aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 2:
-                case 3:
-                    if (aroundCards[0] != null)
-                        aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
 
-                    if (aroundCards[1] != null)
-                        aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
-                    break;
+                aroundCards[i].resetSealValue();
+
+                if (!cardCounts.containsKey(aroundCards[i].cardID))
+                {
+                    cardCounts.put(aroundCards[i].cardID, 0);
+                }
+                else
+                {
+                    cardCounts.put(aroundCards[i].cardID, cardCounts.get(aroundCards[i].cardID) + 1);
+                }
             }
             if (centerCard != null)
             {
-                centerCard.applyBaseAdjacencyEffect(aroundCards[i]);
+                centerCard.resetSealValue();
+
+                if (!cardCounts.containsKey(centerCard.cardID))
+                {
+                    cardCounts.put(centerCard.cardID, 0);
+                }
+                else
+                {
+                    cardCounts.put(centerCard.cardID, cardCounts.get(centerCard.cardID) + 1);
+                }
             }
-        }
-        if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
-        {
+
+            //duplicate bonus and flat powers bonus
             for (i = 0; i < 4; ++i)
             {
                 if (aroundCards[i] == null)
                     break;
 
-                aroundCards[i].applyBaseAdjacencyEffect(centerCard);
+                aroundCards[i].modifySealValue(cardCounts.get(aroundCards[i].cardID));
+
+                for (AbstractPower p : AbstractDungeon.player.powers)
+                {
+                    if (p instanceof ModifySealPower)
+                        ((ModifySealPower) p).modifySeal(aroundCards[i]);
+                }
+
+                aroundCards[i].lockBaseValue(); //This saves the current value as the value to be used for base adjacency bonuses.
             }
-        }
+            if (centerCard != null) {
+                centerCard.modifySealValue(cardCounts.get(centerCard.cardID));
 
-        for (i = 0; i < 4; ++i) //multiplication
-        {
-            if (aroundCards[i] == null)
-                break;
+                for (AbstractPower p : AbstractDungeon.player.powers) {
+                    if (p instanceof ModifySealPower)
+                        ((ModifySealPower) p).modifySeal(centerCard);
+                }
 
-            if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
-                continue;
+                centerCard.lockBaseValue();
+            }
 
-            switch (i)
+            //adjacency and power bonuses.
+            //modifiers are applied to BUFF_SEAL seals first, to maintain consistent results.
+
+            for (i = 0; i < 4; ++i) //add/subtract
             {
-                case 0:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[1] != null)
-                    {
-                        aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                // BUFF BUFF SEALS FROM THE SEALS AROUND THEM
+                if (aroundCards[i] == null)
                     break;
-                case 1:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[0] != null && centerCard == null)
-                    {
-                        aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 2:
-                case 3:
-                    if (aroundCards[0] != null)
-                        aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
 
-                    if (aroundCards[1] != null)
-                        aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                    break;
+                if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
+                    continue; //Not a buff seal, move on.
+
+                switch (i)
+                {
+                    case 0:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[1] != null)
+                        {
+                            aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 1:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[0] != null && centerCard == null)
+                        {
+                            aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 2:
+                    case 3:
+                        if (aroundCards[0] != null)
+                            aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
+
+                        if (aroundCards[1] != null)
+                            aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                }
+                if (centerCard != null)
+                {
+                    centerCard.applyBaseAdjacencyEffect(aroundCards[i]);
+                }
             }
-            if (centerCard != null)
+            if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
             {
-                centerCard.applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                for (i = 0; i < 4; ++i)
+                {
+                    if (aroundCards[i] == null)
+                        break;
+
+                    aroundCards[i].applyBaseAdjacencyEffect(centerCard);
+                }
             }
-        }
-        if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
-        {
-            for (i = 0; i < 4; ++i)
+
+            for (i = 0; i < 4; ++i) //multiplication
             {
                 if (aroundCards[i] == null)
                     break;
 
-                aroundCards[i].applyFinalBaseAdjacencyEffect(centerCard);
-            }
-        }
-
-        //non-buff seals
-        for (i = 0; i < 4; ++i) //add/subtract
-        {
-            if (aroundCards[i] == null)
-                break;
-
-            if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
-                continue;
-
-            switch (i)
-            {
-                case 0:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[1] != null)
-                    {
-                        aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 1:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[0] != null && centerCard == null)
-                    {
-                        aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 2:
-                case 3:
-                    if (aroundCards[0] != null)
-                        aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
-
-                    if (aroundCards[1] != null)
-                        aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
-                    break;
-            }
-            if (centerCard != null)
-            {
-                centerCard.applyAdjacencyEffect(aroundCards[i]);
-            }
-        }
-        if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
-        {
-            for (i = 0; i < 4; ++i)
-            {
-                if (aroundCards[i] == null)
-                    break;
-
-                aroundCards[i].applyAdjacencyEffect(centerCard);
-            }
-        }
-
-        boolean calculateIntentPreview = false;
-
-        for (i = 0; i < 4; ++i) //multiplication
-        {
-            if (aroundCards[i] == null)
-                break;
-
-            calculateIntentPreview = true; //if any seals are in play
-
-            if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
-                continue;
-
-            switch (i)
-            {
-                case 0:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[1] != null)
-                    {
-                        aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 1:
-                    if (aroundCards[3] != null)
-                    {
-                        aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
-                    }
-                    else if (aroundCards[0] != null && centerCard == null)
-                    {
-                        aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
-                    }
-                    if (aroundCards[2] != null)
-                        aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
-                    break;
-                case 2:
-                case 3:
-                    if (aroundCards[0] != null)
-                        aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
-
-                    if (aroundCards[1] != null)
-                        aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
-                    break;
-            }
-            if (centerCard != null)
-            {
-                centerCard.applyFinalAdjacencyEffect(aroundCards[i]);
-            }
-        }
-        if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
-        {
-            for (i = 0; i < 4; ++i)
-            {
-                if (aroundCards[i] == null) //what the Fuck how is there a card in the center wit an empty surrounding card
+                if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
                     continue;
 
-                aroundCards[i].applyFinalAdjacencyEffect(centerCard);
+                switch (i)
+                {
+                    case 0:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[1] != null)
+                        {
+                            aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 1:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[0] != null && centerCard == null)
+                        {
+                            aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 2:
+                    case 3:
+                        if (aroundCards[0] != null)
+                            aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+
+                        if (aroundCards[1] != null)
+                            aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                        break;
+                }
+                if (centerCard != null)
+                {
+                    centerCard.applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                }
+            }
+            if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
+            {
+                for (i = 0; i < 4; ++i)
+                {
+                    if (aroundCards[i] == null)
+                        break;
+
+                    aroundCards[i].applyFinalBaseAdjacencyEffect(centerCard);
+                }
             }
 
-            centerCard.centerMultiplier();
+            //non-buff seals
+            for (i = 0; i < 4; ++i) //add/subtract
+            {
+                if (aroundCards[i] == null)
+                    break;
+
+                if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
+                    continue;
+
+                switch (i)
+                {
+                    case 0:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[1] != null)
+                        {
+                            aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 1:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[0] != null && centerCard == null)
+                        {
+                            aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 2:
+                    case 3:
+                        if (aroundCards[0] != null)
+                            aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
+
+                        if (aroundCards[1] != null)
+                            aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
+                        break;
+                }
+                if (centerCard != null)
+                {
+                    centerCard.applyAdjacencyEffect(aroundCards[i]);
+                }
+            }
+            if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
+            {
+                for (i = 0; i < 4; ++i)
+                {
+                    if (aroundCards[i] == null)
+                        break;
+
+                    aroundCards[i].applyAdjacencyEffect(centerCard);
+                }
+            }
+
+            for (i = 0; i < 4; ++i) //multiplication
+            {
+                if (aroundCards[i] == null)
+                    break;
+
+                if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
+                    continue;
+
+                switch (i)
+                {
+                    case 0:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[1] != null)
+                        {
+                            aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 1:
+                        if (aroundCards[3] != null)
+                        {
+                            aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
+                        }
+                        else if (aroundCards[0] != null && centerCard == null)
+                        {
+                            aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
+                        }
+                        if (aroundCards[2] != null)
+                            aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
+                        break;
+                    case 2:
+                    case 3:
+                        if (aroundCards[0] != null)
+                            aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
+
+                        if (aroundCards[1] != null)
+                            aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
+                        break;
+                }
+                if (centerCard != null)
+                {
+                    centerCard.applyFinalAdjacencyEffect(aroundCards[i]);
+                }
+            }
+            if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
+            {
+                for (i = 0; i < 4; ++i)
+                {
+                    if (aroundCards[i] == null) //what the Fuck how is there a card in the center wit an empty surrounding card
+                        continue;
+
+                    aroundCards[i].applyFinalAdjacencyEffect(centerCard);
+                }
+
+                centerCard.centerMultiplier();
+            }
         }
 
         for (i = 0; i < 4; ++i) //intents
@@ -803,25 +814,32 @@ public class SealSystem {
             sealIntents[4].setSeal(centerCard);
         }
 
-
-
         // Calculate preview result
 
-        if (calculateIntentPreview && !hideIntents())
-        {
+        healthBarRenders.clear();
+
+        if (calculateIntentPreview) {
             HashMap<AbstractMonster, PretendMonster> previewMonsters = new HashMap<>();
 
             for (AbstractMonster m : AbstractDungeon.getMonsters().monsters)
                 if (!m.halfDead && !m.isDying && !m.isEscaping)
                     previewMonsters.put(m, new PretendMonster(m));
                 else
-                    previewIntents.remove(m); //remove those that aren't valid.
+                    previewIntents.remove(m); //remove those that are no longer alive.
 
             PretendMonster.prepareFakePlayerPowers();
 
             if (centerCard != null)
             {
-                centerCard.instantSealEffect(previewMonsters.get(SealSystem.targets.get(centerCard)), previewMonsters);
+                HealthBarRender h = centerCard.instantSealEffect(previewMonsters.get(SealSystem.targets.get(centerCard)), previewMonsters);
+
+                if (h != null)
+                {
+                    if (!healthBarRenders.containsKey(h.target))
+                        healthBarRenders.put(h.target, h);
+                    else
+                        healthBarRenders.get(h.target).combine(h);
+                }
             }
 
             for (i = 3; i >= 0; --i)
@@ -829,23 +847,41 @@ public class SealSystem {
                 if (aroundCards[i] == null)
                     continue;
 
-                aroundCards[i].instantSealEffect(previewMonsters.get(SealSystem.targets.get(aroundCards[i])), previewMonsters);
+                HealthBarRender h = aroundCards[i].instantSealEffect(previewMonsters.get(SealSystem.targets.get(aroundCards[i])), previewMonsters);
+
+                if (h != null)
+                {
+                    if (!healthBarRenders.containsKey(h.target))
+                        healthBarRenders.put(h.target, h);
+                    else
+                        healthBarRenders.get(h.target).combine(h);
+                }
             }
 
             for (Map.Entry<AbstractMonster, PretendMonster> m : previewMonsters.entrySet())
             {
-                m.getValue().calculateDamage();
-
-                PreviewIntent newIntent = new PreviewIntent(m.getKey(), m.getValue());
-
-                if (previewIntents.containsKey(m.getKey()))
+                int difference = m.getKey().currentHealth - m.getValue().currentHealth;;
+                if (difference > 0)
                 {
-                    if (!previewIntents.get(m.getKey()).equals(newIntent))
-                        previewIntents.put(m.getKey(), newIntent);
+                    HealthBarRender h = new HealthBarRender(m.getKey(), difference);
+
+                    if (!healthBarRenders.containsKey(h.target))
+                        healthBarRenders.put(h.target, h);
+                    else
+                        healthBarRenders.get(h.target).combine(h);
                 }
-                else
-                {
-                    previewIntents.put(m.getKey(), newIntent);
+
+                if (!hideIntents()) {
+                    m.getValue().calculateDamage();
+
+                    PreviewIntent newIntent = new PreviewIntent(m.getKey(), m.getValue());
+
+                    if (previewIntents.containsKey(m.getKey())) {
+                        if (!previewIntents.get(m.getKey()).equals(newIntent))
+                            previewIntents.put(m.getKey(), newIntent);
+                    } else {
+                        previewIntents.put(m.getKey(), newIntent);
+                    }
                 }
             }
         }
@@ -863,10 +899,12 @@ public class SealSystem {
     public static void triggerEndOfTurn() {
         previewIntents.clear();
 
+        disableCalculation = true;
+
         int keepAmount = AbstractDungeon.player.hasPower(ImprintPower.POWER_ID) ? AbstractDungeon.player.getPower(ImprintPower.POWER_ID).amount : 0;
         if (centerCard != null)
         {
-            centerCard.superFlash(Color.PURPLE);
+            centerCard.superFlash(Color.PURPLE.cpy());
             centerCard.triggerSealEffect(SealSystem.targets.get(centerCard));
 
             if (keepAmount < 5)
@@ -883,7 +921,7 @@ public class SealSystem {
             if (aroundCards[i] == null)
                 continue;
 
-            aroundCards[i].superFlash(Color.PURPLE);
+            aroundCards[i].superFlash(Color.PURPLE.cpy());
             aroundCards[i].triggerSealEffect(SealSystem.targets.get(aroundCards[i]));
 
             if (keepAmount < i + 1)

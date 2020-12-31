@@ -22,7 +22,7 @@ public class Fling extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 5;
+    private static final int DAMAGE = 6;
     private static final int MAGIC = 4;
 
     public Fling() {

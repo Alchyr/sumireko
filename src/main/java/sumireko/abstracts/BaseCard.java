@@ -15,10 +15,8 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.VulnerablePower;
 import com.megacrit.cardcrawl.powers.WeakPower;
 import sumireko.SumirekoMod;
-import sumireko.cards.rare.ExtensionSeal;
 import sumireko.enums.CharacterEnums;
 import sumireko.util.CardInfo;
-import sumireko.util.TextureLoader;
 
 import java.util.HashMap;
 

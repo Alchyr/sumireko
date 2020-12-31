@@ -26,5 +26,12 @@
     "DESCRIPTIONS": [
       "At the start of every third turn, make a card in your hand #ysumireko:Occult for the rest of combat."
     ]
+  },
+  "sumireko:BetterOccultBall": {
+    "NAME": "Occult Ball?",
+    "FLAVOR": "A mystical object, said to grant wishes... well, it's really not that powerful.",
+    "DESCRIPTIONS": [
+      "At the start of each combat, make 3 cards in your hand #ysumireko:Occult for the rest of combat."
+    ]
   }
 }

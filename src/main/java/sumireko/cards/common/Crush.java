@@ -22,7 +22,7 @@ public class Crush extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 7;
+    private static final int DAMAGE = 8;
 
     public Crush() {
         super(cardInfo, false);

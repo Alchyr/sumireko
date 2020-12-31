@@ -3,15 +3,16 @@ package sumireko.cards.uncommon;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.BaseCard;
-import sumireko.powers.PerfectMemoryPower;
+import sumireko.abstracts.SealCard;
+import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
+import sumireko.util.SealIntent;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class PerfectMemory extends BaseCard {
+public class EmptySeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "PerfectMemory",
+            "EmptySeal",
             0,
             CardType.SKILL,
             CardTarget.NONE,
@@ -19,23 +20,32 @@ public class PerfectMemory extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int MAGIC = 1;
-    private static final int UPG_MAGIC = 1;
 
-    public PerfectMemory() {
-        super(cardInfo, true);
 
-        setMagic(MAGIC, UPG_MAGIC);
-        setExhaust(true);
+    public EmptySeal() {
+        super(cardInfo, false);
+
+        tags.add(CustomCardTags.FINAL);
+    }
+
+    @Override
+    public boolean canUpgrade() {
+        return false;
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        applySelf(new PerfectMemoryPower(p, upgraded ? this.magicNumber : 1));
+        drawCards(1);
+        super.use(p, m);
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new PerfectMemory();
+        return new EmptySeal();
+    }
+
+    @Override
+    public void getIntent(SealIntent i) {
+        i.intent = null;
     }
 }

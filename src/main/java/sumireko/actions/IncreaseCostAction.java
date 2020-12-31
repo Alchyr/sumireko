@@ -23,7 +23,7 @@ public class IncreaseCostAction extends AbstractGameAction {
                 c.cost += this.amount;
                 c.costForTurn += this.amount;
                 c.isCostModified = true;
-                c.superFlash(Color.SLATE);
+                c.superFlash(Color.SLATE.cpy());
             }
         }
 
