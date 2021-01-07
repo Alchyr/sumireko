@@ -9,7 +9,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.*;
 import com.megacrit.cardcrawl.relics.ChampionsBelt;
 import sumireko.SealSystem;
-import sumireko.actions.SealAction;
+import sumireko.actions.seals.SealAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.ModifySealPower;
 import sumireko.util.CardInfo;

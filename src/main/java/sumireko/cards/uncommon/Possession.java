@@ -24,6 +24,7 @@ public class Possession extends BaseCard {
         super(cardInfo, true);
 
         isEthereal = true;
+        setExhaust(true);
     }
 
     @Override

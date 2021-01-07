@@ -28,12 +28,6 @@ public class PocketBattery extends BaseCard {
         tags.add(CustomCardTags.UNPLAYABLE);
     }
 
-    @Override
-    public void upgrade() {
-        super.upgrade();
-        selfRetain = false;
-    }
-
     public boolean canUse(AbstractPlayer p, AbstractMonster m) {
         return false;
     }

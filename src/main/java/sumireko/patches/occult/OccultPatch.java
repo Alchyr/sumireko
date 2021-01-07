@@ -1,43 +1,18 @@
 package sumireko.patches.occult;
 
-import com.evacipated.cardcrawl.modthespire.Loader;
-import com.evacipated.cardcrawl.modthespire.ModInfo;
-import com.evacipated.cardcrawl.modthespire.lib.SpirePatch;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
 import javassist.*;
 import org.clapper.util.classutil.*;
 
-import java.io.File;
 import java.lang.reflect.Modifier;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 
 import static sumireko.patches.occult.OccultFields.notEnoughEnergy;
 
 //hooray for dynamic patching
-
-@SpirePatch(
-        clz = CardCrawlGame.class,
-        method = SpirePatch.CONSTRUCTOR
-)
 public class OccultPatch {
-    public static void Raw(CtBehavior ctBehavior) throws NotFoundException {
-        System.out.println("Starting dynamic Occult patch:");
-
-        ClassFinder finder = new ClassFinder();
-
-        finder.add(new File(Loader.STS_JAR));
-
-        for (ModInfo modInfo : Loader.MODINFOS) {
-            if (modInfo.jarURL != null) {
-                try {
-                    finder.add(new File(modInfo.jarURL.toURI()));
-                } catch (URISyntaxException e) {
-                    // do nothing
-                }
-            }
-        }
+    public static void patch(ClassFinder finder, ClassPool pool) throws NotFoundException {
+        System.out.println("- Occult patch:");
 
         // Get all classes for AbstractCards
         ClassFilter filter = new AndClassFilter(
@@ -52,13 +27,16 @@ public class OccultPatch {
         ArrayList<ClassInfo> foundClasses = new ArrayList<>();
         finder.findClasses(foundClasses, filter);
 
-        System.out.println("\t- Done Finding Classes.\n\t- Patching:");
+        System.out.println("\t- Potential targets found.\n\t- Patching:");
+
+        int skipped = 0, patched = 0;
 
         for (ClassInfo classInfo : foundClasses)
         {
-            CtClass ctClass = ctBehavior.getDeclaringClass().getClassPool().get(classInfo.getClassName());
+            CtClass ctClass = pool.get(classInfo.getClassName());
 
-            System.out.println("\t\t- Patching Class: " + ctClass.getSimpleName());
+            boolean changed = false;
+
             try
             {
                 CtMethod[] methods = ctClass.getDeclaredMethods();
@@ -66,26 +44,39 @@ public class OccultPatch {
                 {
                     if (m.getName().equals("canUse"))
                     {
-                        System.out.println("\t\t\t- Modifying Method: canUse");
+                        //System.out.println("\t\t\t- Modifying Method: canUse");
                         m.insertAfter("{" +
                                 "$_ = sumireko.patches.occult.OccultPatch.checkUsability($0, $_);" +
                                 "}");
+
+                        changed = true;
                     }
                     else if (m.getName().equals("hasEnoughEnergy"))
                     {
-                        System.out.println("\t\t\t- Modifying Method: hasEnoughEnergy");
+                        //System.out.println("\t\t\t- Modifying Method: hasEnoughEnergy");
                         m.insertAfter("{" +
                                 "$_ = sumireko.patches.occult.OccultPatch.checkEnergy($0, $_);" +
                                 "}");
+
+                        changed = true;
                     }
                 }
-                System.out.println("\t\t\tSuccess.\n");
+
+                if (changed)
+                {
+                    System.out.println("\t\t- Class patched: " + ctClass.getSimpleName());
+                    ++patched;
+                }
+                else
+                {
+                    ++skipped;
+                }
             } catch(CannotCompileException e) {
-                System.out.println("\t\t\tFailure.\n");
+                System.out.println("\t\t- Error occurred while patching class: " + ctClass.getSimpleName() + "\n");
                 e.printStackTrace();
             }
         }
-        System.out.println("\t- Done Patching.");
+        System.out.println("- Occult patch complete. " + (patched + skipped) + " classes checked. " + patched + " classes changed. " + skipped + " classes unchanged.");
     }
 
     public static boolean checkUsability(AbstractCard c, boolean normallyUsable)

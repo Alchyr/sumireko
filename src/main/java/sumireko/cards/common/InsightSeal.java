@@ -24,16 +24,15 @@ public class InsightSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 4;
-    private static final int UPG_BLOCK = 1;
+    private static final int BLOCK = 3;
 
-    private static final int SEAL = 1;
+    private static final int SEAL = 2;
     private static final int UPG_SEAL = 1;
 
     public InsightSeal() {
         super(cardInfo, false);
 
-        setBlock(BLOCK, UPG_BLOCK);
+        setBlock(BLOCK);
         setSeal(SEAL, UPG_SEAL);
         tags.add(CustomCardTags.BUFF_SEAL);
     }

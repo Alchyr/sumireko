@@ -5,7 +5,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.actions.DamageRandomConditionalEnemyAction;
+import sumireko.actions.general.DamageRandomConditionalEnemyAction;
 import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;

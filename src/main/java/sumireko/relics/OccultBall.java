@@ -2,7 +2,7 @@ package sumireko.relics;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import sumireko.abstracts.BaseRelic;
-import sumireko.actions.OccultBallAction;
+import sumireko.actions.relics.OccultBallAction;
 
 import static sumireko.SumirekoMod.makeID;
 

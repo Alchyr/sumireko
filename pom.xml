@@ -4,8 +4,8 @@
     <groupId>sumireko</groupId>
     <artifactId>sumireko</artifactId>
     <name>Sumireko Usami</name>
-    <version>0.0.0</version>
-    <description>Sumireko Usami, from Touhou.\n\nUtilize fancy seals to do fancy things.</description>
+    <version>0.0.1</version>
+    <description>Sumireko Usami, from Touhou.\n\nUtilize fancy seals to do fancy things. She could probably do this stuff without the seals, but they make it look cooler.</description>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>

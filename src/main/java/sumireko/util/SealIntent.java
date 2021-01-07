@@ -10,6 +10,7 @@ import com.megacrit.cardcrawl.helpers.ImageMaster;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
 import com.megacrit.cardcrawl.vfx.BobEffect;
+import com.megacrit.cardcrawl.vfx.ShieldParticleEffect;
 import sumireko.abstracts.SealCard;
 import sumireko.effects.*;
 
@@ -133,48 +134,34 @@ public class SealIntent {
     }
 
     private void updateIntentVFX() {
-        if (intentColor.a > 0.0F && this.intent != null) {
+        this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
+        if (intentColor.a > 0.0F && this.intent != null && this.intentParticleTimer < 0.0F) {
             switch (this.intent)
             {
                 case ATTACK_DEBUFF:
                 case DEBUFF:
                 case STRONG_DEBUFF:
                 case DEFEND_DEBUFF:
-                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                    if (this.intentParticleTimer < 0.0F) {
-                        this.intentParticleTimer = 1.0F;
-                        this.intentVfx.add(new FadedDebuffParticleEffect(x, y + 64.0f));
-                    }
+                    this.intentParticleTimer = 1.0F;
+                    this.intentVfx.add(new FadedDebuffParticleEffect(x, y + 64.0f));
                     break;
                 case ATTACK_BUFF:
                 case BUFF:
                 case DEFEND_BUFF:
-                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                    if (this.intentParticleTimer < 0.0F) {
-                        this.intentParticleTimer = 0.1F;
-                        this.intentVfx.add(new FadedBuffParticleEffect(x, y + 64.0f));
-                    }
+                    this.intentParticleTimer = 0.1F;
+                    this.intentVfx.add(new FadedBuffParticleEffect(x, y + 64.0f));
                     break;
                 case ATTACK_DEFEND:
-                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                    if (this.intentParticleTimer < 0.0F) {
-                        this.intentParticleTimer = 0.5F;
-                        this.intentVfx.add(new FadedShieldParticleEffect(x, y + 64.0f));
-                    }
+                    this.intentParticleTimer = 0.5F;
+                    this.intentVfx.add(new ShieldParticleEffect(x, y + 64.0f));
                     break;
                 case UNKNOWN:
-                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                    if (this.intentParticleTimer < 0.0F) {
-                        this.intentParticleTimer = 0.5F;
-                        this.intentVfx.add(new FadedUnknownParticleEffect(x, y + 64.0f));
-                    }
+                    this.intentParticleTimer = 0.5F;
+                    this.intentVfx.add(new FadedUnknownParticleEffect(x, y + 64.0f));
                     break;
                 case STUN:
-                    this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
-                    if (this.intentParticleTimer < 0.0F) {
-                        this.intentParticleTimer = 0.67F;
-                        this.intentVfx.add(new FadedStunStarEffect(x, y + 64.0f));
-                    }
+                    this.intentParticleTimer = 0.67F;
+                    this.intentVfx.add(new FadedStunStarEffect(x, y + 64.0f));
                     break;
             }
         }
@@ -238,6 +225,7 @@ public class SealIntent {
         this.amount = c.sealValue;
         this.multihit = false;
         this.specialText = "";
+        this.intentBg = null;
         c.getIntent(this);
 
         if (c != current)
@@ -245,11 +233,11 @@ public class SealIntent {
 
         if (this.intent == null)
         {
+            this.current = null; //testing
             return;
         }
         this.current = c;
         this.intentImg = this.getIntentImg();
-        this.intentBg = null;
     }
 
     public void multihit(int numHits) {

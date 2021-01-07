@@ -25,8 +25,8 @@ public class OccultSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 2;
-    private static final int UPG_SEAL = 2;
+    private static final int SEAL = 3;
+    private static final int UPG_SEAL = 1;
 
     public OccultSeal() {
         super(cardInfo, false);

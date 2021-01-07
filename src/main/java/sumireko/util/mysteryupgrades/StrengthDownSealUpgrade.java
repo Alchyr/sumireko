@@ -4,7 +4,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.StrengthPower;
-import sumireko.actions.LoseStrengthThisTurnAction;
+import sumireko.actions.seals.LoseStrengthThisTurnAction;
 import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;

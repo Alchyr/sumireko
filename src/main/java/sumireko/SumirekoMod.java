@@ -22,9 +22,12 @@ import javassist.NotFoundException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.clapper.util.classutil.*;
+import sumireko.abstracts.SealCard;
 import sumireko.blackbird.Improve;
 import sumireko.character.Sumireko;
 import sumireko.enums.CharacterEnums;
+import sumireko.patches.DeepDreamPatch;
+import sumireko.patches.PsychometryTrackerPatch;
 import sumireko.relics.OccultBall;
 import sumireko.util.CardFilter;
 import sumireko.util.KeywordWithProper;
@@ -343,12 +346,15 @@ public class SumirekoMod implements
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
         SealSystem.reset();
+        DeepDreamPatch.wakeUp();
+        PsychometryTrackerPatch.cardsPlayedLastTurn.clear();
         Improve._clean();
     }
 
     @Override
     public void receiveOnBattleStart(AbstractRoom abstractRoom) {
         SealSystem.setPosition(); //Sets positions based on where the player is.
+        PsychometryTrackerPatch.cardsPlayedLastTurn.clear();
         if (hasSeals(AbstractDungeon.player))
         {
             SealSystem.enabled = true;
@@ -357,6 +363,6 @@ public class SumirekoMod implements
 
     private boolean hasSeals(AbstractPlayer p) //Patch here for sumireko skillbook :)
     {
-        return p instanceof Sumireko;
+        return p instanceof Sumireko || p.masterDeck.group.stream().anyMatch((c)->c instanceof SealCard);
     }
 }

@@ -5,7 +5,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.StrengthPower;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.LoseStrengthThisTurnAction;
+import sumireko.actions.seals.LoseStrengthThisTurnAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.HealthBarRender;

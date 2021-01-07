@@ -24,10 +24,7 @@ import com.megacrit.cardcrawl.monsters.exordium.SlimeBoss;
 import com.megacrit.cardcrawl.relics.Pocketwatch;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
-import sumireko.cards.basic.DefenseSeal;
-import sumireko.cards.basic.OccultSeal;
-import sumireko.cards.basic.PsychokineticBurst;
-import sumireko.cards.basic.StrikeSeal;
+import sumireko.cards.basic.*;
 import sumireko.enums.CharacterEnums;
 import sumireko.patches.EnergyFontGen;
 import sumireko.relics.OccultBall;
@@ -113,8 +110,6 @@ public class Sumireko extends CustomPlayer {
     //private static SpineAnimation stand = new SpineAnimation(SKELETON_ATLAS, STAND_JSON, 2.0f);
     //private static SpineAnimation attack = new SpineAnimation(SKELETON_ATLAS, ATTACK_JSON, 2.0f);
 
-    private static final float SCALE_MOD = 1.5f;
-
     public Sumireko()
     {
         super(NAMES[0], CharacterEnums.SUMIREKO, null, null, null, new SpriteAnimation(0.06f, frames, IMG_BACK));
@@ -124,7 +119,7 @@ public class Sumireko extends CustomPlayer {
                 SHOULDER_2,
                 CORPSE,
                 getLoadout(),
-                20.0F, -10.0F, 220.0F, 290.0F,
+                20.0F, -20.0F, 200.0F, 250.0F,
                 new EnergyManager(ENERGY_PER_TURN));
 
         //loadAnimation(ATLAS, JSON, 1.0f);
@@ -185,10 +180,12 @@ public class Sumireko extends CustomPlayer {
         retVal.add(StrikeSeal.ID);
         retVal.add(StrikeSeal.ID);
         retVal.add(StrikeSeal.ID);
+        retVal.add(StrikeSeal.ID);
         retVal.add(DefenseSeal.ID);
         retVal.add(DefenseSeal.ID);
         retVal.add(DefenseSeal.ID);
-        retVal.add(DefenseSeal.ID);
+        retVal.add(Wall.ID);
+        retVal.add(Wall.ID);
         retVal.add(OccultSeal.ID);
         retVal.add(PsychokineticBurst.ID);
 
@@ -244,7 +241,7 @@ public class Sumireko extends CustomPlayer {
 
     @Override
     public AbstractCard getStartCardForEvent() {
-        return new StrikeSeal();
+        return new PsychokineticBurst();
     }
 
     @Override
@@ -265,23 +262,6 @@ public class Sumireko extends CustomPlayer {
     @Override
     public AbstractGameAction.AttackEffect[] getSpireHeartSlashEffect() {
         return new AbstractGameAction.AttackEffect[]{
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
-                AbstractGameAction.AttackEffect.FIRE,
-                AbstractGameAction.AttackEffect.LIGHTNING,
                 AbstractGameAction.AttackEffect.FIRE
         };
     }

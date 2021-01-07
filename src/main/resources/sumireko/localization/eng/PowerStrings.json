@@ -14,11 +14,12 @@
       " #yProwess."
     ]
   },
-  "sumireko:RetainSpecificCard": {
-    "NAME": "Retain Card",
+  "sumireko:Suspense": {
+    "NAME": "Suspense",
     "DESCRIPTIONS": [
       "#yRetain ",
-      " until played."
+      " until played. Gain #b",
+      " #yBlock the next time you play it."
     ]
   },
   "sumireko:Recall": {
@@ -77,8 +78,8 @@
     "NAME": "Lock Cycle",
     "DESCRIPTIONS": [
       "At the start of your turn, draw #b",
-      " additional card for each card in your hand at the end of the previous turn.",
-      " additional cards for each card in your hand at the end of the previous turn."
+      " additional card for every #b2 cards in your hand at the end of the previous turn.",
+      " additional cards for every #b2 cards in your hand at the end of the previous turn."
     ]
   },
   "sumireko:Metaphysics": {

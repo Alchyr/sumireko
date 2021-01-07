@@ -4,7 +4,7 @@ import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.RandomOccultCardsAction;
+import sumireko.actions.general.RandomOccultCardsAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.PretendMonster;

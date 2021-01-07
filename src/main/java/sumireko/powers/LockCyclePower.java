@@ -34,8 +34,13 @@ public class LockCyclePower extends BasePower {
 
     public void atEndOfTurn(boolean isPlayer) {
         if (isPlayer) {
-            this.flash();
-            addToBot(new ApplyPowerAction(this.owner, this.owner, new DrawCardNextTurnPower(this.owner, AbstractDungeon.player.hand.group.size()), AbstractDungeon.player.hand.group.size()));
+            int amt = AbstractDungeon.player.hand.size() / 2;
+
+            if (amt >= 1)
+            {
+                this.flash();
+                addToBot(new ApplyPowerAction(this.owner, this.owner, new DrawCardNextTurnPower(this.owner, amt * this.amount), amt * this.amount));
+            }
         }
     }
 }

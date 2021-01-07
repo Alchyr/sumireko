@@ -13,6 +13,13 @@
       "At the start of your turn, draw until your hand is full. At the end of your turn, lose 1 HP for each card in your hand."
     ]
   },
+  "sumireko:Seal Relic": {
+    "NAME": "Uncommon",
+    "FLAVOR": "\"Hmm? Well of course these aren't actual seals, but that's not going to stop me from pretending they are.\"",
+    "DESCRIPTIONS": [
+      ""
+    ]
+  },
   "sumireko:FuturisticGrimoire": {
     "NAME": "Futuristic Grimoire",
     "FLAVOR": "Isn't this yours? Though, it looks a bit different.",

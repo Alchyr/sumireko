@@ -26,16 +26,15 @@ public class FadedShieldParticleEffect extends AbstractGameEffect {
     public void update() {
         this.scale += Gdx.graphics.getDeltaTime() * Settings.scale * 1.1F;// 27
         if (this.duration > 1.0F) {// 30
-            this.color.a = Interpolation.fade.apply(0.0F, 0.18F, 1.0F - (this.duration - 1.0F));// 31
+            this.color.a = Interpolation.fade.apply(0.0F, 0.25F, 1.0F - (this.duration - 1.0F));// 31
         } else {
-            this.color.a = Interpolation.fade.apply(0.18F, 0.0F, 1.0F - this.duration);// 33
+            this.color.a = Interpolation.fade.apply(0.25F, 0.0F, 1.0F - this.duration);// 33
         }
 
         this.duration -= Gdx.graphics.getDeltaTime();// 36
         if (this.duration < 0.0F) {// 37
             this.isDone = true;// 38
         }
-
     }// 40
 
     public void render(SpriteBatch sb) {

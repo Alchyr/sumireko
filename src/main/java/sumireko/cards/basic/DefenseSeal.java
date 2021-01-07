@@ -27,7 +27,7 @@ public class DefenseSeal extends SealCard {
 
 
     private static final int SEAL = 4;
-    private static final int UPG_SEAL = 2;
+    private static final int UPG_SEAL = 3;
 
     public DefenseSeal() {
         super(cardInfo, false);

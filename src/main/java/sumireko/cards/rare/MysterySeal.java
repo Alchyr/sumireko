@@ -46,7 +46,7 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         possibleUpgrades.add(new WeakSealUpgrade());
         possibleUpgrades.add(new VulnSealUpgrade());
         possibleUpgrades.add(new StrengthDownSealUpgrade());
-        possibleUpgrades.add(new AdjacentBoostUpgrade());
+        //possibleUpgrades.add(new AdjacentBoostUpgrade());
         possibleUpgrades.add(new OccultUpgrade());
         possibleUpgrades.add(new DrawCardUpgrade());
     }

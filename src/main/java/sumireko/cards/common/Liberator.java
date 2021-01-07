@@ -6,7 +6,7 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.LambdaDrawPileToHandAction;
+import sumireko.actions.general.LambdaDrawPileToHandAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;

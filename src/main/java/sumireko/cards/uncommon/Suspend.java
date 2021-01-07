@@ -1,16 +1,13 @@
 package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
-import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.powers.AbstractPower;
-import com.megacrit.cardcrawl.ui.panels.EnergyPanel;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.HandSelectAction;
-import sumireko.powers.RetainSpecificCardPower;
+import sumireko.actions.general.HandSelectAction;
+import sumireko.powers.SuspensePower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
@@ -54,7 +51,7 @@ public class Suspend extends BaseCard {
                 //    }
                 //}
                 //if (newRetain)
-                addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new RetainSpecificCardPower(AbstractDungeon.player, c, this.magicNumber), this.magicNumber));
+                addToTop(new ApplyPowerAction(AbstractDungeon.player, AbstractDungeon.player, new SuspensePower(AbstractDungeon.player, c, this.magicNumber), this.magicNumber));
             }
         }, cardStrings.EXTENDED_DESCRIPTION[0]));
     }

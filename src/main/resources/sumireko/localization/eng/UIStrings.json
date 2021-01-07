@@ -23,22 +23,21 @@
       "Make Occult"
     ]
   },
-  "sumireko:Shanghai": {
+  "sumireko:DeepDream": {
     "TEXT": [
-      "Shanghai"
-    ],
-    "EXTRA_TEXT": [
-      "Deals #b",
-      " damage to the closest enemy at the end of each turn, then loses #b1 #yCharge"
+      "#bI'm #balready #b~asleep...~"
     ]
   },
-  "sumireko:Hourai": {
+  "sumireko:ForbiddenKnowledge": {
     "TEXT": [
-      "Hourai"
-    ],
-    "EXTRA_TEXT": [
-      "Deals #b",
-      " damage to ALL enemies in a line at the end of each turn, then loses #b1 #yCharge"
+      "Choose a Card to Make Occult"
+    ]
+  },
+  "sumireko:Psychometry": {
+    "TEXT": [
+      "Choose a Card to Add to Your Hand.",
+      "Choose ",
+      " Cards to Add to Your Hand."
     ]
   },
   "sumireko:CostIncrease": {

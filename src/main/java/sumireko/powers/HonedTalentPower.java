@@ -37,6 +37,13 @@ public class HonedTalentPower extends BasePower {
         if (card.hasTag(CustomCardTags.FINAL))
         {
             this.flash();
+        }
+    }
+
+    @Override
+    public void onAfterUseCard(AbstractCard card, UseCardAction action) {
+        if (card.hasTag(CustomCardTags.FINAL))
+        {
             this.currentBuff += this.amount; //why didn't i just make this a twoamountpower
             updateDescription();
         }

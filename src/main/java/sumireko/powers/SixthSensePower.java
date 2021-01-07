@@ -7,7 +7,7 @@ import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.EquilibriumPower;
 import com.megacrit.cardcrawl.relics.RunicPyramid;
 import sumireko.abstracts.BasePower;
-import sumireko.actions.HandSelectAction;
+import sumireko.actions.general.HandSelectAction;
 
 import static sumireko.SumirekoMod.makeID;
 

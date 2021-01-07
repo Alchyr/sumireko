@@ -6,7 +6,7 @@ import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.DamageRandomConditionalEnemyAction;
+import sumireko.actions.general.DamageRandomConditionalEnemyAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.HealthBarRender;
@@ -28,49 +28,39 @@ public class ShockingSeal extends SealCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 0;
-
-    private static final int SEAL = 1;
+    private static final int SEAL = 3;
 
     public ShockingSeal() {
-        super(cardInfo, false);
+        super(cardInfo, true);
 
-        setCostUpgrade(UPG_COST);
         setSeal(SEAL);
 
         tags.add(CustomCardTags.FRAGILE_SEAL);
     }
 
     @Override
+    public void upgrade() {
+        super.upgrade();
+        tags.remove(CustomCardTags.FRAGILE_SEAL);
+    }
+
+    @Override
     public void triggerSealEffect(AbstractMonster target) {
-        if (this.sealValue > 0)
+        for (int i = 0; i < this.sealValue; ++i)
         {
-            // :)
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
             addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
         }
     }
 
     @Override
     public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-        if (this.sealValue > 0)
+        if (this.sealValue > 0 && pretendMonsters.size() == 1)
         {
-            if (pretendMonsters.size() == 1)
+            for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
             {
-                for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
+                //there should be only one. Otherwise, the damage is not predictable.
+                for (int i = 0; i < this.sealValue; ++i)
                 {
-                    //this should be the only one.
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
                     monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
                 }
             }
@@ -81,7 +71,7 @@ public class ShockingSeal extends SealCard {
     @Override
     public void getIntent(SealIntent i) {
         i.intent = AbstractMonster.Intent.ATTACK;
-        i.multihit(7);
+        i.multihit(this.sealValue);
     }
 
     @Override

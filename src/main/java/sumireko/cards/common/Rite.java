@@ -4,7 +4,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.RiteAction;
+import sumireko.actions.cards.RiteAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 

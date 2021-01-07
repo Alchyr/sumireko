@@ -233,7 +233,7 @@ public class PreviewIntent {
                     this.intentParticleTimer -= Gdx.graphics.getDeltaTime();
                     if (this.intentParticleTimer < 0.0F) {
                         this.intentParticleTimer = 0.5F;
-                        this.intentVfx.add(new FadedShieldParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
+                        this.intentVfx.add(new ShieldParticleEffect(source.intentHb.cX, source.intentHb.cY + 64.0f));
                     }
                     break;
                 case UNKNOWN:

@@ -4,7 +4,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.LockingCard;
-import sumireko.actions.MindEyeAction;
+import sumireko.actions.cards.MindEyeAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;

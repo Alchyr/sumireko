@@ -11,7 +11,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.vfx.combat.ShockWaveEffect;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.RandomOccultCardsAction;
+import sumireko.actions.general.RandomOccultCardsAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
