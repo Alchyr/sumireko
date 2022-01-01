@@ -31,6 +31,7 @@ public class BlockUpgrade extends MysteryUpgrade {
         }
 
         c.baseBlock += BLOCK_UPGRADE;
+        c.block = c.baseBlock;
         c.upgradedBlock = true;
     }
 

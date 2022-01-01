@@ -13,7 +13,7 @@ import static sumireko.SumirekoMod.makeID;
 public class VisionOfMadness extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "VisionOfMadness",
-            3,
+            2,
             CardType.SKILL,
             CardTarget.NONE,
             CardRarity.RARE);
@@ -21,14 +21,15 @@ public class VisionOfMadness extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 7;
-    private static final int UPG_MAGIC = -3;
+    private static final int MAGIC = 4;
+    private static final int UPG_MAGIC = -1;
 
 
     public VisionOfMadness() {
         super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
+        setExhaust(true);
     }
 
     @Override

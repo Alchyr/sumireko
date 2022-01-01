@@ -1,75 +1,28 @@
 package sumireko.actions.cards;
 
-import basemod.BaseMod;
-import com.badlogic.gdx.graphics.Color;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.CardGroup;
-import com.megacrit.cardcrawl.characters.AbstractPlayer;
-import com.megacrit.cardcrawl.core.CardCrawlGame;
-import com.megacrit.cardcrawl.core.Settings;
-import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
-import com.megacrit.cardcrawl.vfx.cardManip.ShowCardBrieflyEffect;
-import sumireko.patches.occult.OccultFields;
-
-import java.util.ArrayList;
-
-import static sumireko.SumirekoMod.makeID;
+import com.megacrit.cardcrawl.actions.common.DamageAction;
+import com.megacrit.cardcrawl.cards.DamageInfo;
+import com.megacrit.cardcrawl.core.AbstractCreature;
 
 public class ForbiddenKnowledgeAction extends AbstractGameAction {
-    public static final String[] TEXT;
-    private AbstractPlayer player;
+    private int hits;
+    private DamageInfo info;
 
-    public ForbiddenKnowledgeAction() {
-        this.actionType = ActionType.CARD_MANIPULATION;
-        this.duration = this.startDuration = Settings.ACTION_DUR_FAST;
-        this.player = AbstractDungeon.player;
+    public ForbiddenKnowledgeAction(AbstractCreature target, int hits, DamageInfo info, AttackEffect effect) {
+        this.hits = hits;
+        this.info = info;
+        this.setValues(target, info);
+        this.actionType = ActionType.DAMAGE;
+        this.attackEffect = effect;
     }
 
     public void update() {
-        if (this.duration == this.startDuration) {
-            if (!this.player.drawPile.isEmpty()) {
-                if (this.player.drawPile.size() == 1) {
-                    for (AbstractCard c : this.player.drawPile.group) {
-                        OccultFields.isOccult.set(c, true);
-                        c.initializeDescription();
-                        AbstractDungeon.effectList.add(new ShowCardBrieflyEffect(c.makeStatEquivalentCopy(), Settings.WIDTH / 2.0f, Settings.HEIGHT / 2.0f));
-                    }
-
-                    this.isDone = true;
-                } else {
-                    CardGroup temp = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
-
-                    for (AbstractCard c : this.player.drawPile.group) {
-                        temp.addToTop(c);
-                    }
-
-                    temp.sortAlphabetically(true);
-                    temp.sortByRarityPlusStatusCardType(false);
-                    AbstractDungeon.gridSelectScreen.open(temp, 1, TEXT[0], false);
-
-                    this.tickDuration();
-                }
-            } else {
-                this.isDone = true;
+        if (this.target != null && this.target.currentHealth > 0) {
+            for(int i = 0; i < hits; ++i) {// 37
+                this.addToTop(new DamageAction(this.target, this.info, this.attackEffect));
             }
-        } else {
-            if (!AbstractDungeon.gridSelectScreen.selectedCards.isEmpty()) {
-                for (AbstractCard c : AbstractDungeon.gridSelectScreen.selectedCards) {
-                    OccultFields.isOccult.set(c, true);
-                    c.initializeDescription();
-                    AbstractDungeon.effectList.add(new ShowCardBrieflyEffect(c.makeStatEquivalentCopy(), Settings.WIDTH / 2.0f, Settings.HEIGHT / 2.0f));
-                }
-
-                AbstractDungeon.gridSelectScreen.selectedCards.clear();
-                AbstractDungeon.player.hand.refreshHandLayout();
-            }
-
-            this.tickDuration();
         }
-    }
-
-    static {
-        TEXT = CardCrawlGame.languagePack.getUIString(makeID("ForbiddenKnowledge")).TEXT;
+        this.isDone = true;
     }
 }

@@ -19,10 +19,13 @@ public class DeepDream extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
+    public static final int SIZE = 7;
+    public static final int UPG_SIZE = 3;
 
     public DeepDream() {
         super(cardInfo, false);
 
+        setMagic(SIZE, UPG_SIZE);
         setExhaust(true);
     }
 
@@ -33,7 +36,7 @@ public class DeepDream extends BaseCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new DeepDreamAction());
+        addToBot(new DeepDreamAction(this.magicNumber));
     }
 
     @Override

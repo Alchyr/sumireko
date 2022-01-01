@@ -9,6 +9,7 @@ import javassist.CtBehavior;
 
 import java.util.ArrayList;
 
+//todo: Store a copy of played cards in a separate list instead of cardsPlayedThisTurn so that cards will be as they were when played (specifically, locking cards won't be locked)
 @SpirePatch(
         clz = GameActionManager.class,
         method = "getNextAction"

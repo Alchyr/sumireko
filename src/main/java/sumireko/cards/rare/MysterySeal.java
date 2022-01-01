@@ -4,6 +4,7 @@ import basemod.abstracts.CustomSavable;
 import com.badlogic.gdx.math.MathUtils;
 import com.evacipated.cardcrawl.mod.stslib.cards.interfaces.BranchingUpgradesCard;
 import com.evacipated.cardcrawl.mod.stslib.patches.cardInterfaces.BranchingUpgradesPatch;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
@@ -11,6 +12,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
+import sumireko.patches.occult.OccultFields;
 import sumireko.util.*;
 import sumireko.util.mysteryupgrades.*;
 
@@ -66,26 +68,10 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
 
 
     //Seal intent stuff
-    public boolean damageSeal; //1
-    public boolean debuffSeal; //2
-    public boolean buffSeal; //4
-    public boolean strongDebuffSeal; //8
-
-    private static final HashMap<Integer, AbstractMonster.Intent> intentMap;
-    static {
-        intentMap = new HashMap<>();
-        intentMap.put(1, AbstractMonster.Intent.ATTACK);
-        intentMap.put(2, AbstractMonster.Intent.DEBUFF);
-        intentMap.put(3, AbstractMonster.Intent.ATTACK_DEBUFF);
-        intentMap.put(4, AbstractMonster.Intent.BUFF);
-        intentMap.put(5, AbstractMonster.Intent.ATTACK_BUFF);
-        intentMap.put(6, AbstractMonster.Intent.DEBUFF);
-        intentMap.put(8, AbstractMonster.Intent.STRONG_DEBUFF);
-        intentMap.put(9, AbstractMonster.Intent.ATTACK_DEBUFF);
-        intentMap.put(10, AbstractMonster.Intent.STRONG_DEBUFF);
-        intentMap.put(12, AbstractMonster.Intent.STRONG_DEBUFF); //7 and 11 are not possible as they require 3 different seal upgrades
-    }
-
+    public boolean damageSeal;
+    public boolean debuffSeal;
+    public boolean buffSeal;
+    public boolean strongDebuffSeal;
 
     ///TODO: ODODODODEDO?
     // make rng biased towards effects you already have, causing you to cap at like 3 or 4 unique effects to avoid making text too much
@@ -212,6 +198,7 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
         setMagic(0);
         setSeal(0);
         setAllDamage(0);
+        OccultFields.isOccult.set(this, false);
 
         damageSeal = false;
         debuffSeal = false;
@@ -445,11 +432,14 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
         for (MysteryUpgrade m : sortedUpgrades)
         {
-            m.triggerSealEffect(this, target);
+            m.triggerSealEffect(this, target, actions);
         }
+
+        return actions;
     }
 
     @Override
@@ -479,9 +469,21 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
 
     @Override
     public void getIntent(SealIntent i) {
-        int key = (damageSeal ? 1 : 0) | (debuffSeal ? 2 : 0) | (buffSeal ? 4 : 0) | (strongDebuffSeal ? 8 : 0);
+        if (damageSeal) {
+            i.baseDamage(sealValue);
+        }
 
-        i.intent = intentMap.get(key);
+        if (strongDebuffSeal) {
+            i.addIntent(SealIntent.STRONG_DEBUFF);
+        }
+        else if (debuffSeal) {
+            i.addIntent(SealIntent.DEBUFF);
+        }
+
+        if (buffSeal) {
+            i.addIntent(SealIntent.BUFF);
+            i.bonusEffect(String.valueOf(sealValue));
+        }
     }
 
     @Override

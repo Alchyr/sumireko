@@ -5,6 +5,7 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
 import sumireko.powers.EsotericSecretsPower;
+import sumireko.powers.OldEsotericSecretsPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
@@ -20,15 +21,13 @@ public class EsotericSecrets extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int UPG_COST = 0;
-
-    private static final int MAGIC = 4;
+    private static final int MAGIC = 2;
+    private static final int UPG_MAGIC = 1;
 
     public EsotericSecrets() {
         super(cardInfo, false);
 
-        setCostUpgrade(UPG_COST);
-        setMagic(MAGIC);
+        setMagic(MAGIC, UPG_MAGIC);
     }
 
     @Override

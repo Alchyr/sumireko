@@ -36,9 +36,14 @@ public abstract class LockingCard extends BaseCard implements LockingCardInterfa
     @Override
     public AbstractCard makeStatEquivalentCopy() {
         AbstractCard copy = super.makeStatEquivalentCopy();
-        if (copy instanceof LockingCard)
+        if (copy instanceof LockingCardInterface)
         {
-            ((LockingCard) copy).locked = this.locked;
+            if (this.locked) {
+                ((LockingCardInterface) copy).lockCard();
+            }
+            else {
+                ((LockingCardInterface) copy).unlockCard();
+            }
         }
         return copy;
     }

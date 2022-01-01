@@ -16,7 +16,7 @@ public class NaturalJinxPower extends BasePower {
     public static final String NAME = "NaturalJinx";
     public static final String POWER_ID = makeID(NAME);
     public static final AbstractPower.PowerType TYPE = PowerType.DEBUFF;
-    public static final boolean TURN_BASED = false;
+    public static final boolean TURN_BASED = true;
 
     public NaturalJinxPower(final AbstractCreature owner, int amount)
     {

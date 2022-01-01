@@ -14,11 +14,13 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.AbstractPower;
 import com.megacrit.cardcrawl.powers.VulnerablePower;
 import com.megacrit.cardcrawl.powers.WeakPower;
+import sumireko.SealSystem;
 import sumireko.SumirekoMod;
 import sumireko.enums.CharacterEnums;
 import sumireko.util.CardInfo;
 
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import static sumireko.SumirekoMod.makeID;
 import static sumireko.util.TextureLoader.getCardTextureString;
@@ -222,7 +224,16 @@ public abstract class BaseCard extends CustomCard {
             this.upgradeName();
 
             if (this.upgradesDescription)
-                this.rawDescription = cardStrings.UPGRADE_DESCRIPTION;
+            {
+                if (cardStrings.UPGRADE_DESCRIPTION == null)
+                {
+                    SumirekoMod.logger.error("Card " + cardID + " upgrades description and has null upgrade description.");
+                }
+                else
+                {
+                    this.rawDescription = cardStrings.UPGRADE_DESCRIPTION;
+                }
+            }
 
             if (upgradeCost)
             {
@@ -273,7 +284,13 @@ public abstract class BaseCard extends CustomCard {
         addToBot(new DrawCardAction(amount));
     }
     protected void block() {
-        addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, this.block));
+        block(this.block);
+    }
+    protected void block(int amt) {
+        addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, amt));
+    }
+    protected AbstractGameAction getBlockAction(int amount) {
+        return new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, amount);
     }
     protected void giveBlock(AbstractCreature target, int amount) {
         addToBot(new GainBlockAction(target, AbstractDungeon.player, amount));
@@ -293,6 +310,10 @@ public abstract class BaseCard extends CustomCard {
     protected void damageSingle(AbstractCreature target, int amount, DamageInfo.DamageType type, AbstractGameAction.AttackEffect effect)
     {
         addToBot(new DamageAction(target, new DamageInfo(AbstractDungeon.player, amount, type), effect));
+    }
+    protected AbstractGameAction getDamageSingle(AbstractCreature target, int amount, DamageInfo.DamageType type, AbstractGameAction.AttackEffect effect)
+    {
+        return new DamageAction(target, new DamageInfo(AbstractDungeon.player, amount, type), effect);
     }
     protected void damageRandom(AbstractGameAction.AttackEffect effect)
     {
@@ -317,11 +338,30 @@ public abstract class BaseCard extends CustomCard {
             addToBot(new DamageAllEnemiesAction(AbstractDungeon.player, amount, type, effect));
         }
     }
+    protected AbstractGameAction getDamageAll(int amount, DamageInfo.DamageType type, AbstractGameAction.AttackEffect effect)
+    {
+        return getDamageAll(amount, type, effect, false);
+    }
+    protected AbstractGameAction getDamageAll(int amount, DamageInfo.DamageType type, AbstractGameAction.AttackEffect effect, boolean isFast)
+    {
+        if (type != DamageInfo.DamageType.NORMAL)
+        {
+            return new DamageAllEnemiesAction(AbstractDungeon.player, DamageInfo.createDamageMatrix(amount, true), type, effect, isFast);
+        }
+        else
+        {
+            return new DamageAllEnemiesAction(AbstractDungeon.player, amount, type, effect);
+        }
+    }
 
 
     protected void applySingle(AbstractCreature c, AbstractPower power)
     {
-        addToBot(new ApplyPowerAction(c, AbstractDungeon.player, power, power.amount));
+        applySingle(c, power, false);
+    }
+    protected void applySingle(AbstractCreature c, AbstractPower power, boolean isFast)
+    {
+        addToBot(new ApplyPowerAction(c, AbstractDungeon.player, power, power.amount, isFast));
     }
 
     protected void applySelf(AbstractPower power)
@@ -353,5 +393,23 @@ public abstract class BaseCard extends CustomCard {
     protected VulnerablePower getVuln(AbstractCreature c, int amount)
     {
         return new VulnerablePower(c, amount, false);
+    }
+
+    public static void forEachCard(Consumer<AbstractCard> method) {
+        for (AbstractCard c : AbstractDungeon.player.hand.group) {
+            method.accept(c);
+        }
+        for (AbstractCard c : AbstractDungeon.player.drawPile.group) {
+            method.accept(c);
+        }
+        for (AbstractCard c : AbstractDungeon.player.discardPile.group) {
+            method.accept(c);
+        }
+        for (AbstractCard c : SealSystem.aroundCards) {
+            if (c != null)
+                method.accept(c);
+        }
+        if (SealSystem.centerCard != null)
+            method.accept(SealSystem.centerCard);
     }
 }

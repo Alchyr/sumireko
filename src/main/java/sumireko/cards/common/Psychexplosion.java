@@ -28,7 +28,7 @@ public class Psychexplosion extends BaseCard {
 
 
     private static final int DAMAGE = 13;
-    private static final int UPG_DAMAGE = 3;
+    private static final int UPG_DAMAGE = 4;
 
 
     public Psychexplosion() {
@@ -62,7 +62,8 @@ public class Psychexplosion extends BaseCard {
     public void use(AbstractPlayer p, AbstractMonster m) {
         if (OccultFields.isOccultPlayable.get(this))
         {
-            addToBot(new VFXAction(new ExplosionSmallEffect(m.hb.cX + MathUtils.random(-35.0f * Settings.scale, 35.0f * Settings.scale), m.hb.cY + MathUtils.random(0, 20.0f * Settings.scale))));
+            if (m != null)
+                addToBot(new VFXAction(new ExplosionSmallEffect(m.hb.cX + MathUtils.random(-35.0f * Settings.scale, 35.0f * Settings.scale), m.hb.cY + MathUtils.random(0, 20.0f * Settings.scale))));
             damageSingle(m, AbstractGameAction.AttackEffect.FIRE);
         }
         else

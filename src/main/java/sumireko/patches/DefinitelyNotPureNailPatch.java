@@ -7,13 +7,47 @@ import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.relics.AbstractRelic;
+import com.megacrit.cardcrawl.stances.AbstractStance;
 import javassist.CtBehavior;
 import sumireko.SealSystem;
+import sumireko.interfaces.DamageModifierCard;
 
 import java.util.ArrayList;
 
 public class DefinitelyNotPureNailPatch
 {
+    private static float addDamage(AbstractCard card, float damage)
+    {
+        for (AbstractCard c : AbstractDungeon.player.hand.group) {
+            if (c instanceof DamageModifierCard) {
+                damage = ((DamageModifierCard) c).modifyDamage(card.damageTypeForTurn, damage);
+            }
+        }
+
+        if (card.baseDamage != damage) {
+            card.isDamageModified = true;
+        }
+
+        return damage;
+    }
+
+    private static float addDamage(DamageInfo info, float damage)
+    {
+        if (info.owner == AbstractDungeon.player) {
+            for (AbstractCard c : AbstractDungeon.player.hand.group) {
+                if (c instanceof DamageModifierCard) {
+                    damage = ((DamageModifierCard) c).modifyDamage(info.type, damage);
+                }
+            }
+
+            if (info.base != damage) {
+                info.isModified = true;
+            }
+        }
+
+        return damage;
+    }
+
     private static float multiplyDamage(AbstractCard card, float damage)
     {
         if (SealSystem.centerCard != null)
@@ -62,46 +96,78 @@ public class DefinitelyNotPureNailPatch
             clz=AbstractCard.class,
             method="applyPowers"
     )
-    public static class ApplyPowersSingle
+    public static class ApplyPowers
     {
+        //Add
         @SpireInsertPatch(
-                locator=Locator.class,
+                locator=AddSingle.class,
                 localvars={"tmp"}
         )
-        public static void Insert(AbstractCard __instance, @ByRef float[] tmp)
+        public static void InsertAddSingle(AbstractCard __instance, @ByRef float[] tmp)
         {
-            tmp[0] = multiplyDamage(__instance, tmp[0]);
+            tmp[0] = addDamage(__instance, tmp[0]);
         }
-
-        private static class Locator extends SpireInsertLocator
+        private static class AddSingle extends SpireInsertLocator
         {
             @Override
             public int[] Locate(CtBehavior ctMethodToPatch) throws Exception
             {
-                Matcher finalMatcher = new Matcher.MethodCallMatcher(MathUtils.class, "floor");
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(AbstractStance.class, "atDamageGive");
+                return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
+            }
+        }
+
+        @SpireInsertPatch(
+                locator=AddMulti.class,
+                localvars={"tmp", "i"}
+        )
+        public static void InsertAddMulti(AbstractCard __instance, float[] tmp, int i)
+        {
+            tmp[i] = addDamage(__instance, tmp[i]);
+        }
+
+        private static class AddMulti extends SpireInsertLocator
+        {
+            @Override
+            public int[] Locate(CtBehavior ctMethodToPatch) throws Exception
+            {
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(AbstractStance.class, "atDamageGive");
                 ArrayList<Matcher> matchers = new ArrayList<>();
                 matchers.add(finalMatcher);
                 return LineFinder.findInOrder(ctMethodToPatch, matchers, finalMatcher);
             }
         }
-    }
 
-    @SpirePatch(
-            clz=AbstractCard.class,
-            method="applyPowers"
-    )
-    public static class ApplyPowersMulti
-    {
+        //Multiply
         @SpireInsertPatch(
-                locator=Locator.class,
+                locator=MultiplySingle.class,
+                localvars={"tmp"}
+        )
+        public static void InsertMultiplySingle(AbstractCard __instance, @ByRef float[] tmp)
+        {
+            tmp[0] = multiplyDamage(__instance, tmp[0]);
+        }
+
+        private static class MultiplySingle extends SpireInsertLocator
+        {
+            @Override
+            public int[] Locate(CtBehavior ctMethodToPatch) throws Exception
+            {
+                Matcher finalMatcher = new Matcher.MethodCallMatcher(MathUtils.class, "floor");
+                return LineFinder.findInOrder(ctMethodToPatch, finalMatcher);
+            }
+        }
+
+        @SpireInsertPatch(
+                locator=MultiplyMulti.class,
                 localvars={"tmp", "i"}
         )
-        public static void Insert(AbstractCard __instance, float[] tmp, int i)
+        public static void InsertMultiplyMulti(AbstractCard __instance, float[] tmp, int i)
         {
             tmp[i] = multiplyDamage(__instance, tmp[i]);
         }
 
-        private static class Locator extends SpireInsertLocator
+        private static class MultiplyMulti extends SpireInsertLocator
         {
             @Override
             public int[] Locate(CtBehavior ctMethodToPatch) throws Exception

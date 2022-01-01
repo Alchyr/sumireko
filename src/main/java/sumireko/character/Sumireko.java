@@ -1,27 +1,20 @@
 package sumireko.character;
 
 import basemod.abstracts.CustomPlayer;
-import basemod.animations.AbstractAnimation;
 import basemod.animations.SpineAnimation;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
-import com.esotericsoftware.spine.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
-import com.megacrit.cardcrawl.cards.red.Strike_Red;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.EnergyManager;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.helpers.ScreenShake;
 import com.megacrit.cardcrawl.localization.CharacterStrings;
-import com.megacrit.cardcrawl.monsters.exordium.SlimeBoss;
-import com.megacrit.cardcrawl.relics.Pocketwatch;
 import com.megacrit.cardcrawl.screens.CharSelectInfo;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import sumireko.cards.basic.*;
@@ -57,6 +50,7 @@ public class Sumireko extends CustomPlayer {
     private static final String CORPSE = makeCharacterPath("corpse.png");
     private static final String IMG = makeCharacterPath("sumireko.png");
     private static final String IMG_BACK = makeCharacterPath("color.png");
+
 
     private static final String[] frames = {
             makeCharacterPath("stand/stand0000.png"),
@@ -129,7 +123,6 @@ public class Sumireko extends CustomPlayer {
 
         //this.state.setAnimation(0, "idle", true);
 
-
         this.img = TextureLoader.getTexture(IMG);
 
         /*changeAnimation(stand, "stand");
@@ -176,18 +169,16 @@ public class Sumireko extends CustomPlayer {
     public ArrayList<String> getStartingDeck() {
         ArrayList<String> retVal = new ArrayList<>();
 
+        retVal.add(Strike.ID);
+        retVal.add(Strike.ID);
         retVal.add(StrikeSeal.ID);
         retVal.add(StrikeSeal.ID);
-        retVal.add(StrikeSeal.ID);
-        retVal.add(StrikeSeal.ID);
-        retVal.add(StrikeSeal.ID);
-        retVal.add(DefenseSeal.ID);
-        retVal.add(DefenseSeal.ID);
-        retVal.add(DefenseSeal.ID);
-        retVal.add(Wall.ID);
-        retVal.add(Wall.ID);
-        retVal.add(OccultSeal.ID);
-        retVal.add(PsychokineticBurst.ID);
+        retVal.add(Defend.ID);
+        retVal.add(Defend.ID);
+        retVal.add(Defend.ID);
+        retVal.add(Defend.ID);
+        retVal.add(BarrierSeal.ID);
+        retVal.add(Liberator.ID);
 
         return retVal;
     }
@@ -241,7 +232,7 @@ public class Sumireko extends CustomPlayer {
 
     @Override
     public AbstractCard getStartCardForEvent() {
-        return new PsychokineticBurst();
+        return new BarrierSeal();
     }
 
     @Override
@@ -262,6 +253,8 @@ public class Sumireko extends CustomPlayer {
     @Override
     public AbstractGameAction.AttackEffect[] getSpireHeartSlashEffect() {
         return new AbstractGameAction.AttackEffect[]{
+                AbstractGameAction.AttackEffect.FIRE,
+                AbstractGameAction.AttackEffect.FIRE,
                 AbstractGameAction.AttackEffect.FIRE
         };
     }

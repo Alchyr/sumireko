@@ -25,8 +25,14 @@ public class RenderSealDamageOnHPPatch {
         {
             HealthBarRender h = SealSystem.healthBarRenders.get(__instance);
 
-            while (h != null)
+            if (h != null)
             {
+                if (!h.locked) {
+                    h.locked = true;
+                    h.resultHp = __instance.currentHealth - (prevPowerAmtSum[0] + h.amount);
+                }
+                h.amount = __instance.currentHealth - (prevPowerAmtSum[0] + h.resultHp);
+
                 sb.setColor(h.c);
 
                 //renders the entire hp bar in modified color.
@@ -43,7 +49,7 @@ public class RenderSealDamageOnHPPatch {
 
                 prevPowerAmtSum[0] += h.amount;
 
-                h = h.sub;
+                //h = h.sub;
             }
         }
     }

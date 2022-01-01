@@ -37,7 +37,8 @@ public class PsychometryAction extends AbstractGameAction {
 
                 CardGroup temp = new CardGroup(CardGroup.CardGroupType.UNSPECIFIED);
 
-                temp.group.addAll(PsychometryTrackerPatch.cardsPlayedLastTurn);
+                for (AbstractCard c : PsychometryTrackerPatch.cardsPlayedLastTurn)
+                    temp.group.add(c.makeStatEquivalentCopy());
 
                 temp.sortAlphabetically(true);
                 temp.sortByRarityPlusStatusCardType(false);

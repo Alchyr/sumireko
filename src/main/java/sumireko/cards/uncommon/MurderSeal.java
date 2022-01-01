@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
@@ -68,4 +68,4 @@ public class MurderSeal extends SealCard {
     public AbstractCard makeCopy() {
         return new MurderSeal();
     }
-}
+}*/

@@ -20,7 +20,7 @@ public class Sight extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 4;
+    private static final int MAGIC = 3;
 
     public Sight() {
         super(cardInfo, false);

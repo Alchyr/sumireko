@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.actions.common.ExhaustSpecificCardAction;
@@ -25,7 +25,7 @@ public class Banish extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 0;
+    private static final int MAGIC = 1;
     private static final int UPG_MAGIC = 1;
 
 
@@ -41,13 +41,13 @@ public class Banish extends BaseCard {
             for (AbstractCard c : cards)
             {
                 addToTop(new DrawCardAction((this.upgraded ? this.magicNumber : 0) + (c.freeToPlay() ? 0 : (c.costForTurn >= 0 ? c.costForTurn : (c.costForTurn == -1 ? EnergyPanel.getCurrentEnergy() : 0)))));
-                addToTop(new ExhaustSpecificCardAction(c, AbstractDungeon.player.hand));
+                p.hand.moveToExhaustPile(c);
             }
-        }, cardStrings.EXTENDED_DESCRIPTION[0]));
+        }, null, cardStrings.EXTENDED_DESCRIPTION[0], false, false, false));
     }
 
     @Override
     public AbstractCard makeCopy() {
         return new Banish();
     }
-}
+}*/

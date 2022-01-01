@@ -30,6 +30,7 @@ public class DamageAllUpgrade extends MysteryUpgrade {
         c.type = AbstractCard.CardType.ATTACK;
 
         c.baseAllDamage += DAMAGE_UPGRADE;
+        c.allDamage = c.baseAllDamage;
         c.upgradedAllDamage = true;
     }
 

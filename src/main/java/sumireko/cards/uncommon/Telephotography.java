@@ -79,8 +79,8 @@ public class Telephotography extends BaseCard {
         for (Map.Entry<String, AbstractCard> c : CardLibrary.cards.entrySet())
         {
             if (c.getValue().type == CardType.ATTACK &&
-                (!UnlockTracker.isCardLocked(c.getKey()) ||
-                 Settings.treatEverythingAsUnlocked()) &&
+                 c.getValue().rarity != CardRarity.SPECIAL &&
+                 (!UnlockTracker.isCardLocked(c.getKey()) || Settings.treatEverythingAsUnlocked()) &&
                  !bannedCards.contains(c.getKey()) &&
                  !c.getValue().hasTag(CardTags.HEALING)
             )

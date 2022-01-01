@@ -7,11 +7,29 @@
       "."
     ]
   },
+  "sumireko:Cornerstone": {
+    "NAME": "Cornerstone",
+    "DESCRIPTIONS": [
+      "The effects of the center #ySeal are increased by #b",
+      "."
+    ]
+  },
   "sumireko:ProwessDown": {
     "NAME": "Prowess Down",
     "DESCRIPTIONS": [
       "At the end of this turn, lose #b",
       " #yProwess."
+    ]
+  },
+  "sumireko:Tribulation": {
+    "NAME": "Tribulation",
+    "DESCRIPTIONS": [
+      "You cannot play cards this turn.",
+      "You cannot play cards for #b",
+      " turns.",
+      "Can't play any cards.",
+      "You cannot play cards next turn.",
+      "You cannot play cards for the next #b"
     ]
   },
   "sumireko:Suspense": {
@@ -22,11 +40,38 @@
       " #yBlock the next time you play it."
     ]
   },
+  "sumireko:Unnecessary": {
+    "NAME": "Unnecessary",
+    "DESCRIPTIONS": [
+      "Nothing is unnecessary.",
+      "You cannot play ",
+      ", ",
+      ", or ",
+      " or ",
+      " this turn."
+    ]
+  },
   "sumireko:Recall": {
     "NAME": "Recall",
     "DESCRIPTIONS": [
       "Gain [E] the next time you draw ",
       "."
+    ]
+  },
+  "sumireko:Fatigue": {
+    "NAME": "Fatigue",
+    "DESCRIPTIONS": [
+      "Lose #b",
+      " [E] at the start of your next turn.",
+      " [E] at the start of your next turn."
+    ]
+  },
+  "sumireko:AdditionalTurn": {
+    "NAME": "Deja Vu",
+    "DESCRIPTIONS": [
+      "Take #b",
+      " additional turn after this one.",
+      " additional turns after this one."
     ]
   },
   "sumireko:SixthSense": {
@@ -54,11 +99,26 @@
       " cards."
     ]
   },
+  "sumireko:Comprehension": {
+    "NAME": "Comprehension",
+    "DESCRIPTIONS": [
+      "Make the next #yLocking, #yLocked, or #yUnplayable card you draw #yOccult.",
+      "Make the next #b",
+      " #yLocking, #yLocked, or #yUnplayable cards you draw #yOccult."
+    ]
+  },
   "sumireko:NaturalJinx": {
     "NAME": "Natural Jinx",
     "DESCRIPTIONS": [
       "Whenever you play an #yOccult card, this enemy loses #b",
       " HP."
+    ]
+  },
+  "sumireko:Torment": {
+    "NAME": "Torment",
+    "DESCRIPTIONS": [
+      "Whenever you play a card, this enemy loses #b",
+      " #yStrength this turn."
     ]
   },
   "sumireko:TruePentagram": {
@@ -68,10 +128,10 @@
     ]
   },
   "sumireko:PerfectParadox": {
-    "NAME": "Perfect Paradox",
+    "NAME": "Paradox",
     "DESCRIPTIONS": [
-      "Whenever you play a card you should not be able to, gain #b",
-      " #yBlock."
+      "Whenever you play a card you should not be able to, a random enemy loses #b",
+      " #yStrength this turn."
     ]
   },
   "sumireko:LockCycle": {
@@ -97,6 +157,13 @@
     ]
   },
   "sumireko:EsotericSecrets": {
+    "NAME": "Esoteric Secrets",
+    "DESCRIPTIONS": [
+      "At the end of your turn, #yExhaust any number of cards and gain #b",
+      " #yBlock for each."
+    ]
+  },
+  "sumireko:OLDEsotericSecrets": {
     "NAME": "Esoteric Secrets",
     "DESCRIPTIONS": [
       "Take #b",
@@ -128,6 +195,13 @@
     ]
   },
   "sumireko:HonedTalent": {
+    "NAME": "Honed Talent",
+    "DESCRIPTIONS": [
+      "After you play #b",
+      " more #ySeals, gain #b1 #yProwess."
+    ]
+  },
+  "sumireko:OldHonedTalent": {
     "NAME": "Honed Talent",
     "DESCRIPTIONS": [
       "#yFinal cards deal #b",

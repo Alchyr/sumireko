@@ -3,6 +3,8 @@ package sumireko;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
@@ -12,42 +14,51 @@ import com.megacrit.cardcrawl.relics.RunicDome;
 import com.megacrit.cardcrawl.rooms.AbstractRoom;
 import com.megacrit.cardcrawl.vfx.AbstractGameEffect;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.seals.DiscardSealAction;
-import sumireko.actions.seals.ExhaustSealAction;
-import sumireko.actions.seals.RefreshSealSystemAction;
-import sumireko.actions.seals.YeetSealAction;
+import sumireko.actions.seals.*;
+import sumireko.cards.uncommon.MirrorSeal;
 import sumireko.effects.SealLineEffect;
 import sumireko.effects.SealPreviewGlow;
 import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.ModifySealPower;
+import sumireko.patches.BlockPreview;
 import sumireko.powers.ImprintPower;
 import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.PreviewIntent;
 import sumireko.util.SealIntent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import static sumireko.SumirekoMod.*;
 import static sumireko.util.MathHelper.dist;
 
-//TODO: Render boolean, disabled by default upon entering a room if not sumirenko
-//Positioning: Instead of permanently linked to char hitbox, fix position at the start of combat (avoids jank with hitbox moving when attacking)
 public class SealSystem {
     public static boolean enabled = false;
 
     private static float x, y;
 
     public static SealCard[] aroundCards = new SealCard[4];
-    public static HashMap<String, Integer> cardCounts = new HashMap<>();
+    //public static HashMap<String, Integer> cardCounts = new HashMap<>();
     public static SealCard centerCard = null;
+    private static final HashMap<AbstractMonster, PretendMonster> previewMonsters = new HashMap<>();
+    private static final Set<SealCard> ignorePreview = new HashSet<>();
 
     private static SealCard hoveredCard = null;
 
-    public static HashMap<SealCard, AbstractMonster> targets = new HashMap<>();
+    private static final HashMap<SealCard, AbstractMonster> targets = new HashMap<>();
+    public static AbstractMonster getTarget(SealCard card) {
+        AbstractMonster t = targets.get(card);
+        if (t != null) {
+            return t;
+        }
+
+        for (Map.Entry<SealCard, AbstractMonster> targetEntry : targets.entrySet()) {
+            if (targetEntry.getKey() instanceof MirrorSeal && card.equals(((MirrorSeal) targetEntry.getKey()).copying)) {
+                return targetEntry.getValue();
+            }
+        }
+        return null;
+    }
 
     public static final SealIntent[] sealIntents = { new SealIntent(), new SealIntent(), new SealIntent(), new SealIntent(), new SealIntent() };
     private static final HashMap<AbstractMonster, PreviewIntent> previewIntents = new HashMap<>();
@@ -106,21 +117,26 @@ public class SealSystem {
         for (SealIntent i : sealIntents)
         {
             i.current = null;
+            i.refresh();
         }
-        cardCounts.clear();
+        //cardCounts.clear();
         centerCard = null;
         hoveredCard = null;
         nextIndex = 0;
         recalculate = false;
         disableCalculation = false;
         targets.clear();
+        previewMonsters.clear();
         previewIntents.clear();
         previewEffects.clear();
         healthBarRenders.clear();
+        ignorePreview.clear();
         lineEffects.clear();
         enabled = false;
         x = 0;
         y = 0;
+
+        BlockPreview.amt = 0;
     }
     public static void refresh()
     {
@@ -128,9 +144,12 @@ public class SealSystem {
         disableCalculation = false;
         previewIntents.clear();
         healthBarRenders.clear();
+        ignorePreview.clear();
+
+        BlockPreview.amt = 0;
     }
 
-    public static void addSeal(SealCard c, AbstractMonster target)
+    public static boolean addSeal(SealCard c, AbstractMonster target)
     {
         enabled = true;
         targets.put(c, target);
@@ -147,9 +166,10 @@ public class SealSystem {
         }
         else
         {
-            logger.error("Trying to add seal when already at 5 Seals?");
+            return false;
         }
         updatePositions();
+        return true;
     }
 
     public static void setPosition()
@@ -325,16 +345,16 @@ public class SealSystem {
                     switch(i)
                     {
                         case 0:
-                            previewEffects.add(new SealPreviewGlow(x + TOP_POS_X, y + TOP_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_BRIGHT));
+                            previewEffects.add(new SealPreviewGlow(x + TOP_POS_X, y + TOP_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_VERY_BRIGHT.cpy()));
                             break;
                         case 1:
-                            previewEffects.add(new SealPreviewGlow(x + BOTTOM_POS_X, y + BOTTOM_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_BRIGHT));
+                            previewEffects.add(new SealPreviewGlow(x + BOTTOM_POS_X, y + BOTTOM_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_VERY_BRIGHT.cpy()));
                             break;
                         case 2:
-                            previewEffects.add(new SealPreviewGlow(x + LEFT_POS_X, y + LEFT_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_BRIGHT));
+                            previewEffects.add(new SealPreviewGlow(x + LEFT_POS_X, y + LEFT_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_VERY_BRIGHT.cpy()));
                             break;
                         case 3:
-                            previewEffects.add(new SealPreviewGlow(x + RIGHT_POS_X, y + RIGHT_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_BRIGHT));
+                            previewEffects.add(new SealPreviewGlow(x + RIGHT_POS_X, y + RIGHT_POS_Y, SMALL_PREVIEW_SCALE, SUMIREKO_COLOR_VERY_BRIGHT.cpy()));
                             break;
                     }
                     previewSpecific = false;
@@ -497,45 +517,21 @@ public class SealSystem {
         {
             recalculate = false;
 
-            //reset and count duplicates
-            cardCounts.clear();
-            for (; i < 4; ++i)
-            {
+            //reset
+            for (; i < 4; ++i) {
                 if (aroundCards[i] == null)
                     break;
 
                 aroundCards[i].resetSealValue();
-
-                if (!cardCounts.containsKey(aroundCards[i].cardID))
-                {
-                    cardCounts.put(aroundCards[i].cardID, 0);
-                }
-                else
-                {
-                    cardCounts.put(aroundCards[i].cardID, cardCounts.get(aroundCards[i].cardID) + 1);
-                }
             }
             if (centerCard != null)
-            {
                 centerCard.resetSealValue();
 
-                if (!cardCounts.containsKey(centerCard.cardID))
-                {
-                    cardCounts.put(centerCard.cardID, 0);
-                }
-                else
-                {
-                    cardCounts.put(centerCard.cardID, cardCounts.get(centerCard.cardID) + 1);
-                }
-            }
-
-            //duplicate bonus and flat powers bonus
+            //flat bonuses
             for (i = 0; i < 4; ++i)
             {
                 if (aroundCards[i] == null)
                     break;
-
-                aroundCards[i].modifySealValue(cardCounts.get(aroundCards[i].cardID));
 
                 for (AbstractPower p : AbstractDungeon.player.powers)
                 {
@@ -546,8 +542,6 @@ public class SealSystem {
                 aroundCards[i].lockBaseValue(); //This saves the current value as the value to be used for base adjacency bonuses.
             }
             if (centerCard != null) {
-                centerCard.modifySealValue(cardCounts.get(centerCard.cardID));
-
                 for (AbstractPower p : AbstractDungeon.player.powers) {
                     if (p instanceof ModifySealPower)
                         ((ModifySealPower) p).modifySeal(centerCard);
@@ -557,55 +551,17 @@ public class SealSystem {
             }
 
             //adjacency and power bonuses.
-            //modifiers are applied to BUFF_SEAL seals first, to maintain consistent results.
 
-            for (i = 0; i < 4; ++i) //add/subtract
+            //First step: All buff seals are modified by the surrounding seals using base (pre-buff seal, post-flat bonus) values
+            for (i = 0; i < 4; ++i) //addition/subtraction modifiers
             {
-                // BUFF BUFF SEALS FROM THE SEALS AROUND THEM
                 if (aroundCards[i] == null)
                     break;
-
                 if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
                     continue; //Not a buff seal, move on.
 
-                switch (i)
-                {
-                    case 0:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[1] != null)
-                        {
-                            aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 1:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[0] != null && centerCard == null)
-                        {
-                            aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 2:
-                    case 3:
-                        if (aroundCards[0] != null)
-                            aroundCards[0].applyBaseAdjacencyEffect(aroundCards[i]);
-
-                        if (aroundCards[1] != null)
-                            aroundCards[1].applyBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                }
-                if (centerCard != null)
-                {
-                    centerCard.applyBaseAdjacencyEffect(aroundCards[i]);
+                for (SealCard c : getAdjacentSeals(i)) {
+                    c.applyBaseAdjacencyEffect(aroundCards[i]);
                 }
             }
             if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
@@ -614,57 +570,18 @@ public class SealSystem {
                 {
                     if (aroundCards[i] == null)
                         break;
-
                     aroundCards[i].applyBaseAdjacencyEffect(centerCard);
                 }
             }
-
-            for (i = 0; i < 4; ++i) //multiplication
+            for (i = 0; i < 4; ++i) //multiplication modifiers
             {
                 if (aroundCards[i] == null)
                     break;
-
                 if (!aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
                     continue;
 
-                switch (i)
-                {
-                    case 0:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[1] != null)
-                        {
-                            aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 1:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[0] != null && centerCard == null)
-                        {
-                            aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 2:
-                    case 3:
-                        if (aroundCards[0] != null)
-                            aroundCards[0].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-
-                        if (aroundCards[1] != null)
-                            aroundCards[1].applyFinalBaseAdjacencyEffect(aroundCards[i]);
-                        break;
-                }
-                if (centerCard != null)
-                {
-                    centerCard.applyFinalBaseAdjacencyEffect(aroundCards[i]);
+                for (SealCard c : getAdjacentSeals(i)) {
+                    c.applyFinalBaseAdjacencyEffect(aroundCards[i]);
                 }
             }
             if (centerCard != null && centerCard.hasTag(CustomCardTags.BUFF_SEAL))
@@ -676,55 +593,21 @@ public class SealSystem {
 
                     aroundCards[i].applyFinalBaseAdjacencyEffect(centerCard);
                 }
+
+                centerCard.centerMultiplier();
             }
 
-            //non-buff seals
+            //Do the same for non-buff seals. Buff seals buff each other first, then buff non-buff seals.
             for (i = 0; i < 4; ++i) //add/subtract
             {
                 if (aroundCards[i] == null)
                     break;
 
-                if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
+                if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL)) //buffs already done
                     continue;
 
-                switch (i)
-                {
-                    case 0:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[1] != null)
-                        {
-                            aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 1:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[0] != null && centerCard == null)
-                        {
-                            aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 2:
-                    case 3:
-                        if (aroundCards[0] != null)
-                            aroundCards[0].applyAdjacencyEffect(aroundCards[i]);
-
-                        if (aroundCards[1] != null)
-                            aroundCards[1].applyAdjacencyEffect(aroundCards[i]);
-                        break;
-                }
-                if (centerCard != null)
-                {
-                    centerCard.applyAdjacencyEffect(aroundCards[i]);
+                for (SealCard c : getAdjacentSeals(i)) {
+                    c.applyAdjacencyEffect(aroundCards[i]); //now using non-base value: post-buff
                 }
             }
             if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
@@ -737,53 +620,15 @@ public class SealSystem {
                     aroundCards[i].applyAdjacencyEffect(centerCard);
                 }
             }
-
             for (i = 0; i < 4; ++i) //multiplication
             {
                 if (aroundCards[i] == null)
                     break;
-
                 if (aroundCards[i].hasTag(CustomCardTags.BUFF_SEAL))
                     continue;
 
-                switch (i)
-                {
-                    case 0:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[1] != null)
-                        {
-                            aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 1:
-                        if (aroundCards[3] != null)
-                        {
-                            aroundCards[3].applyFinalAdjacencyEffect(aroundCards[i]);
-                        }
-                        else if (aroundCards[0] != null && centerCard == null)
-                        {
-                            aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
-                        }
-                        if (aroundCards[2] != null)
-                            aroundCards[2].applyFinalAdjacencyEffect(aroundCards[i]);
-                        break;
-                    case 2:
-                    case 3:
-                        if (aroundCards[0] != null)
-                            aroundCards[0].applyFinalAdjacencyEffect(aroundCards[i]);
-
-                        if (aroundCards[1] != null)
-                            aroundCards[1].applyFinalAdjacencyEffect(aroundCards[i]);
-                        break;
-                }
-                if (centerCard != null)
-                {
-                    centerCard.applyFinalAdjacencyEffect(aroundCards[i]);
+                for (SealCard c : getAdjacentSeals(i)) {
+                    c.applyFinalAdjacencyEffect(aroundCards[i]); //now using non-base value: post-buff
                 }
             }
             if (centerCard != null && !centerCard.hasTag(CustomCardTags.BUFF_SEAL))
@@ -798,67 +643,95 @@ public class SealSystem {
 
                 centerCard.centerMultiplier();
             }
-        }
 
-        for (i = 0; i < 4; ++i) //intents
-        {
-            if (aroundCards[i] == null)
-                break;
 
-            sealIntents[i].setSeal(aroundCards[i]);
-        }
-        if (centerCard != null)
-        {
-            sealIntents[4].setSeal(centerCard);
+            //- SEAL INTENTS -
+            //First, set base intent from seal. Then, modify with adjacent seals.
+            for (i = 0; i < 4; ++i)
+            {
+                if (aroundCards[i] == null)
+                    break;
+
+                sealIntents[i].setSeal(aroundCards[i]);
+
+                for (SealCard adjacent : getAdjacentSeals(i)) {
+                    adjacent.applyAdjacencyIntent(sealIntents[i]);
+                }
+            }
+            if (centerCard != null)
+            {
+                sealIntents[4].setSeal(centerCard);
+
+                for (i = 0; i < 4; ++i)
+                {
+                    if (aroundCards[i] == null)
+                        break;
+
+                    aroundCards[i].applyAdjacencyIntent(sealIntents[4]);
+                }
+            }
         }
 
         // Calculate preview result
-
         healthBarRenders.clear();
 
         if (calculateIntentPreview) {
-            HashMap<AbstractMonster, PretendMonster> previewMonsters = new HashMap<>();
+            //Recalculate previews
+            if (!disableCalculation) {
+                previewMonsters.clear();
 
-            for (AbstractMonster m : AbstractDungeon.getMonsters().monsters)
-                if (!m.halfDead && !m.isDying && !m.isEscaping)
-                    previewMonsters.put(m, new PretendMonster(m));
-                else
-                    previewIntents.remove(m); //remove those that are no longer alive.
-
-            PretendMonster.prepareFakePlayerPowers();
-
-            if (centerCard != null)
-            {
-                HealthBarRender h = centerCard.instantSealEffect(previewMonsters.get(SealSystem.targets.get(centerCard)), previewMonsters);
-
-                if (h != null)
-                {
-                    if (!healthBarRenders.containsKey(h.target))
-                        healthBarRenders.put(h.target, h);
+                for (AbstractMonster m : AbstractDungeon.getMonsters().monsters)
+                    if (!m.halfDead && !m.isDying && !m.isEscaping)
+                        previewMonsters.put(m, new PretendMonster(m));
                     else
-                        healthBarRenders.get(h.target).combine(h);
+                        previewIntents.remove(m); //remove those that are no longer alive.
+
+                PretendMonster.prepareFakePlayerPowers();
+
+                if (centerCard != null)
+                {
+                    HealthBarRender h = centerCard.instantSealEffect(previewMonsters.get(SealSystem.targets.get(centerCard)), previewMonsters);
+
+                    for (i = 0; i < 4; ++i) {
+                        if (aroundCards[i] == null)
+                            break;
+
+                        aroundCards[i].instantAdjacentEffect(centerCard, previewMonsters);
+                    }
+
+                    if (h != null)
+                    {
+                        if (!healthBarRenders.containsKey(h.target))
+                            healthBarRenders.put(h.target, h);
+                        else
+                            healthBarRenders.get(h.target).combine(h);
+                    }
                 }
-            }
 
-            for (i = 3; i >= 0; --i)
-            {
-                if (aroundCards[i] == null)
-                    continue;
-
-                HealthBarRender h = aroundCards[i].instantSealEffect(previewMonsters.get(SealSystem.targets.get(aroundCards[i])), previewMonsters);
-
-                if (h != null)
+                for (i = 3; i >= 0; --i)
                 {
-                    if (!healthBarRenders.containsKey(h.target))
-                        healthBarRenders.put(h.target, h);
-                    else
-                        healthBarRenders.get(h.target).combine(h);
+                    if (aroundCards[i] == null)
+                        continue;
+
+                    HealthBarRender h = aroundCards[i].instantSealEffect(previewMonsters.get(SealSystem.targets.get(aroundCards[i])), previewMonsters);
+
+                    for (SealCard c : getAdjacentSeals(i)) {
+                        c.instantAdjacentEffect(aroundCards[i], previewMonsters);
+                    }
+
+                    if (h != null)
+                    {
+                        if (!healthBarRenders.containsKey(h.target))
+                            healthBarRenders.put(h.target, h);
+                        else
+                            healthBarRenders.get(h.target).combine(h);
+                    }
                 }
             }
 
             for (Map.Entry<AbstractMonster, PretendMonster> m : previewMonsters.entrySet())
             {
-                int difference = m.getKey().currentHealth - m.getValue().currentHealth;;
+                int difference = m.getKey().currentHealth - m.getValue().currentHealth;
                 if (difference > 0)
                 {
                     HealthBarRender h = new HealthBarRender(m.getKey(), difference);
@@ -870,6 +743,9 @@ public class SealSystem {
                 }
 
                 if (!hideIntents()) {
+                    //TODO:
+                    //Special monster intents (multi-intent, card intents)
+
                     m.getValue().calculateDamage();
 
                     PreviewIntent newIntent = new PreviewIntent(m.getKey(), m.getValue());
@@ -887,6 +763,8 @@ public class SealSystem {
         {
             previewIntents.clear();
         }
+
+        BlockPreview.amt = SealSystem.getBlock();
     }
 
     private static boolean hideIntents() //TODO: Add compatibility for other mod stuff that hides intents in separate files.
@@ -894,24 +772,157 @@ public class SealSystem {
         return AbstractDungeon.player.hasRelic(RunicDome.ID);
     }
 
-    public static void triggerEndOfTurn() {
+    public static int getAdjacentCount(SealCard c) {
+        int count = 0;
+        int index = 0;
+        for (; index < 4; ++index) {
+            if (aroundCards[index] == null) {
+                break;
+            }
+            else if (aroundCards[index].equals(c)) {
+                switch (index) {
+                    case 0:
+                        if (aroundCards[3] != null)
+                        {
+                            ++count;
+                        }
+                        else if (aroundCards[1] != null)
+                        {
+                            ++count;
+                        }
+                        if (aroundCards[2] != null)
+                            ++count;
+                        break;
+                    case 1:
+                        if (aroundCards[3] != null)
+                        {
+                            ++count;
+                        }
+                        else if (centerCard == null)
+                        {
+                            ++count;
+                        }
+                        if (aroundCards[2] != null)
+                            ++count;
+                        break;
+                    case 2:
+                    case 3:
+                        ++count;
+                        if (aroundCards[1] != null)
+                            ++count;
+                        break;
+                    case 4: //center seal
+                        for (int i = 0; i < 4; ++i)
+                            if (aroundCards[i] != null)
+                                ++count;
+                        return count;
+                }
+
+                if (centerCard != null)
+                    ++count;
+
+                return count;
+            }
+        }
+
+        if (index == 4 && centerCard != null && centerCard.equals(c))
+            return 4;
+
+        return 0;
+    }
+    public static ArrayList<SealCard> getAdjacentSeals(SealCard c) {
+        int index = 0;
+        for (; index < 4; ++index) {
+            if (aroundCards[index] == null)
+                break;
+            else if (aroundCards[index].equals(c))
+                return getAdjacentSeals(index);
+        }
+
+        if (index == 4 && centerCard != null && centerCard.equals(c))
+            return getAdjacentSeals(4);
+
+        return new ArrayList<>();
+    }
+    public static ArrayList<SealCard> getAdjacentSeals(int index) {
+        ArrayList<SealCard> seals = new ArrayList<>();
+
+        switch (index) {
+            case 0:
+                if (aroundCards[3] != null)
+                {
+                    seals.add(aroundCards[3]);
+                }
+                else if (aroundCards[1] != null)
+                {
+                    seals.add(aroundCards[1]);
+                }
+                if (aroundCards[2] != null)
+                    seals.add(aroundCards[2]);
+                break;
+            case 1:
+                if (aroundCards[3] != null)
+                {
+                    seals.add(aroundCards[3]);
+                }
+                else if (centerCard == null && aroundCards[0] != null)
+                {
+                    seals.add(aroundCards[0]);
+                }
+                if (aroundCards[2] != null)
+                    seals.add(aroundCards[2]);
+                break;
+            case 2:
+            case 3:
+                if (aroundCards[0] != null)
+                    seals.add(aroundCards[0]);
+
+                if (aroundCards[1] != null)
+                    seals.add(aroundCards[1]);
+                break;
+            case 4: //center seal
+                for (int i = 0; i < 4; ++i)
+                    if (aroundCards[i] != null)
+                        seals.add(aroundCards[i]);
+                return seals;
+        }
+
+        if (centerCard != null)
+        {
+            seals.add(centerCard);
+        }
+
+
+        return seals;
+    }
+
+    public static void triggerEndOfTurnEffects() {
         previewIntents.clear();
 
         disableCalculation = true;
 
-        int keepAmount = AbstractDungeon.player.hasPower(ImprintPower.POWER_ID) ? AbstractDungeon.player.getPower(ImprintPower.POWER_ID).amount : 0;
         if (centerCard != null)
         {
+            final SealCard t = centerCard;
+            AbstractDungeon.actionManager.addToBottom(new AbstractGameAction() {
+                @Override
+                public void update() {
+                    ignorePreview.add(t);
+                    this.isDone = true;
+                }
+            });
             centerCard.superFlash(Color.PURPLE.cpy());
-            centerCard.triggerSealEffect(SealSystem.targets.get(centerCard));
+            ArrayList<AbstractGameAction> actions = centerCard.triggerSealEffect(SealSystem.targets.get(centerCard));
 
-            if (keepAmount < 5)
-                if (centerCard.hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
-                    AbstractDungeon.actionManager.addToBottom(new YeetSealAction(centerCard, true));
-                else if (centerCard.hasTag(CustomCardTags.FRAGILE_SEAL))
-                    AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(centerCard, true));
-                else
-                    AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(centerCard, true));
+            for (SealCard adj : getAdjacentSeals(4)) {
+                adj.addAdjacentSealEffect(centerCard, actions, SealSystem.targets.get(centerCard));
+            }
+            for (SealCard adj : getAdjacentSeals(4)) {
+                adj.modifyAdjacentSealEffect(centerCard, actions, SealSystem.targets.get(centerCard));
+            }
+
+            for (AbstractGameAction action : actions)
+                AbstractDungeon.actionManager.addToBottom(action);
         }
 
         for (int i = 3; i >= 0; --i)
@@ -919,18 +930,104 @@ public class SealSystem {
             if (aroundCards[i] == null)
                 continue;
 
-            aroundCards[i].superFlash(Color.PURPLE.cpy());
-            aroundCards[i].triggerSealEffect(SealSystem.targets.get(aroundCards[i]));
+            final SealCard t = aroundCards[i];
+            AbstractDungeon.actionManager.addToBottom(new AbstractGameAction() {
+                @Override
+                public void update() {
+                    ignorePreview.add(t);
+                    recalculate = true;
+                    this.isDone = true;
+                }
+            });
 
-            if (keepAmount < i + 1)
-                if (aroundCards[i].hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
+            aroundCards[i].superFlash(Color.PURPLE.cpy());
+            ArrayList<AbstractGameAction> actions = aroundCards[i].triggerSealEffect(SealSystem.targets.get(aroundCards[i]));
+
+            for (SealCard adj : getAdjacentSeals(i)) {
+                adj.addAdjacentSealEffect(aroundCards[i], actions, SealSystem.targets.get(centerCard));
+            }
+            for (SealCard adj : getAdjacentSeals(i)) {
+                adj.modifyAdjacentSealEffect(aroundCards[i], actions, SealSystem.targets.get(centerCard));
+            }
+
+            for (AbstractGameAction action : actions)
+                AbstractDungeon.actionManager.addToBottom(action);
+        }
+    }
+    public static void triggerEndOfTurnMovement() {
+        int keepAmount = 0;
+        AbstractPower imprint = AbstractDungeon.player.getPower(ImprintPower.POWER_ID);
+        if (imprint != null) {
+            keepAmount = imprint.amount;
+            imprint.flash();
+        }
+
+        if (centerCard != null)
+        {
+            if (keepAmount < 5) {
+                if (centerCard.hasTag(CustomCardTags.RETURNING_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new ReturnSealAction(centerCard, true));
+                else if (centerCard.hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new YeetSealAction(centerCard, true));
+                else if (centerCard.hasTag(CustomCardTags.FRAGILE_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(centerCard, true));
+                else
+                    AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(centerCard, true));
+            }
+            else {
+                if (SealSystem.targets.get(centerCard) != null && SealSystem.targets.get(centerCard).isDeadOrEscaped()) {
+                    //seal targets and the target is f
+
+                    AbstractMonster m = AbstractDungeon.getRandomMonster();
+                    if (m != null) {
+                        targets.put(centerCard, m);
+                    }
+                }
+            }
+        }
+
+        for (int i = 3; i >= 0; --i)
+        {
+            if (aroundCards[i] == null)
+                continue;
+
+            if (keepAmount < i + 1) {
+                if (aroundCards[i].hasTag(CustomCardTags.RETURNING_SEAL))
+                    AbstractDungeon.actionManager.addToBottom(new ReturnSealAction(aroundCards[i], i));
+                else if (aroundCards[i].hasTag(CustomCardTags.ULTRA_FRAGILE_SEAL))
                     AbstractDungeon.actionManager.addToBottom(new YeetSealAction(aroundCards[i], i));
                 else if (aroundCards[i].hasTag(CustomCardTags.FRAGILE_SEAL))
                     AbstractDungeon.actionManager.addToBottom(new ExhaustSealAction(aroundCards[i], i));
                 else
                     AbstractDungeon.actionManager.addToBottom(new DiscardSealAction(aroundCards[i], i));
+            }
+            else { //seal is kept.
+                if (SealSystem.targets.get(aroundCards[i]) != null && SealSystem.targets.get(aroundCards[i]).isDeadOrEscaped()) {
+                    //seal targets and the target is f
+
+                    AbstractMonster m = AbstractDungeon.getRandomMonster();
+                    if (m != null) {
+                        targets.put(aroundCards[i], m);
+                    }
+                }
+            }
         }
 
         AbstractDungeon.actionManager.addToBottom(new RefreshSealSystemAction());
+    }
+
+    private static int getBlock() {
+        int amt = 0;
+        if (centerCard != null && !ignorePreview.contains(centerCard)) {
+            amt += centerCard.getSealBlock();
+        }
+
+        for (int i = 0; i < 4; ++i) {
+            if (aroundCards[i] != null && !ignorePreview.contains(aroundCards[i])) {
+                amt += aroundCards[i].getSealBlock();
+            }
+        }
+
+        return amt;
     }
 }

@@ -17,6 +17,7 @@ public class DrawCardUpgrade extends MysteryUpgrade {
     @Override
     public void apply(MysterySeal c) {
         c.baseMagicNumber += MAGIC_UPGRADE;
+        c.magicNumber = c.baseMagicNumber;
         c.upgradedMagicNumber = true;
 }
 

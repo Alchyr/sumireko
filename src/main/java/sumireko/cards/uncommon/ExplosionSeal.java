@@ -11,6 +11,7 @@ import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -27,7 +28,7 @@ public class ExplosionSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int SEAL = 9;
+    private static final int SEAL = 10;
     private static final int UPG_SEAL = 3;
 
     public ExplosionSeal() {
@@ -37,9 +38,12 @@ public class ExplosionSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
         if (this.sealValue > 0)
-            damageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
+            actions.add(getDamageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE));
+
+        return actions;
     }
 
     @Override
@@ -48,7 +52,7 @@ public class ExplosionSeal extends SealCard {
         {
             for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
             {
-                monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+                monster.getValue().sealDamage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), this);
             }
         }
         return null;
@@ -61,7 +65,7 @@ public class ExplosionSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.ATTACK;
+        i.baseDamage(this.sealValue);
     }
 
     @Override

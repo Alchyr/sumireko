@@ -27,8 +27,8 @@ public class Brainwave extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 12;
-    private static final int UPG_DAMAGE = 4;
+    private static final int DAMAGE = 9;
+    private static final int UPG_DAMAGE = 3;
 
 
     public Brainwave() {

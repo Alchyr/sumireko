@@ -12,6 +12,7 @@ import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -20,7 +21,7 @@ public class StrikeSeal extends SealCard {
     private final static CardInfo cardInfo = new CardInfo(
             "StrikeSeal",
             1,
-            CardType.ATTACK,
+            CardType.SKILL,
             CardTarget.ENEMY,
             CardRarity.BASIC);
     // skill
@@ -28,15 +29,14 @@ public class StrikeSeal extends SealCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 3;
+    //private static final int DAMAGE = 3;
 
-    private static final int SEAL = 3;
+    private static final int SEAL = 7;
     private static final int UPG_SEAL = 3;
 
     public StrikeSeal() {
         super(cardInfo, false);
 
-        setDamage(DAMAGE);
         setSeal(SEAL, UPG_SEAL);
 
         tags.add(CardTags.STRIKE);
@@ -50,28 +50,32 @@ public class StrikeSeal extends SealCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        damageSingle(m, AbstractGameAction.AttackEffect.BLUNT_LIGHT);
+        //damageSingle(m, AbstractGameAction.AttackEffect.SLASH_VERTICAL);
 
         super.use(p, m);
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
+
         if (this.sealValue > 0)
-            damageSingle(target, this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
+            actions.add(getDamageSingle(target, this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.SLASH_HORIZONTAL));
+
+        return actions;
     }
 
     @Override
     public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
         if (target != null)
             if (this.sealValue > 0)
-                target.damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+                target.sealDamage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), this);
 
         return null;
     }
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.ATTACK;
+        i.baseDamage(this.sealValue);
     }
 }

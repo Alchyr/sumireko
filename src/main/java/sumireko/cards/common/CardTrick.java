@@ -6,6 +6,7 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
+import sumireko.actions.cards.CardTrickAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
@@ -26,15 +27,21 @@ public class CardTrick extends BaseCard {
         super(cardInfo, true);
 
         //setBlock(BLOCK, UPG_BLOCK);
+        setExhaust(true);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        if (upgraded)
-            drawCards(1);
-        this.addToBot(new PutOnDeckAction(p, p, 1, false));
+        //if (upgraded)
+        //    drawCards(1);
+        //this.addToBot(new PutOnDeckAction(p, p, 1, false));
 
-        this.addToBot(new BetterDiscardPileToHandAction(1));
+        if (upgraded) {
+            this.addToBot(new CardTrickAction());
+        }
+        else {
+            this.addToBot(new BetterDiscardPileToHandAction(1));
+        }
         //this.addToBot(new CardTrickAction(this.block));
     }
 

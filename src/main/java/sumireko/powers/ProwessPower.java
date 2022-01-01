@@ -52,6 +52,10 @@ public class ProwessPower extends BasePower implements ModifySealPower {
         }
     }
 
+    public void doThing(float ___eliteSpawnChance) {
+        ___eliteSpawnChance = ___eliteSpawnChance * 10;
+    }
+
     @Override
     public void modifySeal(SealCard c) {
         c.sealValue += this.amount;

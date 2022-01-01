@@ -1,9 +1,10 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import sumireko.SumirekoMod;
 import sumireko.abstracts.BaseCard;
 import sumireko.enums.CustomCardTags;
 import sumireko.patches.occult.OccultFields;
@@ -23,7 +24,8 @@ public class BorderOfReality extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 15;
+    private static final int BLOCK = 12;
+    private static final int UPG_BLOCK = 3;
 
     private boolean reducedForCombat = false;
     private int originalBlock;
@@ -31,31 +33,19 @@ public class BorderOfReality extends BaseCard {
     public BorderOfReality() {
         super(cardInfo, false);
 
-        setBlock(BLOCK);
+        setBlock(BLOCK, UPG_BLOCK);
         originalBlock = baseBlock;
-
-        this.tags.add(CustomCardTags.FINAL);
     }
 
     @Override
-    public boolean canUpgrade() {
-        return false;
-    }
-
-    @Override
-    public void applyPowers() { //for the sake of fucky stuff like ring of chaos.
-        if (!reducedForCombat)
+    public void applyPowers() {
+        if (!reducedForCombat) //for the sake of fucky stuff like ring of chaos.
         {
             originalBlock = baseBlock;
             reducedForCombat = true;
         }
 
-        baseBlock = originalBlock;
-        for (AbstractCard c : AbstractDungeon.actionManager.cardsPlayedThisCombat)
-        {
-            if (OccultFields.isOccult.get(c))
-                --baseBlock;
-        }
+        baseBlock = originalBlock - SumirekoMod.occultPlayedThisCombat;
 
         super.applyPowers();
     }
@@ -69,4 +59,4 @@ public class BorderOfReality extends BaseCard {
     public AbstractCard makeCopy() {
         return new BorderOfReality();
     }
-}
+}*/

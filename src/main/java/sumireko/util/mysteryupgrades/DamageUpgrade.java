@@ -10,7 +10,7 @@ import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 
 public class DamageUpgrade extends MysteryUpgrade {
-    private static final int DAMAGE_UPGRADE = 8;
+    private static final int DAMAGE_UPGRADE = 7;
 
     public DamageUpgrade()
     {
@@ -31,6 +31,7 @@ public class DamageUpgrade extends MysteryUpgrade {
         c.type = AbstractCard.CardType.ATTACK;
 
         c.baseDamage += DAMAGE_UPGRADE;
+        c.damage = c.baseDamage;
         c.upgradedDamage = true;
     }
 

@@ -21,14 +21,17 @@ public class RuleCancelAction extends AbstractGameAction {
     public static final String[] TEXT = uiStrings.TEXT;
 
     private AbstractPlayer p;
+    private boolean optional;
 
     private ArrayList<AbstractCard> invalidCards;
 
-    public RuleCancelAction()
+    public RuleCancelAction(boolean optional)
     {
         p = AbstractDungeon.player;
         this.actionType = ActionType.CARD_MANIPULATION;
         this.duration = this.startDuration = 0.2f;
+
+        this.optional = optional;
 
         invalidCards = new ArrayList<>();
     }
@@ -55,7 +58,7 @@ public class RuleCancelAction extends AbstractGameAction {
                 return;
             }
 
-            if (validCards.size() == 1)
+            if (validCards.size() == 1 && !optional)
             {
                 OccultFields.isOccult.set(validCards.getTopCard(), true);
                 validCards.getTopCard().superFlash(Color.VIOLET.cpy());
@@ -75,7 +78,7 @@ public class RuleCancelAction extends AbstractGameAction {
                 return;
             }
 
-            AbstractDungeon.handCardSelectScreen.open(TEXT[0], 1, false, false);
+            AbstractDungeon.handCardSelectScreen.open(TEXT[0], 1, false, optional);
             this.tickDuration();
             return;
         }

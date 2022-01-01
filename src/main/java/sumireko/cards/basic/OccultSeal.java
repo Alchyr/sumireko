@@ -1,4 +1,4 @@
-package sumireko.cards.basic;
+/*package sumireko.cards.basic;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -55,4 +55,4 @@ public class OccultSeal extends SealCard {
     public void getIntent(SealIntent i) {
         i.intent = AbstractMonster.Intent.BUFF;
     }
-}
+}*/

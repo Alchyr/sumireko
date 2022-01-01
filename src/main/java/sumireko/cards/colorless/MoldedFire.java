@@ -28,7 +28,7 @@ public class MoldedFire extends BaseCard {
 
 
     private static final int DAMAGE = 8;
-    private static final int UPG_DAMAGE = 4;
+    private static final int UPG_DAMAGE = 3;
 
 
     public MoldedFire() {

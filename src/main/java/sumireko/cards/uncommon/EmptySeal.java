@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -48,4 +48,4 @@ public class EmptySeal extends SealCard {
     public void getIntent(SealIntent i) {
         i.intent = null;
     }
-}
+}*/

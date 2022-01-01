@@ -1,4 +1,4 @@
-package sumireko.cards.rare;
+/*package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -37,4 +37,4 @@ public class Doppelganger extends BaseCard {
     public AbstractCard makeCopy() {
         return new Doppelganger();
     }
-}
+}*/

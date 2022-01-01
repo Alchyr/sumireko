@@ -6,11 +6,7 @@ import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
-import sumireko.util.HealthBarRender;
-import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
-
-import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
 
@@ -50,10 +46,8 @@ public class AmplificationSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.MAGIC;
-        i.multihit(this.sealValue);
-        i.amount = -1;
-        //"x#"
+        i.addIntent(SealIntent.MAGIC);
+        i.bonusEffect("x" + this.sealValue);
     }
 
     @Override

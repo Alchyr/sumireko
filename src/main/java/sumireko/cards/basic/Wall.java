@@ -1,4 +1,4 @@
-package sumireko.cards.basic;
+/*package sumireko.cards.basic;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -20,7 +20,7 @@ public class Wall extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int BLOCK = 7;
+    private static final int BLOCK = 6;
 
 
     public Wall() {
@@ -44,4 +44,4 @@ public class Wall extends BaseCard {
     public AbstractCard makeCopy() {
         return new Wall();
     }
-}
+}*/

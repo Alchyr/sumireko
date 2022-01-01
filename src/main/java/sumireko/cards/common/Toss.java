@@ -1,4 +1,4 @@
-package sumireko.cards.common;
+/*package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.common.DiscardSpecificCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -58,4 +58,4 @@ public class Toss extends BaseCard {
     public AbstractCard makeCopy() {
         return new Toss();
     }
-}
+}*/

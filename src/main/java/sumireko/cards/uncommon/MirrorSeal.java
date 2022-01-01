@@ -1,6 +1,7 @@
 package sumireko.cards.uncommon;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.DamageInfo;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -14,6 +15,8 @@ import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -85,9 +88,23 @@ public class MirrorSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
         if (copying != null)
-            copying.triggerSealEffect(target);
+            return copying.triggerSealEffect(target);
+
+        return new ArrayList<>();
+    }
+    @Override
+    public void addAdjacentSealEffect(SealCard base, ArrayList<AbstractGameAction> actions, AbstractMonster target) {
+        if (copying != null) {
+            copying.addAdjacentSealEffect(base, actions, target);
+        }
+    }
+    @Override
+    public void modifyAdjacentSealEffect(SealCard base, ArrayList<AbstractGameAction> actions, AbstractMonster target) {
+        if (copying != null) {
+            copying.modifyAdjacentSealEffect(base, actions, target);
+        }
     }
 
     @Override
@@ -96,6 +113,18 @@ public class MirrorSeal extends SealCard {
             return copying.instantSealEffect(target, pretendMonsters);
 
         return null;
+    }
+    @Override
+    public void instantAdjacentEffect(SealCard primary, HashMap<AbstractMonster, PretendMonster> previewMonsters) {
+        if (copying != null) {
+            copying.instantAdjacentEffect(primary, previewMonsters);
+        }
+    }
+    @Override
+    public void instantAdjacentEffectOnUnblockedDamage(SealCard base, PretendMonster pretendMonster, int damage) {
+        if (copying != null) {
+            copying.instantAdjacentEffectOnUnblockedDamage(base, pretendMonster, damage);
+        }
     }
 
     @Override
@@ -175,8 +204,32 @@ public class MirrorSeal extends SealCard {
         if (copying != null)
         {
             copying.getIntent(i);
-            i.amount = copying.sealValue;
         }
+    }
+
+    @Override
+    public void applyAdjacencyIntent(SealIntent sealIntent) {
+        if (copying != null)
+        {
+            copying.applyAdjacencyIntent(sealIntent);
+        }
+    }
+
+    @Override
+    public int getSealBlock() {
+        if (copying != null) {
+            return copying.getSealBlock();
+        }
+        return 0;
+    }
+
+    @Override
+    public void hover() {
+        if (copying != null)
+        {
+            copying.hover();
+        }
+        super.hover();
     }
 
     @Override
@@ -194,8 +247,18 @@ public class MirrorSeal extends SealCard {
         }
     }
 
+    //:) for interaction with Dreamcatcher
+    @Override
+    public AbstractCard makeStatEquivalentCopy() {
+        if (copying != null)
+            return copying.makeStatEquivalentCopy();
+        return super.makeStatEquivalentCopy();
+    }
+
     @Override
     public AbstractCard makeCopy() {
+        if (copying != null)
+            return copying.makeCopy();
         return new MirrorSeal();
     }
 }

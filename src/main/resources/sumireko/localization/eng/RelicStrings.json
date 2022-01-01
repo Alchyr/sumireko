@@ -3,7 +3,8 @@
     "NAME": "Lemegeton",
     "FLAVOR": "Lemegeton",
     "DESCRIPTIONS": [
-      "Whenever you draw a card, replace it with a random card. The cost remains the same."
+      "Whenever you draw a card, replace it with a random card. The cost remains the same.",
+      "This and the next one are just dumb ideas that aren't going to be made. Though I did make this one once for fun."
     ]
   },
   "sumireko:SeaCrystal": {
@@ -27,10 +28,18 @@
       "#yFinal cards can be upgraded."
     ]
   },
+  "sumireko:IceScale": {
+    "NAME": "Ice Scale",
+    "FLAVOR": "A constant chill emanates from it which will never fade.",
+    "DESCRIPTIONS": [
+      "Temporary #yStrength changes are halved each turn instead of removed completely."
+    ]
+  },
   "sumireko:OccultBall": {
     "NAME": "Occult Ball",
     "FLAVOR": "A mystical object, said to grant wishes... well, it's really not that powerful.",
     "DESCRIPTIONS": [
+      "At the start of your turn, if you played no #ysumireko:Occult cards last turn, you may make a card in your hand #yOccult for the rest of combat.",
       "At the start of every third turn, make a card in your hand #ysumireko:Occult for the rest of combat."
     ]
   },
@@ -38,7 +47,7 @@
     "NAME": "Occult Ball?",
     "FLAVOR": "A mystical object, said to grant wishes... well, it's really not that powerful.",
     "DESCRIPTIONS": [
-      "At the start of each combat, make 3 cards in your hand #ysumireko:Occult for the rest of combat."
+      "At the start of each combat, make 3 cards in your draw pile #ysumireko:Occult for the rest of combat."
     ]
   }
 }

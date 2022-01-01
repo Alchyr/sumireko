@@ -21,18 +21,13 @@ public class Rite extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 3;
+    private static final int DAMAGE = 4;
+    private static final int UPG_DAMAGE = 2;
 
     public Rite() {
         super(cardInfo, false);
 
-        setDamage(DAMAGE);
-        tags.add(CustomCardTags.FINAL);
-    }
-
-    @Override
-    public boolean canUpgrade() {
-        return false;
+        setDamage(DAMAGE, UPG_DAMAGE);
     }
 
     @Override

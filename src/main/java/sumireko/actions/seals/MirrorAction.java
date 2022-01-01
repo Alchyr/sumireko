@@ -26,7 +26,7 @@ public class MirrorAction extends AbstractGameAction {
         {
             s.flashVfx = new UltraFlashVfx(s, Color.WHITE.cpy());
             SealCard toCopy = SealSystem.aroundCards[SealSystem.nextIndex - 1];
-            m = SealSystem.targets.get(toCopy); //The target, is used by SealAction.
+            m = SealSystem.getTarget(toCopy); //The target, is used by SealAction.
             if (toCopy instanceof MirrorSeal)
             {
                 toCopy = ((MirrorSeal) toCopy).copying;

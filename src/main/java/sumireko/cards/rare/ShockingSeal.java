@@ -13,6 +13,7 @@ import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -22,7 +23,7 @@ public class ShockingSeal extends SealCard {
             "ShockingSeal",
             1,
             CardType.SKILL,
-            CardTarget.NONE,
+            CardTarget.ALL_ENEMY,
             CardRarity.RARE);
     // skill
 
@@ -45,11 +46,14 @@ public class ShockingSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
         for (int i = 0; i < this.sealValue; ++i)
         {
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
+            actions.add(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
         }
+
+        return actions;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class ShockingSeal extends SealCard {
                 //there should be only one. Otherwise, the damage is not predictable.
                 for (int i = 0; i < this.sealValue; ++i)
                 {
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+                    monster.getValue().sealDamage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), this);
                 }
             }
         }
@@ -70,8 +74,7 @@ public class ShockingSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.ATTACK;
-        i.multihit(this.sealValue);
+        i.baseDamage(this.sealValue, this.sealValue);
     }
 
     @Override

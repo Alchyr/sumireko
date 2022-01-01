@@ -1,12 +1,24 @@
 package sumireko.patches.occult;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.characters.AbstractPlayer;
+import com.megacrit.cardcrawl.helpers.CardLibrary;
+import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import javassist.*;
+import javassist.bytecode.*;
+import javassist.bytecode.annotation.Annotation;
+import javassist.bytecode.annotation.BooleanMemberValue;
 import org.clapper.util.classutil.*;
+import org.jetbrains.annotations.NotNull;
+import sumireko.annotations.Playable;
+import sumireko.annotations.Unplayable;
+import sumireko.enums.CustomCardTags;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
+import java.util.*;
 
+import static sumireko.SumirekoMod.logger;
 import static sumireko.patches.occult.OccultFields.notEnoughEnergy;
 
 //hooray for dynamic patching
@@ -31,48 +43,98 @@ public class OccultPatch {
 
         int skipped = 0, patched = 0;
 
+        Field modified = null;
+        boolean alreadyModified, changed, logged;
+        Collection<String> references;
+        CtMethod[] methods;
+        CtMethod canUse, hasEnoughEnergy;
+
+        outer:
         for (ClassInfo classInfo : foundClasses)
         {
             CtClass ctClass = pool.get(classInfo.getClassName());
 
-            boolean changed = false;
+            changed = false;
+            logged = false;
+            canUse = null;
+            hasEnoughEnergy = null;
 
             try
             {
-                CtMethod[] methods = ctClass.getDeclaredMethods();
-                for (CtMethod m : methods)
-                {
-                    if (m.getName().equals("canUse"))
-                    {
-                        //System.out.println("\t\t\t- Modifying Method: canUse");
-                        m.insertAfter("{" +
-                                "$_ = sumireko.patches.occult.OccultPatch.checkUsability($0, $_);" +
-                                "}");
+                references = ctClass.getRefClasses();
 
-                        changed = true;
-                    }
-                    else if (m.getName().equals("hasEnoughEnergy"))
+                for (String s : references) {
+                    if (pool.getOrNull(s) == null)
                     {
-                        //System.out.println("\t\t\t- Modifying Method: hasEnoughEnergy");
-                        m.insertAfter("{" +
-                                "$_ = sumireko.patches.occult.OccultPatch.checkEnergy($0, $_);" +
-                                "}");
-
-                        changed = true;
+                        System.out.println("\t\t- Class " + ctClass.getSimpleName() + " refers to an unloaded class, " + s + ", and will be skipped.");
+                        continue outer;
                     }
+                }
+
+                alreadyModified = ctClass.isModified();
+
+                methods = ctClass.getDeclaredMethods();
+                for (CtMethod m : methods) {
+                    switch (m.getName()) {
+                        case "canUse":
+                            CtClass[] params = m.getParameterTypes();
+                            if (params.length == 2 && params[0].getName().equals(AbstractPlayer.class.getName()) && params[1].getName().equals(AbstractMonster.class.getName())) {
+                                canUse = m;
+                            }
+                            break;
+                        case "hasEnoughEnergy":
+                            hasEnoughEnergy = m;
+                            break;
+                    }
+                }
+                if (checkUnplayable(ctClass, canUse))
+                    changed = logged = true;
+
+                if (canUse != null) {
+                    //System.out.println("\t\t\t- Modifying Method: canUse");
+                    canUse.insertAfter("{" +
+                            "$_ = sumireko.patches.occult.OccultPatch.checkUsability($0, $_);" +
+                            "}");
+
+                    changed = true;
+                }
+                if (hasEnoughEnergy != null) {
+                    //System.out.println("\t\t\t- Modifying Method: hasEnoughEnergy");
+                    hasEnoughEnergy.insertAfter("{" +
+                            "$_ = sumireko.patches.occult.OccultPatch.checkEnergy($0, $_);" +
+                            "}");
+
+                    changed = true;
                 }
 
                 if (changed)
                 {
-                    System.out.println("\t\t- Class patched: " + ctClass.getSimpleName());
+                    if (!logged)
+                        System.out.println("\t\t- Class patched: " + ctClass.getSimpleName());
                     ++patched;
                 }
                 else
                 {
                     ++skipped;
+                    if (!alreadyModified) {
+                        try {
+                            if (modified == null) {
+                                modified = ctClass.getClass().getDeclaredField("wasChanged");
+                                modified.setAccessible(true);
+                            }
+                            modified.set(ctClass, false);
+                            //System.out.println("\t\t- Marked class as unchanged: " + ctClass.getSimpleName());
+                        }
+                        catch (NoSuchFieldException | IllegalAccessException e) {
+                            System.out.println("\t\t- Failed to mark class as unchanged: " + ctClass.getSimpleName());
+                        }
+                    }
                 }
             } catch(CannotCompileException e) {
                 System.out.println("\t\t- Error occurred while patching class: " + ctClass.getSimpleName() + "\n");
+                e.printStackTrace();
+            } catch(BadBytecode e) {
+                System.out.println("\t\t- Class's canUse method has bad bytecode: " + ctClass.getSimpleName() + "\n");
                 e.printStackTrace();
             }
         }
@@ -96,5 +158,211 @@ public class OccultPatch {
             return true;
         }
         return normallyEnoughEnergy;
+    }
+
+
+    /*
+        BASIC:
+            3 (value 0)
+            172 (return integer)
+            This is code that just directly returns false.
+
+        LONGER (example), method that sets a cantUseMessage:
+            42 load a reference onto the stack from local variable 0
+            178
+            180
+            3 (value 0)
+            50
+            181
+            3 (value 0)
+            172 (return integer)
+
+        For a method to mean "unplayable":
+        Every return op must follow the pattern of 3 172 (always returns false).
+     */
+    //Specifically checks for classes that will always return false for canUse
+    //private static Set<String> unplayableCards = new HashSet<>();
+    //private static Set<String> playableCards = new HashSet<>(); //only contains classes that directly declare a canUse method
+    private static Set<String> testedClasses = new HashSet<>();
+
+    private static final Set<Integer> returnOps = new HashSet<>();
+    private static final int zeroInt = 3;
+    private static final int intReturn = 0b10101100; //172
+    static {
+        returnOps.add(0b10101101); //long
+        returnOps.add(0b10101110); //float
+        returnOps.add(0b10101111); //double
+        returnOps.add(0b10110000); //reference
+        returnOps.add(0b10110001); //void
+    }
+    private static boolean checkUnplayable(CtClass cardClass, CtMethod canUse) throws BadBytecode {
+        testedClasses.add(cardClass.getName());
+        if (cardClass.getName().equals(AbstractCard.class.getName())) {
+            return false;
+        }
+        if (canUse != null) {
+            //Check if canUse method directly returns false
+            System.out.println("\t\t- Class has canUse: " + cardClass.getSimpleName());
+            StringBuilder opCode = new StringBuilder();
+            CodeAttribute ca = canUse.getMethodInfo().getCodeAttribute();
+
+            int lastOp = 0, index, op;
+            CodeIterator ci = ca.iterator();
+            boolean hardFalse = false, unplayable = true;
+            while (ci.hasNext()) {
+                index = ci.next();
+                op = ci.byteAt(index);
+                opCode.append(op).append(" ");
+
+                if (returnOps.contains(op)) {
+                    //non-int return op. This has a possibly non-false return.
+                    //System.out.println("\t\t\t- " + "Has non-boolean constant return value.");
+                    unplayable = false;
+                }
+                if (op == intReturn && lastOp != zeroInt) {
+                    //returns not a constant false
+                    //System.out.println("\t\t\t- " + "Has non-false constant return value.");
+                    unplayable = false;
+                }
+                else if (op == intReturn && lastOp == zeroInt) {
+                    //has a hard-false return
+                    hardFalse = true;
+                }
+                lastOp = op;
+            }
+            System.out.println("\t\t\t- Opcodes: " + opCode);
+
+            if (unplayable) {
+                System.out.println("\t\t\t- " + "Unplayable.");
+                addUnusableAnnotation(cardClass);
+            }
+            else {
+                System.out.println("\t\t\t- " + (hardFalse ? "Sometimes unplayable?" : "Not unplayable."));
+                addPlayableAnnotation(cardClass, hardFalse);
+            }
+            return true;
+        }
+        else {
+            //Check super
+            return recursiveCheckUnplayable(cardClass, cardClass);
+        }
+    }
+    //If a class doesn't declare a canUse, this will attempt to check the superclass.
+    private static boolean recursiveCheckUnplayable(CtClass baseClass, CtClass testClass) throws BadBytecode {
+        try {
+            CtClass superClass = testClass.getSuperclass();
+            if (superClass != null) {
+                if (!testedClasses.contains(superClass.getName())) {
+                    testedClasses.add(superClass.getName());
+
+                    CtMethod[] methods = superClass.getDeclaredMethods();
+                    for (CtMethod m : methods) {
+                        if ("canUse".equals(m.getName())) {
+                            CtClass[] params = m.getParameterTypes();
+                            if (params.length == 2 && params[0].getName().equals(AbstractPlayer.class.getName()) && params[1].getName().equals(AbstractMonster.class.getName())) {
+                                checkUnplayable(superClass, m);
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (superClass.hasAnnotation(unplayableAnnotation)) {
+                    addUnusableAnnotation(baseClass);
+                    return true;
+                }
+            }
+            return false;
+        }
+        catch (NotFoundException ignored) {
+            return false;
+        }
+    }
+
+    private static final String playableAnnotation = "sumireko/annotations/Playable";
+    private static final String unplayableAnnotation = "sumireko/annotations/Unplayable";
+    private static void addPlayableAnnotation(CtClass clazz, boolean sometimes) {
+        ConstPool pool = clazz.getClassFile().getConstPool();
+        Annotation usable = new Annotation(playableAnnotation, pool);
+        usable.addMemberValue("sometimes", new BooleanMemberValue(sometimes, pool));
+        AttributeInfo info = clazz.getClassFile().getAttribute(AnnotationsAttribute.visibleTag);
+        AnnotationsAttribute attr;
+        if (info != null) {
+            attr = (AnnotationsAttribute) info;
+        }
+        else {
+            attr = new AnnotationsAttribute(pool, AnnotationsAttribute.visibleTag);
+        }
+        attr.addAnnotation(usable);
+        clazz.getClassFile().addAttribute(attr);
+    }
+    private static void addUnusableAnnotation(CtClass clazz) {
+        ConstPool pool = clazz.getClassFile().getConstPool();
+        Annotation usable = new Annotation(unplayableAnnotation, pool);
+        AttributeInfo info = clazz.getClassFile().getAttribute(AnnotationsAttribute.visibleTag);
+        AnnotationsAttribute attr;
+        if (info != null) {
+            attr = (AnnotationsAttribute) info;
+        }
+        else {
+            attr = new AnnotationsAttribute(pool, AnnotationsAttribute.visibleTag);
+        }
+        attr.addAnnotation(usable);
+        clazz.getClassFile().addAttribute(attr);
+    }
+
+
+    public static boolean isUnplayable(AbstractPlayer p, AbstractCard c) {
+        if (alwaysUnplayable.contains(c.getClass().getName())) //unplayable.
+            return true;
+
+        if (sometimesUnplayable.contains(c.getClass().getName()) && c.cost == -2 && c.costForTurn == -2 && //might be unplayable, cost says it is
+                (!c.canUse(p, null) || OccultFields.isOccultPlayable.get(c))) //it's not playable or only playable because occult
+            return true;
+
+        if (c.hasTag(CustomCardTags.UNPLAYABLE)) //tagged. Technically not necessary anymore, as the alwaysUnplayable check catches them now.
+            return true;
+
+        return false;
+    }
+    private static Set<String> alwaysUnplayable = new HashSet<>();
+    private static Set<String> sometimesUnplayable = new HashSet<>();
+    private static boolean hasUnplayableAnnotation(@NotNull Object o) {
+        return o.getClass().isAnnotationPresent(Unplayable.class);
+    }
+    private static boolean hasPlayableAnnotation(@NotNull Object o) {
+        return o.getClass().isAnnotationPresent(Playable.class);
+    }
+    private static boolean sometimesUnplayable(@NotNull AbstractCard c) {
+        Playable a = c.getClass().getAnnotation(Playable.class);
+
+        if (a != null) {
+            return a.sometimes();
+        }
+        return false;
+    }
+
+    public static void testPlayability() {
+        ArrayList<AbstractCard> all = CardLibrary.getAllCards();
+        for (AbstractCard c : all) {
+            if ((c.type == AbstractCard.CardType.CURSE || c.type == AbstractCard.CardType.STATUS) && c.costForTurn < -1) {
+                //Theoretically, an unplayable curse/status.
+                //unplayableCards shouldn't contain this since its superclass is just AbstractCard, which doesn't guarantee unplayability.
+                if (!hasPlayableAnnotation(c)) {
+                    //Does not have a canUse override that sometimes returns true.
+                    logger.info("\t- Unplayable: " + c.name);
+                    alwaysUnplayable.add(c.getClass().getName());
+                }
+            }
+            else {
+                if (hasUnplayableAnnotation(c)) {
+                    logger.info("\t- Unplayable: " + c.name);
+                    alwaysUnplayable.add(c.getClass().getName());
+                }
+                if (sometimesUnplayable(c)) {
+                    logger.info("\t- Sometimes unplayable? " + c.name);
+                    sometimesUnplayable.add(c.getClass().getName());
+                }
+            }
+        }
     }
 }

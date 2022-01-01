@@ -1,11 +1,15 @@
 package sumireko.util.mysteryupgrades;
 
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.abstracts.SealCard.pretendApplyPower;
@@ -35,9 +39,9 @@ public class VulnSealUpgrade extends MysteryUpgrade {
     }
 
     @Override
-    public void triggerSealEffect(MysterySeal c, AbstractMonster target) {
+    public void triggerSealEffect(MysterySeal c, AbstractMonster target, ArrayList<AbstractGameAction> actions) {
         if (c.sealValue > 0)
-            applySingle(target, getVuln(target, c.sealValue));
+            actions.add(new ApplyPowerAction(target, AbstractDungeon.player, getVuln(target, c.sealValue), c.sealValue, true));
     }
 
     @Override

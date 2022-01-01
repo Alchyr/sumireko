@@ -16,6 +16,7 @@ import com.megacrit.cardcrawl.monsters.beyond.AwakenedOne;
 import com.megacrit.cardcrawl.monsters.beyond.Darkling;
 import com.megacrit.cardcrawl.monsters.exordium.*;
 import com.megacrit.cardcrawl.powers.*;
+import sumireko.SealSystem;
 import sumireko.abstracts.SealCard;
 
 import java.lang.reflect.Field;
@@ -149,11 +150,19 @@ public class PretendMonster extends AbstractCreature {
         }
     }
 
+    public void sealDamage(DamageInfo info, SealCard c) {
+        damage(info);
+
+        for (SealCard adj : SealSystem.getAdjacentSeals(c)) {
+            adj.instantAdjacentEffectOnUnblockedDamage(c, this, lastDamageTaken);
+        }
+    }
+
     @Override
     public void damage(DamageInfo info) {
         ArrayList<AbstractPower> enemyPowers;
 
-        if (info.owner == AbstractDungeon.player)
+        /*if (info.owner == AbstractDungeon.player)
         {
             enemyPowers = fakePlayerPowers;
             info.owner = dummySource;
@@ -164,9 +173,9 @@ public class PretendMonster extends AbstractCreature {
             info.owner = dummySource; //in case powers check the owner of the damage info
         }
         else
-            enemyPowers = new ArrayList<>();
+            enemyPowers = new ArrayList<>();*/
 
-        if (info.output > 0 && this.hasPower(IntangiblePlayerPower.POWER_ID)) {
+        if (info.output > 0 && (this.hasPower(IntangiblePlayerPower.POWER_ID) || this.hasPower(IntangiblePower.POWER_ID))) {
             info.output = 1;
         }
 
@@ -183,13 +192,7 @@ public class PretendMonster extends AbstractCreature {
 
         damageAmount = temp[0];
 
-        //on attack hooks are too risky.
-        for (AbstractPower p : enemyPowers)
-        {
-            if (p.ID.equals(IntangiblePower.POWER_ID) && damageAmount > 1)
-                damageAmount = 1;
-        }
-
+        //on attack hooks are too risky, can trigger stuff. So, these are hardcoded.
         if (hasPower(ShiftingPower.POWER_ID))
         {
             SealCard.pretendApplyPower(this, new StrengthPower(this, -damageAmount), -damageAmount);
@@ -232,7 +235,8 @@ public class PretendMonster extends AbstractCreature {
                     {
                         Field f = copy.getClass().getDeclaredField("source");
                         f.setAccessible(true);
-                        f.set(copy, dummySource);
+                        if (f.get(copy) != null)
+                            f.set(copy, dummySource);
                     }
                     catch (Exception e)
                     {

@@ -5,12 +5,14 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
+import com.evacipated.cardcrawl.mod.stslib.fields.cards.AbstractCard.RefundFields;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.SumirekoMod;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 public class Improve extends AbstractGameAction {
@@ -176,5 +178,41 @@ public class Improve extends AbstractGameAction {
         } catch (Exception var12) {// 137
             return t;// 139
         }
+    }
+
+    public void split(TextureAtlas t) {
+        HashMap<Texture, Pixmap> textureMap = new HashMap<>();
+
+
+        for (TextureAtlas.AtlasRegion r : t.getRegions()) {
+            Texture tex = r.getTexture();
+
+            if (!tex.getTextureData().isPrepared()) {
+                tex.getTextureData().prepare();
+            }
+
+            if (!textureMap.containsKey(tex)) {
+                textureMap.put(tex, tex.getTextureData().consumePixmap());
+            }
+
+            int xOffset = r.getRegionX();
+            int yOffset = r.getRegionY();
+
+            Pixmap src = textureMap.get(tex);
+            Pixmap dest = new Pixmap(r.getRegionWidth(), r.getRegionHeight(), Pixmap.Format.RGBA8888);
+
+            for (int y = 0; y < r.getRegionHeight(); ++y) {
+                for (int x = 0; x < r.getRegionWidth(); ++x) {
+                    dest.drawPixel(x, y, src.getPixel(x + xOffset, y + yOffset));
+                }
+            }
+
+            //Write dest to a file or something idk
+
+            dest.dispose();
+        }
+
+        for (Pixmap p : textureMap.values())
+            p.dispose();
     }
 }

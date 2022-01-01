@@ -6,7 +6,7 @@
       "seals",
       "seal:"
     ],
-    "DESCRIPTION": "When this card is played, it is placed in the next available #ySeal slot. Duplicate #ySeals have their effect increased. #ySeals are triggered at the end of your turn, then discarded. You may have up to 5 #ySeals at once."
+    "DESCRIPTION": "When this card is played, it is placed in the next available #ySeal slot. #ySeals are triggered at the end of your turn, then discarded. You may have up to 5 #ySeals at once."
   },
   {
     "ID": "occult",
@@ -18,11 +18,11 @@
     "DESCRIPTION": "Occult cards can be played disregarding any conditions for playability."
   },
   {
-    "PROPER_NAME": "Prowess",
+    "PROPER_NAME": "Sleeved",
     "NAMES": [
-      "prowess"
+      "sleeved"
     ],
-    "DESCRIPTION": "Prowess increases the effects of #ySeals."
+    "DESCRIPTION": "This effect is active while this card is in your draw pile."
   },
   {
     "PROPER_NAME": "Locking",
@@ -48,10 +48,33 @@
     "DESCRIPTION": "Fragile #ySeals are #yExhausted when triggered."
   },
   {
+    "ID": "eternal",
+    "PROPER_NAME": "Eternal",
+    "NAMES": [
+      "Eternal.",
+      "eternal"
+    ],
+    "DESCRIPTION": "Eternal #ySeals are returned to the hand when triggered."
+  },
+  {
+    "PROPER_NAME": "Prowess",
+    "NAMES": [
+      "prowess"
+    ],
+    "DESCRIPTION": "Prowess increases the effects of #ySeals."
+  },
+  {
     "PROPER_NAME": "Final",
     "NAMES": [
       "final"
     ],
     "DESCRIPTION": "Final cards cannot be #yUpgraded or made #yOccult."
+  },
+  {
+    "PROPER_NAME": "Stun",
+    "NAMES": [
+      "stun"
+    ],
+    "DESCRIPTION": "Causes the enemy to do nothing during their next turn."
   }
 ]

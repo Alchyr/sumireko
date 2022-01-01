@@ -12,6 +12,7 @@ import sumireko.util.HealthBarRender;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -37,12 +38,16 @@ public class FrostSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
         if (this.sealValue > 0)
         {
-            addToBot(new GainBlockAction(AbstractDungeon.player, AbstractDungeon.player, this.sealValue));
-            damageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.FIRE);
+            actions.add(getBlockAction(this.sealValue));
+            //TODO: Frost attack effect using frost orbs atlas regions or something
+            actions.add(getDamageAll(this.sealValue, DamageInfo.DamageType.THORNS, AbstractGameAction.AttackEffect.NONE));
         }
+
+        return actions;
     }
 
     @Override
@@ -51,7 +56,7 @@ public class FrostSeal extends SealCard {
         {
             for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
             {
-                monster.getValue().damage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS));
+                monster.getValue().sealDamage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), this);
             }
         }
         return null;
@@ -59,7 +64,13 @@ public class FrostSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.ATTACK_DEFEND;
+        i.baseDamage(this.sealValue);
+        i.addIntent(SealIntent.DEFEND);
+    }
+
+    @Override
+    public int getSealBlock() {
+        return sealValue;
     }
 
     @Override

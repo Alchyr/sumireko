@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -25,7 +25,7 @@ public class SixthSense extends BaseCard {
         super(cardInfo, true);
 
         setMagic(MAGIC);
-        setInnate(false, true);
+        setCostUpgrade(0);
     }
 
     @Override
@@ -37,4 +37,4 @@ public class SixthSense extends BaseCard {
     public AbstractCard makeCopy() {
         return new SixthSense();
     }
-}
+}*/

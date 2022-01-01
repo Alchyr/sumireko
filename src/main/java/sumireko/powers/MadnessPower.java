@@ -24,8 +24,8 @@ public class MadnessPower extends BasePower {
         if (card.type != AbstractCard.CardType.POWER)
         {
             action.exhaustCard = true;
-            this.flash();
         }
+        this.flash();
 
         addToBot(new ReducePowerAction(this.owner, this.owner, this, 1));
     }

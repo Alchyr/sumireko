@@ -25,13 +25,14 @@ public class MalleableFire extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 5;
+    private static final int DAMAGE = 8;
+    private static final int UPG_DAMAGE = 3;
 
 
     public MalleableFire() {
         super(cardInfo, true);
 
-        setDamage(DAMAGE);
+        setDamage(DAMAGE, UPG_DAMAGE);
         setExhaust(true);
         this.cardsToPreview = new MoldedFire();
     }

@@ -28,6 +28,7 @@ public class RuleCancel extends BaseCard {
         super(cardInfo, false);
 
         tags.add(CustomCardTags.FINAL);
+        setExhaust(true);
         //setCostUpgrade(UPG_COST);
     }
 
@@ -37,7 +38,7 @@ public class RuleCancel extends BaseCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new RuleCancelAction());
+        addToBot(new RuleCancelAction(false));
     }
 
     @Override

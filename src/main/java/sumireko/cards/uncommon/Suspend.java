@@ -22,11 +22,11 @@ public class Suspend extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int MAGIC = 4;
+    private static final int MAGIC = 5;
     private static final int UPG_MAGIC = 3;
 
     public Suspend() {
-        super(cardInfo, true);
+        super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
     }

@@ -38,6 +38,7 @@ public class CardDestination {
                     ReflectionHacks.setPrivate(__instance, AbstractGameAction.class, "duration", ___duration - Gdx.graphics.getDeltaTime());
 
                     AbstractDungeon.player.hand.removeCard(___targetCard);
+                    AbstractDungeon.player.limbo.removeCard(___targetCard);
 
                     AbstractDungeon.player.cardInUse = null;
                     ___targetCard.exhaustOnUseOnce = false;

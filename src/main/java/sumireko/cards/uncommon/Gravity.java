@@ -12,7 +12,7 @@ import static sumireko.SumirekoMod.makeID;
 public class Gravity extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "Gravity",
-            1,
+            2,
             CardType.POWER,
             CardTarget.SELF,
             CardRarity.UNCOMMON);
@@ -28,7 +28,14 @@ public class Gravity extends BaseCard {
         super(cardInfo, true);
 
         setMagic(MAGIC);
-        setInnate(false, true);
+        isEthereal = true;
+    }
+
+    @Override
+    public void upgrade() {
+        super.upgrade();
+
+        isEthereal = false;
     }
 
     @Override

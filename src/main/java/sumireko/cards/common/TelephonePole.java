@@ -22,8 +22,10 @@ public class TelephonePole extends LockingCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 12;
-    private static final int UPG_DAMAGE = 4;
+    private static final int DAMAGE = 11;
+    private static final int UPG_DAMAGE = 3;
+
+    private static final int DEBUFF = 2;
 
     private static final int BLOCK = 4;
     private static final int UPG_BLOCK = 1;
@@ -32,6 +34,7 @@ public class TelephonePole extends LockingCard {
         super(cardInfo, false);
 
         setDamage(DAMAGE, UPG_DAMAGE);
+        setMagic(DEBUFF);
         //setBlock(BLOCK, UPG_BLOCK);
     }
 
@@ -41,6 +44,7 @@ public class TelephonePole extends LockingCard {
 
         //block();
         damageSingle(m, AbstractGameAction.AttackEffect.SMASH);
+        applySingle(m, getVuln(m, this.magicNumber));
     }
 
     @Override

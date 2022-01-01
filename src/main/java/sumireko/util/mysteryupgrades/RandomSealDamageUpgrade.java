@@ -10,6 +10,7 @@ import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class RandomSealDamageUpgrade extends MysteryUpgrade {
@@ -37,9 +38,9 @@ public class RandomSealDamageUpgrade extends MysteryUpgrade {
     }
 
     @Override
-    public void triggerSealEffect(MysterySeal c, AbstractMonster target) {
+    public void triggerSealEffect(MysterySeal c, AbstractMonster target, ArrayList<AbstractGameAction> actions) {
         if (c.sealValue > 0)
-            addToBot(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, c.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
+            actions.add(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, c.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
     }
 
     @Override
@@ -51,7 +52,7 @@ public class RandomSealDamageUpgrade extends MysteryUpgrade {
                 for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
                 {
                     //this should be the only one.
-                    monster.getValue().damage(new DamageInfo(AbstractDungeon.player, c.sealValue, DamageInfo.DamageType.THORNS));
+                    monster.getValue().sealDamage(new DamageInfo(AbstractDungeon.player, c.sealValue, DamageInfo.DamageType.THORNS), c);
                 }
             }
         }

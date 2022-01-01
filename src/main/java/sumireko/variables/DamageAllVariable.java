@@ -53,7 +53,7 @@ public class DamageAllVariable extends DynamicVariable {
     @Override
     public void setIsModified(AbstractCard card, boolean v) {
         if (card instanceof MysterySeal)
-            ((MysterySeal) card).upgradedAllDamage = v;
+            ((MysterySeal) card).isAllDamageModified = v;
     }
 
     /*@Override

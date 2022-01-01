@@ -21,8 +21,8 @@ public class PerfectParadox extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 5;
-    private static final int UPG_MAGIC = 2;
+    private static final int MAGIC = 2;
+    private static final int UPG_MAGIC = 1;
 
 
     public PerfectParadox() {

@@ -19,7 +19,8 @@ public class DeepDreamAction extends AbstractGameAction {
     private int phase;
     private boolean phaseTriggered;
 
-    public DeepDreamAction() {
+    public DeepDreamAction(int amt) {
+        this.amount = amt;
         duration = 0;
         phase = 0;
         phaseTriggered = false;
@@ -70,7 +71,7 @@ public class DeepDreamAction extends AbstractGameAction {
                 if (!Settings.isControllerMode) //only if you're in controller mode, though.
                     AbstractDungeon.player.hand.refreshHandLayout();
 
-                DeepDreamPatch.startDream();
+                DeepDreamPatch.startDream(this.amount);
 
                 AbstractDungeon.player.hand.refreshHandLayout();
 

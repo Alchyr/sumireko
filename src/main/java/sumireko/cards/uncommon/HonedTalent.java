@@ -5,6 +5,7 @@ import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
 import sumireko.powers.HonedTalentPower;
+import sumireko.powers.OldHonedTalentPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
@@ -12,7 +13,7 @@ import static sumireko.SumirekoMod.makeID;
 public class HonedTalent extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "HonedTalent",
-            2,
+            1,
             CardType.POWER,
             CardTarget.SELF,
             CardRarity.UNCOMMON);
@@ -23,8 +24,9 @@ public class HonedTalent extends BaseCard {
     public HonedTalent() {
         super(cardInfo, false);
 
-        setMagic(2);
-        setCostUpgrade(1);
+        setMagic(4, -1);
+        //setInnate(false, true);
+        //setCostUpgrade(1);
     }
 
     @Override

@@ -16,13 +16,14 @@ import com.megacrit.cardcrawl.relics.BurningBlood;
 import sumireko.abstracts.BasePower;
 import sumireko.enums.CustomCardTags;
 import sumireko.interfaces.LockingCardInterface;
+import sumireko.patches.occult.OccultPatch;
 import sumireko.util.KeywordWithProper;
 
 import java.util.ArrayList;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class GravityPower extends BasePower {
+public class GravityPower extends BasePower implements CloneablePowerInterface {
     public static final String NAME = "Gravity";
     public static final String POWER_ID = makeID(NAME);
     public static final AbstractPower.PowerType TYPE = AbstractPower.PowerType.BUFF;
@@ -36,10 +37,9 @@ public class GravityPower extends BasePower {
     @Override
     public void onCardDraw(AbstractCard c) {
         if ((c instanceof LockingCardInterface && ((LockingCardInterface) c).isLocked()) ||
-                c.rawDescription.toLowerCase().contains(GameDictionary.UNPLAYABLE.NAMES[0]) ||
-                c.hasTag(CustomCardTags.UNPLAYABLE))
+                OccultPatch.isUnplayable(AbstractDungeon.player, c))
         {
-            addToBot(new DrawCardAction(this.amount));
+            addToTop(new DrawCardAction(this.amount));
         }
     }
 
@@ -60,5 +60,10 @@ public class GravityPower extends BasePower {
         {
             this.description = DESCRIPTIONS[1] + amount + DESCRIPTIONS[2];
         }
+    }
+
+    @Override
+    public AbstractPower makeCopy() {
+        return new GravityPower(owner, amount);
     }
 }

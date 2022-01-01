@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.GainEnergyAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -69,4 +69,4 @@ public class Simplicity extends BaseCard {
     public AbstractCard makeCopy() {
         return new Simplicity();
     }
-}
+}*/

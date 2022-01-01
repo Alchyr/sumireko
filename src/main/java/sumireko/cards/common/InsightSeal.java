@@ -55,7 +55,8 @@ public class InsightSeal extends SealCard {
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.BUFF;
+        i.addIntent(SealIntent.BUFF);
+        i.bonusEffect("+" + this.sealValue);
     }
 
     @Override

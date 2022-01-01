@@ -1,5 +1,6 @@
 package sumireko.util.mysteryupgrades;
 
+import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
@@ -9,6 +10,7 @@ import sumireko.cards.rare.MysterySeal;
 import sumireko.util.MysteryUpgrade;
 import sumireko.util.PretendMonster;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.abstracts.SealCard.pretendApplyPower;
@@ -38,11 +40,11 @@ public class StrengthDownSealUpgrade extends MysteryUpgrade {
     }
 
     @Override
-    public void triggerSealEffect(MysterySeal c, AbstractMonster target) {
+    public void triggerSealEffect(MysterySeal c, AbstractMonster target, ArrayList<AbstractGameAction> actions) {
         if (c.sealValue > 0)
         {
             for (AbstractMonster mo : AbstractDungeon.getCurrRoom().monsters.monsters) {
-                addToBot(new LoseStrengthThisTurnAction(mo, AbstractDungeon.player, c.sealValue));
+                actions.add(new LoseStrengthThisTurnAction(mo, AbstractDungeon.player, c.sealValue));
             }
         }
     }

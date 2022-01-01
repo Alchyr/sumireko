@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.actions.common.LoseHPAction;
@@ -12,7 +12,7 @@ import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class LuckyCharm extends LockingCard {
+public class LuckyCharm extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "LuckyCharm",
             1,
@@ -24,11 +24,12 @@ public class LuckyCharm extends LockingCard {
 
     private static final int UPG_COST = 0;
 
-    private static final int MAGIC = 1;
+    private static final int MAGIC = 0;
 
     public LuckyCharm() {
         super(cardInfo, false);
 
+        this.selfRetain = true;
         setCostUpgrade(UPG_COST);
         setMagic(MAGIC);
     }
@@ -47,4 +48,4 @@ public class LuckyCharm extends LockingCard {
     public AbstractCard makeCopy() {
         return new LuckyCharm();
     }
-}
+}*/

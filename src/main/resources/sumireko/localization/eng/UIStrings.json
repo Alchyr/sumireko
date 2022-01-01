@@ -44,5 +44,20 @@
     "TEXT": [
       "Increase the Cost"
     ]
+  },
+  "sumireko:MultiGroupMoveAction": {
+    "TEXT": [
+      "Choose a Card to Move.",
+      "Choose Cards to Move."
+    ]
+  },
+  "sumireko:GroupTitles": {
+    "TEXT": [
+      "Hand",
+      "Draw Pile",
+      "Discard Pile",
+      "Exhaust Pile",
+      "???"
+    ]
   }
 }

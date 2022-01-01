@@ -12,11 +12,13 @@ import sumireko.SealSystem;
 )
 public class TriggerEndTurnEffects {
     @SpirePrefixPatch
-    public static void SEALS(GameActionManager __instance)
+    public static void PRE(GameActionManager __instance)
     {
-        SealSystem.triggerEndOfTurn();
+        SealSystem.triggerEndOfTurnEffects();
     }
 
     @SpirePostfixPatch
-    public static void DREAMS(GameActionManager __instance) { DeepDreamPatch.triggerEndOfTurn(); }
+    public static void POST(GameActionManager __instance) {
+        DeepDreamPatch.triggerEndOfTurn();
+    }
 }

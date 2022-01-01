@@ -2,7 +2,10 @@ package sumireko.actions.seals;
 
 import com.badlogic.gdx.graphics.Color;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
+import com.megacrit.cardcrawl.vfx.cardManip.ExhaustCardEffect;
+import com.megacrit.cardcrawl.vfx.cardManip.PurgeCardEffect;
 import sumireko.SealSystem;
 import sumireko.abstracts.SealCard;
 import sumireko.enums.CustomCardTags;
@@ -32,8 +35,21 @@ public class SealAction extends AbstractGameAction {
             this.m = this.source.m;
         }
 
-        SealSystem.addSeal(seal, this.m);
-        seal.flash(Color.VIOLET);
+        if (SealSystem.addSeal(seal, this.m)) {
+            seal.flash(Color.VIOLET.cpy());
+            seal.beginGlowing();
+            AbstractDungeon.player.limbo.removeCard(seal); //ensure it doesn't stay in limbo if it comes from limbo
+        }
+        else {
+            seal.flash(Color.RED.cpy());
+            if (seal.hasTag(CustomCardTags.FRAGILE_SEAL)) {
+                AbstractDungeon.effectList.add(new ExhaustCardEffect(seal));
+                AbstractDungeon.player.limbo.moveToExhaustPile(seal);
+            }
+            else {
+                AbstractDungeon.player.limbo.removeCard(seal);
+            }
+        }
 
         if (seal.purgeOnUse)
         {

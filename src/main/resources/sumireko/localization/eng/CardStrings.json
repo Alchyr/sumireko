@@ -1,39 +1,59 @@
 {
-  "sumireko:StrikeSeal": {
-    "NAME": "Strike Seal",
-    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Deal !SEAL! damage.",
-    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Deal !SEAL! damage.",
+  "sumireko:Strike": {
+    "NAME": "Strike",
+    "DESCRIPTION": "Deal !D! damage.",
+    "UPGRADE_DESCRIPTION": "Deal !D! damage.",
     "EXTENDED_DESCRIPTION": [
-      "Deal !D! damage. NL sumireko:Seal: Deal !SEAL! damage."
+      "Deal !D! damage."
     ]
   },
-  "sumireko:DefenseSeal": {
-    "NAME": "Defending Seal",
-    "DESCRIPTION": "sumireko:Seal: Gain !SEAL! Block."
+  "sumireko:StrikeSeal": {
+    "NAME": "Strike Seal",
+    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage.",
+    "UPGRADE_DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Seal: Deal !SEAL! damage."
+    ]
   },
-  "sumireko:Wall": {
-    "NAME": "Wall",
-    "DESCRIPTION": "sumireko:Final. NL Gain !B! Block."
+  "sumireko:Defend": {
+    "NAME": "Defend",
+    "DESCRIPTION": "Gain !B! Block."
   },
-  "sumireko:OccultSeal": {
-    "NAME": "Occult Seal",
-    "DESCRIPTION": "sumireko:Occult. NL sumireko:Seal: Increases the effects of adjacent sumireko:Seals by !SEAL!."
+  "sumireko:Liberator": {
+    "NAME": "3D-Printed Gun",
+    "DESCRIPTION": "sumireko:Locking. NL Deal !D! damage. NL Put a random sumireko:Seal from your draw pile into your hand.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Locked. NL Deal !D! damage. NL Put a random sumireko:Seal from your draw pile into your hand."
+    ]
+  },
+  "sumireko:BarrierSeal": {
+    "NAME": "Barrier Seal",
+    "DESCRIPTION": "sumireko:Seal: Gain !SEAL! Block. Adjacent sumireko:Seals also gain !SEAL! Block."
+  },
+  "sumireko:HasteSeal": {
+    "NAME": "Haste Seal",
+    "DESCRIPTION": "Draw !M! cards. NL sumireko:Seal: Next turn, draw !SEAL! cards."
   },
   "sumireko:PsychokineticBurst": {
     "NAME": "Psychokinetic Burst",
-    "DESCRIPTION": "sumireko:Locking. NL Gain [E]. NL Draw !M! cards.",
-    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Gain [E] [E]. NL Draw !M! cards.",
+    "DESCRIPTION": "sumireko:Locking. NL Gain [E]. NL Draw !M! card.",
+    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Gain [E]. NL Draw !M! cards.",
     "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Gain [E]. NL Draw !M! cards.",
-      "sumireko:Locked. NL Gain [E] [E]. NL Draw !M! cards."
+      "sumireko:Locked. NL Gain [E]. NL Draw !M! card.",
+      "sumireko:Locked. NL Gain [E]. NL Draw !M! cards."
     ]
   },
-  "sumireko:Toss": {
-    "NAME": "Toss",
-    "DESCRIPTION": "Discard up to !M! cards. NL Trigger the end of turn effects of discarded sumireko:Seals."
+  "sumireko:DejaVu": {
+    "NAME": "Deja Vu",
+    "DESCRIPTION": "Lose [E] [E] at the start of your next turn. NL Take an extra turn after this one. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Lose [E] [E] at the start of your next turn. NL Take an extra turn after this one.",
+    "EXTENDED_DESCRIPTION": [
+      "Lose [E] [E] at the start of your next turn. NL Take an extra turn after this one. NL Exhaust.",
+      "sumireko:Locked. NL Lose [E] [E] at the start of your next turn. NL Take an extra turn after this one."
+    ]
   },
-  "sumireko:NaturalJinx": {
-    "NAME": "Natural Jinx",
+  "sumireko:Jinx": {
+    "NAME": "Jinx",
     "DESCRIPTION": "sumireko:Locking. NL Deal !D! damage. NL Whenever you play an sumireko:Occult card, the enemy loses !M! HP.",
     "EXTENDED_DESCRIPTION": [
       "sumireko:Locked. NL Deal !D! damage. NL Whenever you play an sumireko:Occult card, the enemy loses !M! HP."
@@ -41,18 +61,11 @@
   },
   "sumireko:EchoSeal": {
     "NAME": "Echo Seal",
-    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Deal !SEAL! damage."
+    "DESCRIPTION": "If the last card played this combat was a sumireko:Seal, gain [E] and draw a card. NL sumireko:Seal: Deal !SEAL! damage."
   },
-  "sumireko:Simplicity": {
-    "NAME": "Simplicity",
-    "DESCRIPTION": "sumireko:Final. NL Gain [E] for every 6 unupgraded cards in your deck.",
-    "EXTENDED_DESCRIPTION": [
-      "sumireko:Final. NL Gain !M! [E]. NL (Gain [E] for every 6 unupgraded cards in your deck.)"
-    ]
-  },
-  "sumireko:Cage": {
-    "NAME": "Cage",
-    "DESCRIPTION": "sumireko:Final. NL Enemy loses !M! Strength this turn."
+  "sumireko:Torment": {
+    "NAME": "Torment",
+    "DESCRIPTION": "Deal !D! damage. NL Whenever you play a card this turn, the enemy loses !M! Strength this turn."
   },
   "sumireko:Sight": {
     "NAME": "Sight",
@@ -60,44 +73,40 @@
   },
   "sumireko:Rite": {
     "NAME": "Rite",
-    "DESCRIPTION": "sumireko:Final. NL Deal !D! damage to a random enemy for each active sumireko:Seal."
+    "DESCRIPTION": "Deal !D! damage to a random enemy for each active sumireko:Seal."
   },
   "sumireko:Crush": {
     "NAME": "Crush",
-    "DESCRIPTION": "sumireko:Final. NL Deal !D! damage to ALL enemies twice."
+    "DESCRIPTION": "Deal !D! damage to ALL enemies twice. NL ALL enemies lose !M! Strength this turn."
   },
-  "sumireko:Fling": {
-    "NAME": "Rubble",
-    "DESCRIPTION": "sumireko:Final. NL Deal !D! damage to a random enemy !M! times."
+  "sumireko:OccultSealOld": {
+    "NAME": "Occult Seal",
+    "DESCRIPTION": "sumireko:Occult. NL sumireko:Seal: Increases the effects of adjacent sumireko:Seals by !SEAL!."
   },
-  "sumireko:Sever": {
-    "NAME": "Sever",
-    "DESCRIPTION": "sumireko:Final. NL Deal damage equal to the enemy's missing health, up to !M!.",
+  "sumireko:OccultSeal": {
+    "NAME": "Occult Seal",
+    "DESCRIPTION": "If this card is sumireko:Occult, it costs !M! additional energy. NL sumireko:Seal: Increases the effects of adjacent sumireko:Seals by X.",
     "EXTENDED_DESCRIPTION": [
-      "sumireko:Final. NL Deal damage equal to the enemy's missing health, up to !M!. NL (Deals !D! damage.)"
+      "If this card is sumireko:Occult, it costs !M! additional energy. NL sumireko:Seal: Increases the effects of adjacent sumireko:Seals by !SEAL!."
     ]
+  },
+  "sumireko:Rubble": {
+    "NAME": "Rubble",
+    "DESCRIPTION": "Deal !D! damage and apply 1 Vulnerable to a random enemy !M! times."
   },
   "sumireko:EscapeArtist": {
     "NAME": "Escape Artist",
-    "DESCRIPTION": "Draw a card. NL If you cannot play it, make it sumireko:Occult.",
-    "UPGRADE_DESCRIPTION": "Draw !M! cards. NL If you cannot play either, make it sumireko:Occult."
+    "DESCRIPTION": "Draw a card. NL If you cannot play it, make it sumireko:Occult for the rest of combat.",
+    "UPGRADE_DESCRIPTION": "Draw !M! cards. NL Make those you cannot play sumireko:Occult for the rest of combat."
   },
   "sumireko:CardTrick": {
     "NAME": "Card Trick",
-    "DESCRIPTION": "Put a card from your hand onto the top of your draw pile. NL Put a card from your discard pile into your hand.",
-    "UPGRADE_DESCRIPTION": "Draw a card. NL Put a card from your hand onto the top of your draw pile. NL Put a card from your discard pile into your hand."
-  },
-  "sumireko:BorderOfReality": {
-    "NAME": "Border of Reality",
-    "DESCRIPTION": "sumireko:Final. NL Gain !B! Block. NL Reduce this card's Block by 1 for each sumireko:Occult card played this combat."
+    "DESCRIPTION": "Put a card from your discard pile into your hand. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Put a card from your discard pile into your hand. NL Put a copy of it on top of your draw pile. NL Exhaust."
   },
   "sumireko:InsightSeal": {
     "NAME": "Insight Seal",
     "DESCRIPTION": "Gain !B! Block. NL sumireko:Seal: Increases the effects of adjacent sumireko:Seals by !SEAL!."
-  },
-  "sumireko:MurderSeal": {
-    "NAME": "Murder Seal",
-    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Lose !SEAL! HP."
   },
   "sumireko:FrostSeal": {
     "NAME": "Frigid Seal",
@@ -107,33 +116,31 @@
     "NAME": "Deflection Seal",
     "DESCRIPTION": "Gain !B! Block. NL sumireko:Seal: Whenever you are attacked this turn, deal !SEAL! damage back."
   },
-  "sumireko:Dream": {
-    "NAME": "Dream",
+  "sumireko:Lull": {
+    "NAME": "Lull",
     "DESCRIPTION": "Gain !B! Block. NL Next turn, draw !M! cards."
-  },
-  "sumireko:MindEye": {
-    "NAME": "Mind's Eye",
-    "DESCRIPTION": "sumireko:Locking. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
-    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn.",
-    "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
-      "sumireko:Locked. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn."
-    ]
   },
   "sumireko:Symbolism": {
     "NAME": "Symbolism",
     "DESCRIPTION": "Gain [E] for each active sumireko:Seal. NL Exhaust."
   },
-  "sumireko:Precognition": {
-    "NAME": "Precognition",
-    "DESCRIPTION": "Gain !B! Block. NL Make the top card of your draw pile sumireko:Occult."
+  "sumireko:IllusoryStep": {
+    "NAME": "Illusory Step",
+    "DESCRIPTION": "Gain !B! Block. NL Make the top card of your draw pile sumireko:Occult for the rest of combat."
   },
   "sumireko:Brainwave": {
     "NAME": "Brainwave",
-    "DESCRIPTION": "Deal !D! damage to ALL enemies. NL Make a random Attack in your hand sumireko:Occult."
+    "DESCRIPTION": "Deal !D! damage to ALL enemies. NL Make a random Attack in your hand sumireko:Occult for the rest of combat."
+  },
+  "sumireko:Curse": {
+    "NAME": "Curse",
+    "DESCRIPTION": "sumireko:Locking. NL Enemy loses !M! Strength.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Locked. NL Enemy loses !M! Strength."
+    ]
   },
   "sumireko:InstantBarrier": {
-    "NAME": "Instant Barrier",
+    "NAME": "Instant Wall",
     "DESCRIPTION": "sumireko:Locking. NL Gain !B! Block.",
     "UPGRADE_DESCRIPTION": "Retain. NL sumireko:Locking. NL Gain !B! Block.",
     "EXTENDED_DESCRIPTION": [
@@ -143,87 +150,81 @@
   },
   "sumireko:TelephonePole": {
     "NAME": "Telephone Pole",
-    "DESCRIPTION": "sumireko:Locking. NL Deal !D! damage.",
+    "DESCRIPTION": "sumireko:Locking. NL Deal !D! damage. NL Apply !M! Vulnerable.",
     "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Deal !D! damage."
+      "sumireko:Locked. NL Deal !D! damage. NL Apply !M! Vulnerable."
     ]
   },
   "sumireko:IronGirders": {
     "NAME": "Iron Girders",
-    "DESCRIPTION": "Gain !B! Block. NL Deal !D! damage twice. NL Increase this card's cost by 1 for the combat.",
+    "DESCRIPTION": "Innate. NL Deal !D! damage. NL Decrease the damage of this card by 1 this combat and shuffle it into your draw pile.",
     "EXTENDED_DESCRIPTION": [
-      "Iron girders fall in front of yourself first (between you and enemy). Then, two more fall on the enemy."
+      "An iron girder falls on the enemy."
     ]
   },
-  "sumireko:Materialism": {
-    "NAME": "Materialism",
-    "DESCRIPTION": "Discard ALL sumireko:Seals in your hand, then draw twice as many cards. NL Exhaust.",
-    "UPGRADE_DESCRIPTION": "Discard ALL sumireko:Seals in your hand, then draw twice as many cards."
+  "sumireko:Repel": {
+    "NAME": "Repel",
+    "DESCRIPTION": "Deal !D! damage 2 times. NL Gain Block equal to the unblocked damage dealt."
   },
-  "sumireko:Banish": {
-    "NAME": "Banish",
-    "DESCRIPTION": "Exhaust a card. NL Draw cards equal to its cost.",
-    "UPGRADE_DESCRIPTION": "Exhaust a card. NL Draw cards equal to its cost plus !M!.",
-    "EXTENDED_DESCRIPTION": [
-      "Exhaust"
-    ]
+  "sumireko:Augury": {
+    "NAME": "Augury",
+    "DESCRIPTION": "Gain !B! Block X times. NL You cannot play cards next turn. NL Exhaust."
   },
   "sumireko:RepressionSeal": {
     "NAME": "Repression Seal",
-    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Apply !SEAL! Weak.",
-    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL Draw a card. NL sumireko:Seal: Apply !SEAL! Weak."
-  },
-  "sumireko:Doppelganger": {
-    "NAME": "Doppelganger",
-    "DESCRIPTION": "Add a copy of a card in your hand to your hand. NL Exhaust.",
-    "UPGRADE_DESCRIPTION": "Add an upgraded copy of a card in your hand to your hand. NL Exhaust."
-  },
-  "sumireko:EmptySeal": {
-    "NAME": "Empty Seal",
-    "DESCRIPTION": "sumireko:Final. NL Draw a card. NL sumireko:Seal."
+    "DESCRIPTION": "Apply !M! Weak. NL sumireko:Seal: If the enemy intends to attack, adjacent sumireko:Seals also deal !SEAL! damage to it."
   },
   "sumireko:ExplosionSeal": {
     "NAME": "Explosion Seal",
     "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to ALL enemies. NL If this is the center sumireko:Seal, it deals twice as much damage."
   },
-  "sumireko:RestrainingSeal": {
-    "NAME": "Restraining Seal",
-    "DESCRIPTION": "sumireko:Seal: ALL enemies lose !SEAL! Strength this turn. NL sumireko:Fragile.",
-    "UPGRADE_DESCRIPTION": "CHANGE TO THIS? sumireko:Seal: Enemies attack !SEAL! less time this turn. NL Cannot reduce enemy attacks to zero. NL sumireko:Fragile."
+  "sumireko:ConstraintSeal": {
+    "NAME": "Constraint Seal",
+    "DESCRIPTION": "sumireko:Seal: Enemies lose Strength this turn equal to the unblocked damage dealt to them by adjacent sumireko:Seals. NL sumireko:Fragile.",
+    "UPGRADE_DESCRIPTION": "Retain. NL sumireko:Seal: Enemies lose Strength this turn equal to the unblocked damage dealt to them by adjacent sumireko:Seals. NL sumireko:Fragile."
   },
   "sumireko:MirrorSeal": {
     "NAME": "Mirror Seal",
-    "DESCRIPTION": "sumireko:Seal. NL Becomes a sumireko:Fragile copy of the newest active sumireko:Seal while active. NL sumireko:Fragile.",
-    "UPGRADE_DESCRIPTION": "sumireko:Seal. NL Becomes a copy of the newest active sumireko:Seal while active."
-  },
-  "sumireko:ExtensionSeal": {
-    "NAME": "Extension Seal",
-    "DESCRIPTION": "Unplayable. NL sumireko:Seal: Multiply the effects of adjacent sumireko:Seals by !SEAL!. NL sumireko:Fragile.",
-    "UPGRADE_DESCRIPTION": "Unplayable. NL sumireko:Seal: Multiply the effects of adjacent sumireko:Seals by !SEAL!."
+    "DESCRIPTION": "sumireko:Seal. NL Becomes a sumireko:Fragile copy of the newest active sumireko:Seal. NL sumireko:Fragile.",
+    "UPGRADE_DESCRIPTION": "sumireko:Seal. NL Becomes a copy of the newest active sumireko:Seal."
   },
   "sumireko:FireburstSeal": {
     "NAME": "Fireburst Seal",
-    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage three times."
+    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Deal !SEAL! damage three times."
   },
   "sumireko:ShockingSeal": {
     "NAME": "Shocking Seal",
     "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to a random enemy !SEAL! times. NL sumireko:Fragile.",
     "UPGRADE_DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to a random enemy !SEAL! times."
   },
+  "sumireko:Materialism": {
+    "NAME": "Materialism",
+    "DESCRIPTION": "Deal !D! damage to ALL enemies. NL Shuffle a card from your hand or discard pile into your draw pile."
+  },
   "sumireko:RuleCancel": {
     "NAME": "Rule Cancel",
-    "DESCRIPTION": "sumireko:Final. NL Make a card in your hand sumireko:Occult for the rest of combat."
+    "DESCRIPTION": "sumireko:Final. NL Make a card in your hand sumireko:Occult for the rest of combat. NL Exhaust."
   },
   "sumireko:Psychexplosion": {
     "NAME": "Psychexplosion",
     "DESCRIPTION": "Deal !D! damage. NL Deal twice as much damage if you cannot play this card."
   },
-  "sumireko:SpiritualStress": {
-    "NAME": "Spiritual Stress",
-    "DESCRIPTION": "While in hand, increase this card’s cost by 1 for the combat whenever you play another card. NL Deal damage equal to this card’s cost twice.",
+  "sumireko:End": {
+    "NAME": "End",
+    "DESCRIPTION": "While in hand, increase this card’s cost by 1 this combat whenever you play another card. NL Deal damage equal to double this card’s cost.",
+    "UPGRADE_DESCRIPTION": "While in hand, increase this card’s cost by 1 this combat whenever you play another card. NL Deal damage equal to triple this card’s cost.",
     "EXTENDED_DESCRIPTION": [
-      " NL (Deals !D! damage twice.)"
+      " NL (Deals !D! damage.)"
     ]
+  },
+  "sumireko:MassSeal": {
+    "NAME": "Mass Seal",
+    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage to ALL enemies for each card in your hand.",
+    "UPGRADE_DESCRIPTION": "Draw a card. NL sumireko:Seal: Deal !SEAL! damage to ALL enemies for each card in your hand."
+  },
+  "sumireko:StormSeal": {
+    "NAME": "Storm Seal",
+    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Increase this card's damage by !SEAL! this combat."
   },
   "sumireko:Telephotography": {
     "NAME": "Telephotography",
@@ -235,30 +236,27 @@
     "DESCRIPTION": "Whenever you play a sumireko:Seal, gain !M! temporary Strength."
   },
   "sumireko:PerfectParadox": {
-    "NAME": "Perfect Paradox",
-    "DESCRIPTION": "Whenever you play a card you should not be able to, gain !M! Block."
-  },
-  "sumireko:FundamentalMastery": {
-    "NAME": "Fundamentals",
-    "DESCRIPTION": "sumireko:Final. NL sumireko:Final cards are played an additional time."
+    "NAME": "Paradox",
+    "DESCRIPTION": "Whenever you play a card you shouldn't be able to, a random enemy loses !M! Strength this turn."
   },
   "sumireko:HonedTalent": {
     "NAME": "Honed Talent",
-    "DESCRIPTION": "Whenever you play a sumireko:Final card, the damage dealt by sumireko:Final Attacks is increased by !M! for the combat."
+    "DESCRIPTION": "Whenever you play !M! sumireko:Seals, gain 1 sumireko:Prowess."
+  },
+  "sumireko:HonedTalentOld": {
+    "NAME": "Honed TalentOld",
+    "DESCRIPTION": "Whenever you play a sumireko:Final card, the damage dealt by sumireko:Final Attacks is increased by !M!.",
+    "UPGRADE_DESCRIPTION": "Innate. NL Whenever you play a sumireko:Final card, the damage dealt by sumireko:Final Attacks is increased by !M!."
   },
   "sumireko:Gravity": {
     "NAME": "Gravity",
-    "DESCRIPTION": "Whenever you draw a sumireko:Locked or Unplayable card, draw a card.",
-    "UPGRADE_DESCRIPTION": "Innate. NL Whenever you draw a sumireko:Locked or Unplayable card, draw a card."
+    "DESCRIPTION": "Ethereal. NL Whenever you draw a sumireko:Locked or Unplayable card, draw a card.",
+    "UPGRADE_DESCRIPTION": "Whenever you draw a sumireko:Locked or Unplayable card, draw a card."
   },
   "sumireko:Fragment": {
     "NAME": "Fragment",
-    "DESCRIPTION": "Unplayable. NL Retain. NL Deal !D! damage. NL Add a *Fragment into your hand.",
-    "UPGRADE_DESCRIPTION": "Unplayable. NL Retain. NL Deal !D! damage. NL Add a *Fragment+ into your hand."
-  },
-  "sumireko:Liberator": {
-    "NAME": "3D-Printed Gun",
-    "DESCRIPTION": "Deal !D! damage. NL Put a random sumireko:Seal from your draw pile into your hand. NL Exhaust."
+    "DESCRIPTION": "Unplayable. NL Deal !D! damage. NL Add a *Fragment into your hand.",
+    "UPGRADE_DESCRIPTION": "Unplayable. NL Deal !D! damage. NL Add a *Fragment+ into your hand."
   },
   "sumireko:PsychicProwess": {
     "NAME": "Psychic Superiority",
@@ -266,7 +264,7 @@
   },
   "sumireko:EsotericSecrets": {
     "NAME": "Esoteric Secrets",
-    "DESCRIPTION": "Take !M! less damage from attacks for each sumireko:Locked or Unplayable card in your hand at the end of your turn."
+    "DESCRIPTION": "At the end of your turn, Exhaust any number of cards in your hand and gain !M! Block for each."
   },
   "sumireko:Imprint": {
     "NAME": "Imprint",
@@ -279,13 +277,6 @@
       "sumireko:Seal:",
       "sumireko:Seal.",
       " NL Can be Upgraded any number of times."
-    ]
-  },
-  "sumireko:LuckyCharm": {
-    "NAME": "Lucky Charm",
-    "DESCRIPTION": "sumireko:Locking. NL Increase this card's Block by 1. NL While in hand, gain !M! Block whenever you play another card.",
-    "EXTENDED_DESCRIPTION": [
-      "sumireko:Locked. NL Increase this card's Block by 1. NL While in hand, gain !M! Block whenever you play another card."
     ]
   },
   "sumireko:Clairvoyance": {
@@ -312,19 +303,17 @@
     "NAME": "Molded Fire",
     "DESCRIPTION": "sumireko:Occult. NL Deal !D! damage for each [E] more this costs than your current energy."
   },
-  "sumireko:PocketBattery": {
-    "NAME": "Pocket Battery",
-    "DESCRIPTION": "Unplayable. NL Retain. NL When played or drawn, gain [E].",
-    "UPGRADE_DESCRIPTION": "Unplayable. NL Retain. NL When played or drawn, gain [E]. NL Draw a card."
-  },
   "sumireko:Teleportation": {
     "NAME": "Teleportation",
-    "DESCRIPTION": "Exhaust your discard pile. NL If you Exhaust at least !M! cards, gain 1 Intangible. NL Otherwise, gain !B! Block."
+    "DESCRIPTION": "Exhaust any number of cards in your hand. NL If you Exhaust at least !M! cards, gain 1 Intangible. NL Otherwise, gain !B! Block.",
+    "EXTENDED_DESCRIPTION": [
+      "Exhaust"
+    ]
   },
   "sumireko:SixthSense": {
     "NAME": "Sixth Sense",
     "DESCRIPTION": "At the end of your turn, Retain up to !M! cards you shouldn't be able to play.",
-    "UPGRADE_DESCRIPTION": "Innate. NL At the end of your turn, Retain up to !M! cards you shouldn't be able to play."
+    "UPGRADE_DESCRIPTION": "At the end of your turn, Retain up to !M! cards you shouldn't be able to play."
   },
   "sumireko:LockCycle": {
     "NAME": "Lock Cycle",
@@ -332,13 +321,15 @@
   },
   "sumireko:VisionOfMadness": {
     "NAME": "Vision of Madness",
-    "DESCRIPTION": "Make ALL cards in your hand sumireko:Occult. NL Exhaust the next !M! cards you play."
+    "DESCRIPTION": "Make ALL cards in your hand sumireko:Occult for the rest of combat. NL Exhaust the next !M! cards you play. NL Exhaust."
   },
   "sumireko:ForbiddenKnowledge": {
     "NAME": "Forbidden Knowledge",
-    "DESCRIPTION": "Can only be played if your draw pile contains less than !M! cards. NL Make a card in your draw pile sumireko:Occult.",
+    "DESCRIPTION": "Deal !D! damage for each of your sumireko:Occult cards.",
     "EXTENDED_DESCRIPTION": [
-      "I have too many cards in my draw pile."
+      " NL (",
+      " sumireko:Occult cards.)",
+      " sumireko:Occult card.)"
     ]
   },
   "sumireko:AmplificationSeal": {
@@ -352,22 +343,60 @@
   },
   "sumireko:PerfectMemory": {
     "NAME": "Perfect Memory",
-    "DESCRIPTION": "Put a copy of the next card you play onto the top of your draw pile. NL Exhaust.",
-    "UPGRADE_DESCRIPTION": "Put !M! copies of the next card you play onto the top of your draw pile. NL Exhaust."
+    "DESCRIPTION": "Put a copy of the next card you play onto the top of your draw pile.",
+    "UPGRADE_DESCRIPTION": "Put !M! copies of the next card you play onto the top of your draw pile."
   },
   "sumireko:DeepDream": {
     "NAME": "Deep Dream",
-    "DESCRIPTION": "sumireko:Final. NL Use your draw pile as your hand until the end of the turn. NL Exhaust.",
+    "DESCRIPTION": "Use the top !M! cards of your draw pile as your hand until the end of the turn. NL Exhaust.",
     "UPGRADE_DESCRIPTION": "MIGHT USE? sumireko:Final. NL Shuffle your discard pile into your draw pile. NL Use your draw pile as your hand until the end of the turn. NL Exhaust."
   },
   "sumireko:Psychometry": {
     "NAME": "Psychometry",
-    "DESCRIPTION": "Choose up to !M! cards you played last turn and replace your hand with a copy of them. NL Exhaust."
+    "DESCRIPTION": "Choose up to !M! cards you played last turn and replace your hand with a copy of each. NL Exhaust."
   },
-  "sumireko:Possession": {
-    "NAME": "Possession",
-    "DESCRIPTION": "Ethereal. NL Stun the enemy. NL Exhaust.",
-    "UPGRADE_DESCRIPTION": "Stun the enemy. NL Exhaust."
+  "sumireko:Cornerstone": {
+    "NAME": "Cornerstone",
+    "DESCRIPTION": "Increase the effects of the center sumireko:Seal by !M!."
+  },
+  "sumireko:OneIsEnough": {
+    "NAME": "One Is Enough",
+    "DESCRIPTION": "Draw !M! cards and choose one. NL You cannot play the other this turn.",
+    "UPGRADE_DESCRIPTION": "Draw !M! cards and choose one. NL You cannot play the others this turn.",
+    "EXTENDED_DESCRIPTION": [
+      "be Playable"
+    ]
+  },
+  "sumireko:Comprehension": {
+    "NAME": "Comprehension",
+    "DESCRIPTION": "Make the next !M! Unplayable, sumireko:Locking, or sumireko:Locked cards you draw sumireko:Occult for the rest of combat."
+  },
+  "sumireko:EternalSeal": {
+    "NAME": "Eternal Seal",
+    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal. NL sumireko:Eternal."
+  },
+  "sumireko:Affirmation": {
+    "NAME": "Affirmation",
+    "DESCRIPTION": "sumireko:Final. NL Gain !B! Block and deal !D! damage to a random enemy for each unupgraded card played this turn.",
+    "EXTENDED_DESCRIPTION": [
+      " NL (",
+      " unupgraded card played.)",
+      " unupgraded cards played.)"
+    ]
+  },
+  "sumireko:Avalanche": {
+    "NAME": "Avalanche",
+    "DESCRIPTION": "Add X *Stone *Seals to your hand.",
+    "UPGRADE_DESCRIPTION": "Add X upgraded *Stone *Seals to your hand."
+  },
+  "sumireko:StoneSeal": {
+    "NAME": "Stone Seal",
+    "DESCRIPTION": "Retain. NL sumireko:Seal: Deal !SEAL! damage. NL sumireko:Fragile."
+  },
+  "sumireko:Paralysis": {
+    "NAME": "Paralysis",
+    "DESCRIPTION": "Ethereal. NL Deal !D! damage. NL sumireko:Stun the enemy. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Deal !D! damage. NL sumireko:Stun the enemy. NL Exhaust."
   },
   "sumireko:AttackChoice": {
     "NAME": "Attack",
@@ -385,8 +414,97 @@
     "NAME": "Other",
     "DESCRIPTION": "D. None of the above."
   },
+  "sumireko:Draw Pile Archetype Ideas": {
+    "IDEAS": [
+      "Sleeved cards are active while in the draw pile.",
+      "PROS: Easy to pick up, have usually active benefits that can be easily stacked.",
+      "CONS: When drawn, they're basically bricks, and will do nothing for a while if you discard them.",
+      "Keep values relatively low so they don't go out of control too easily.",
+      "Sleeved cards: Upfront value. Seals/Occult: Value that requires setup.",
+      "Visual: Transparent images of the objects will float around you while they are in your draw pile. Transparency decreases with multiple copies."
+    ]
+  },
+  "sumireko:Ponder": {
+    "NAME": "Ponder",
+    "DESCRIPTION": "Gain !B! Block. NL Shuffle your discard pile into your draw pile."
+  },
+  "sumireko:VoodooDoll": {
+    "NAME": "Voodoo Doll",
+    "DESCRIPTION": "sumireko:Sleeved: Whenever you are attacked, deal !M! damage to the enemy with the least HP.",
+    "UPGRADE_DESCRIPTION": "Shuffle this card into your draw pile. NL sumireko:Sleeved: Whenever you are attacked, deal !M! damage to the enemy with the least HP."
+  },
+  "sumireko:ManekiNeko": {
+    "NAME": "Lucky Cat",
+    "DESCRIPTION": "Unplayable. NL Retain. NL sumireko:Sleeved: Gain !M! Block whenever you play a card.",
+    "UPGRADE_DESCRIPTION": "Retain. NL Gain !B! Block. NL sumireko:Sleeved: Gain !M! Block whenever you play a card.",
+    "EXTENDED_DESCRIPTION": [
+      "I can't play this card."
+    ]
+  },
+  "sumireko:BottomlessSack": {
+    "NAME": "Bottomless Sack",
+    "DESCRIPTION": "sumireko:Sleeved: At the start of your turn, add a random Common card into your hand.",
+    "UPGRADE_DESCRIPTION": "Draw a card. NL sumireko:Sleeved: At the start of your turn, add a random Common card into your hand."
+  },
+  "sumireko:Dreamcatcher": {
+    "NAME": "Dreamcatcher",
+    "DESCRIPTION": "sumireko:Sleeved: When you play a sumireko:Seal, put a copy of it into your hand and Exhaust this card.",
+    "UPGRADE_DESCRIPTION": "Apply !M! Weak. NL sumireko:Sleeved: When you play a sumireko:Seal, put a copy of it into your hand and discard this card."
+  },
+  "sumireko:Smartphone": {
+    "NAME": "Smartphone",
+    "DESCRIPTION": "Ethereal. NL sumireko:Sleeved: When you play a Power, draw this card and ALL enemies lose !M! Strength this turn."
+  },
+  "sumireko:PocketBattery": {
+    "NAME": "Pocket Battery",
+    "DESCRIPTION": "Unplayable. NL Retain. NL When played or drawn, gain [E].",
+    "UPGRADE_DESCRIPTION": "Unplayable. NL Retain. NL Draw a card. NL When played or drawn, gain [E]."
+  },
   "Below this point are cards which have not yet been implemented or are merely up for consideration.": {
     "NAME": "",
+    "DESCRIPTION": "If you're a translator, don't go any further."
+  },
+  "sumireko:Restructure": {
+    "NAME": "Restructure",
+    "DESCRIPTION": "At the start of your turn, shuffle a card from your discard pile into your draw pile."
+  },
+  "sumireko:AlternateReality": {
+    "NAME": "Alternate Reality",
+    "DESCRIPTION": "Swap your draw pile and discard pile. Deal damage equal to the number of cards moved.",
+    "UPGRADE_DESCRIPTION": "Retain. NL Swap your draw pile and discard pile. Deal damage equal to the number of cards moved.",
+    "EXTENDED_DESCRIPTION": [
+      "Deal !D! damage. NL "
+    ]
+  },
+  "sumireko:Daruma": {
+    "NAME": "Daruma",
+    "DESCRIPTION": "Unplayable. NL Retain. NL sumireko:Sleeved: At the start of your turn, put a random card from your discard pile into your hand.",
+    "UPGRADE_DESCRIPTION": "Retain. NL sumireko:Sleeved: At the start of your turn, put a card from your discard pile into your hand."
+  },
+  "sumireko:BrokenClock": {
+    "NAME": "Broken Clock Mehhhhh",
+    "DESCRIPTION": "Unplayable. NL Retain. NL sumireko:Sleeved: The 6th card you play each turn is played twice.",
+    "UPGRADE_DESCRIPTION": "Unplayable. NL sumireko:Sleeved: The 6th card you play each turn is played twice."
+  },
+  "sumireko:PowerGlove": {
+    "NAME": "Power Glove",
+    "DESCRIPTION": "Unplayable. NL Retain. NL sumireko:Sleeved: Attacks deal !M! additional damage."
+  },
+  "sumireko:PrayerBeads": {
+    "NAME": "Prayer Beads",
+    "DESCRIPTION": "Apply !M! Weak. NL sumireko:Sleeved: When you run out of [E], make a card in your hand sumireko:Occult and Exhaust this card.",
+    "UPGRADE_DESCRIPTION": "Apply !M! Weak. NL sumireko:Sleeved: When you run out of [E], make a card in your hand sumireko:Occult and discard this card."
+  },
+  "sumireko:OminousStatue": {
+    "NAME": "Ominous Statue",
+    "DESCRIPTION": "Deal !D! damage. NL sumireko:Sleeved: At the start of your turn, draw 1 less card."
+  },
+  "sumireko:VanishingAct": {
+    "NAME": "Vanishing Act",
+    "DESCRIPTION": ""
+  },
+  "sumireko:BalancingAct": {
+    "NAME": "Balancing Act",
     "DESCRIPTION": ""
   },
   "sumireko:IllusoryDouble": {
@@ -398,13 +516,9 @@
     "NAME": "Illusory Form",
     "DESCRIPTION": "At the end of your turn, you may Exhaust a card to create a clone with HP equal to its cost that will receive enemy attacks. NL Exhaust."
   },
-  "sumireko:JustAnIllusion": {
-    "NAME": "Just An Illusion",
-    "DESCRIPTION": "Take no damage for !M! turns. NL When this effect wears off, take all damage prevented. NL Exhaust."
-  },
-  "sumireko:ReleasingRitual": {
-    "NAME": "Releasing Ritual",
-    "DESCRIPTION": "At the end of your turn, if you have 5 active sumireko:Seals, make a random card in your draw pile sumireko:Occult."
+  "sumireko:MentalBlock": {
+    "NAME": "Mental Block",
+    "DESCRIPTION": "Gain !B! Block. NL The third card you play next turn will be a copy of this card."
   },
   "sumireko:SealedDeck": {
     "NAME": "Sealed Deck",
@@ -414,62 +528,73 @@
     "NAME": "Vibrant Something (2 cost)",
     "DESCRIPTION": "Can only be played if you played at least !M! cards this turn. NL Gain [E] [E] [E]."
   },
-  "sumireko:Rare Occult Card": {
-    "NAME": "Finale",
-    "DESCRIPTION": "Exhaust ALL cards that are not sumireko:Occult. Gain !B! Block for each card Exhausted."
-  },
-  "sumireko:Occultation": {
-    "NAME": "Occultation",
-    "DESCRIPTION": "Retain. NL Play X random sumireko:Occult cards from your draw and discard pile . NL Exhaust.",
-    "UPGRADE_DESCRIPTION": "Retain. NL Play X random sumireko:Occult cards from your draw and discard pile. NL Exhaust."
-  },
   "sumireko:MindBreaker": {
     "NAME": "Mind Breaker",
     "DESCRIPTION": "Enemy deals half as much damage this turn."
   },
-  "sumireko:eeee": {
-    "NAME": "eeee",
-    "DESCRIPTION": "Discard all but one card from your draw pile. NL Gain !B! Block for each card discarded."
+  "sumireko:EternalSealA": {
+    "NAME": "Eternal Seal",
+    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage. Return this card to your hand."
   },
-  "sumireko:MassSeal": {
+  "sumireko:MassSealButPower": {
+    "NAME": "idk",
+    "DESCRIPTION": "At the end of your turn, deal !M! damage to ALL enemies for each card in your hand."
+  },
+  "sumireko:MassSealB": {
     "NAME": "Mass Seal",
     "DESCRIPTION": "Play additional copies of this card equal to this card's cost. NL sumireko:Seal: Deal !SEAL! damage."
   },
-  "sumireko:Lodestone": {
-    "NAME": "Lodestone",
-    "DESCRIPTION": "Grave. NL Gain !B! Block. NL This card is not shuffled into your draw pile."
-  },
-  "sumireko:Doppeler": {
-    "NAME": "Effect",
-    "DESCRIPTION": "Replace a card in your hand with a copy of this card. NL Exhaust."
-  },
-  "sumireko:NightSeal": {
-    "NAME": "Night Seal",
-    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage. NL If you have 3 active *Night *Seals, increase the damage of this card by !SEAL! permanently."
-  },
-  "sumireko:Cornerstone": {
-    "NAME": "Cornerstone",
-    "DESCRIPTION": "Increase the effects of the center sumireko:Seal by !M!."
-  },
-  "sumireko:aaaa": {
-    "NAME": "AlternateReality",
-    "DESCRIPTION": "Swap your hand and draw pile. NL Extra cards are discarded."
+  "sumireko:MirrorImage": {
+    "NAME": "Mirror Image",
+    "DESCRIPTION": "Create a mirror image of the enemy. NL The enemy takes all damage dealt to the mirror image."
   },
   "sumireko:Notes": {
     "NAME": "",
     "DESCRIPTION": "To fill out: Some more stuff that synergizes with seals, perhaps topdeck mechanic a bit. A bit more unplayable/locking. Powers for these.",
     "UPGRADE_DESCRIPTION": "Glue cards that link some of these mechanics together. I think Final is fleshed out enough. Perhaps some minor synergy in the glue cards.",
     "EXTENDED_DESCRIPTION": [
-      "Perhaps some more high cost stuff. Some Value cards.",
-      "Cards I wanna change: Teleportation feels pretty awkward to use. Toss also feels quite awkward. But, it was in a deck without many seals.",
-      "Replace it with a multihit damage effect?",
+      "THE CHOPPING BLOCK: Banish. It's unnecessary with other draw tools existing and doesn't really synergize much.",
+      "Materialism provides a bit too much draw. It's 'anti seal' but just works well with them anyways. Make it instead of draw, an attack?",
+      "Locked and Unplayable cards cost 1 less? Pain to code.",
+      "Strength now affects Seals and Prowess affects Attacks. Not enough support and also busted with the support that exists.",
+      "Whenever you play a card, some effect based on its cost.",
+      "Cards ____ equal to their cost",
+      "Whenever you play cards that cost a total of !M! [E], ___.",
+      "One more locking/unplayable card?",
       "arrrrt.....?",
+      "Seals: Full card art. When hovered, text is displayed. Black background with representative symbol. Symbol is rendered separately",
+      "and scales separately. Will fill most of space on a small card and less of it on hovered card. (May need to do framebuffer stuff.)",
       "Think i'm just gonna cancel the card cost supporty focused stuff (mass mash), maybe iron girders. Too finicky, and would require more support than I have room for.",
       "Singular cards that interact with cost on their own are probably fine."
     ]
   },
   "sumireko:Below this point is cards I decided not to use.": {
     "NAME": "unfortunate"
+  },
+  "sumireko:Cage": {
+    "NAME": "Cage",
+    "DESCRIPTION": "Deal !D! damage. NL Enemy loses !M! Strength this turn."
+  },
+  "sumireko:OldEsotericSecrets": {
+    "NAME": "Esoteric Secrets",
+    "DESCRIPTION": "Take !M! less damage from attacks for each sumireko:Locked or Unplayable card in your hand at the end of your turn."
+  },
+  "sumireko:Doppelganger": {
+    "NAME": "Doppelganger",
+    "DESCRIPTION": "Add a copy of a card in your hand to your hand. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Add an upgraded copy of a card in your hand to your hand. NL Exhaust."
+  },
+  "sumireko:Banish": {
+    "NAME": "Banish",
+    "DESCRIPTION": "Exhaust a card. NL Draw cards equal to its cost plus !M!.",
+    "UPGRADE_DESCRIPTION": "Exhaust a card. NL Draw cards equal to its cost plus !M!.",
+    "EXTENDED_DESCRIPTION": [
+      "Exhaust"
+    ]
+  },
+  "sumireko:NightSeal": {
+    "NAME": "Night Seal",
+    "DESCRIPTION": "sumireko:Seal: Deal !SEAL! damage. NL If you have 3 active *Night *Seals, increase the damage of this card by !SEAL! permanently."
   },
   "sumireko:MassMash (Not relevant enough to rest of stuff)": {
     "NAME": "Mass Mash",
@@ -478,13 +603,48 @@
       " NL (Deals !D! damage.)"
     ]
   },
+  "sumireko:BorderOfReality": {
+    "NAME": "Border of Reality",
+    "DESCRIPTION": "Gain !B! Block. NL Gain 1 less Block for each sumireko:Occult card played this combat."
+  },
+  "sumireko:OldMaterialism": {
+    "NAME": "Materialism",
+    "DESCRIPTION": "Discard all sumireko:Seals in your hand, then draw twice as many cards. NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Discard all sumireko:Seals in your hand, then draw twice as many cards."
+  },
+  "sumireko:EmptySeal": {
+    "NAME": "Empty Seal",
+    "DESCRIPTION": "sumireko:Final. NL Draw a card. NL sumireko:Seal."
+  },
+  "sumireko:ExtensionSeal": {
+    "NAME": "Extension Seal",
+    "DESCRIPTION": "Unplayable. NL sumireko:Seal: Multiply the effects of adjacent sumireko:Seals by !SEAL!.",
+    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL sumireko:Seal: Multiply the effects of adjacent sumireko:Seals by !SEAL!.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Locked. NL sumireko:Seal: Multiply the effects of adjacent sumireko:Seals by !SEAL!."
+    ]
+  },
+  "sumireko:Occultation": {
+    "NAME": "Occultation",
+    "DESCRIPTION": "Retain. NL Play X random sumireko:Occult cards from your draw and discard pile . NL Exhaust.",
+    "UPGRADE_DESCRIPTION": "Retain. NL Play X random sumireko:Occult cards from your draw and discard pile. NL Exhaust."
+  },
   "sumireko:UnlockedSecrets": {
     "NAME": "Unlocked Secrets",
     "DESCRIPTION": "Whenever you play a card you shouldn't be able to, gain [E]."
   },
+  "sumireko:Lodestone": {
+    "NAME": "Lodestone",
+    "DESCRIPTION": "Grave. NL Gain !B! Block. NL This card is not shuffled into your draw pile.",
+    "UPGRADE_DESCRIPTION": "Maybe in a character with more return-from-discard effects."
+  },
   "sumireko:HeavyKnowledge (Cost stuff isn't a main focus.)": {
     "NAME": "Heavy Knowledge",
     "DESCRIPTION": "Whenever you play a card that costs 3 or more, add a random sumireko:Seal card into your hand. NL It costs 0 this turn and has sumireko:Fragile."
+  },
+  "sumireko:Rare Occult Card": {
+    "NAME": "Finale",
+    "DESCRIPTION": "Exhaust ALL cards that are not sumireko:Occult. Gain !B! Block for each card Exhausted."
   },
   "sumireko:CursedSeal": {
     "NAME": "Cursed Seal",
@@ -492,15 +652,68 @@
   },
   "sumireko:LiberationSeal": {
     "NAME": "Un-Seal",
-    "DESCRIPTION": "sumireko:Seal: Make !SEAL! random cards in your hand sumireko:Occult. NL sumireko:Fragile."
+    "DESCRIPTION": "sumireko:Seal: Make !SEAL! random cards in your hand sumireko:Occult for the rest of combat. NL sumireko:Fragile."
+  },
+  "sumireko:RecessesOfTheMind": {
+    "NAME": "Recesses of the Mind",
+    "DESCRIPTION": "Unplayable. NL This card is your discard pile.",
+    "Oh god what the fuck are you thinking don't make this": ""
   },
   "sumireko:ooooo": {
     "NAME": "ooooo",
     "DESCRIPTION": "Ethereal. NL Startup: Draw a card."
   },
   "sumireko:Heartstone": {
-    "NAME": "Heartstone",
-    "DESCRIPTION": "When this card is drawn, increase the cost of cards in your hand by 1 for the turn. NL Deal 40 damage."
+    "NAME": "Heartstone (poopy)",
+    "DESCRIPTION": "When this card is drawn, increase the cost of cards in your hand by 1 this turn. NL Deal 40 damage."
+  },
+  "sumireko:Sever": {
+    "NAME": "Sever (meh.)",
+    "DESCRIPTION": "sumireko:Final. NL Deal damage equal to the enemy's missing health, up to !M!.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Final. NL Deal damage equal to the enemy's missing health, up to !M!. NL (Deals !D! damage.)"
+    ]
+  },
+  "sumireko:Toss": {
+    "NAME": "Toss (Too Jank)",
+    "DESCRIPTION": "Discard up to !M! cards. NL Trigger the end of turn effects of discarded sumireko:Seals."
+  },
+  "sumireko:ShowOfPower": {
+    "NAME": "Show of Power (Final is no longer an archetype.)",
+    "DESCRIPTION": "Play !M! random sumireko:Final cards from your draw pile."
+  },
+  "sumireko:FundamentalMastery": {
+    "NAME": "Fundamentals",
+    "DESCRIPTION": "sumireko:Final. NL sumireko:Final cards are played an additional time."
+  },
+  "sumireko:MindEye": {
+    "NAME": "Mind's Eye",
+    "DESCRIPTION": "Choose 1 of !M! random cards from your draw pile. Put a copy of it into your hand. NL Exhaust."
+  },
+  "sumireko:VuDuDoll": {
+    "NAME": "Vu-Du Doll",
+    "DESCRIPTION": "Enemy loses !M! Strength at the end of each of its turns. NL Exhaust."
+  },
+  "sumireko:TormentNo": {
+    "NAME": "TormentWaitThisIsJustAmplify",
+    "DESCRIPTION": "Deal !D! damage. NL Lose [E]. NL If you do, deal !D! additional damage."
+  },
+  "sumireko:eeee": {
+    "NAME": "eeee",
+    "DESCRIPTION": "Discard all but one card from your draw pile. NL Gain !B! Block for each card discarded."
+  },
+  "sumireko:OldMindEye": {
+    "NAME": "Mind's Eye",
+    "DESCRIPTION": "sumireko:Locking. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
+    "UPGRADE_DESCRIPTION": "sumireko:Locking. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Locked. NL Put a card from your draw pile into your hand. NL It costs 1 more this turn.",
+      "sumireko:Locked. NL Put !M! cards from your draw pile into your hand. NL They cost 1 more this turn."
+    ]
+  },
+  "sumireko:ChainBlock": {
+    "NAME": "Chain Block",
+    "DESCRIPTION": "sumireko:Final. NL Gain !B! Block. NL Copies of this card created during combat cost 0."
   },
   "sumireko:IllegalDumping": {
     "NAME": "Illegal Dumping",
@@ -509,6 +722,36 @@
       "I only have ",
       " total cost."
     ]
+  },
+  "sumireko:LuckyCharm": {
+    "NAME": "Lucky Charm (Replaced with sleeved archetype stuff.)",
+    "DESCRIPTION": "Retain. NL Increase this card's Block by 1. NL While in hand, gain !M! Block whenever you play another card.",
+    "EXTENDED_DESCRIPTION": [
+      "Not locking anymore... sumireko:Locked. NL Increase this card's Block by 1. NL While in hand, gain !M! Block whenever you play another card."
+    ]
+  },
+  "sumireko:IllusoryVeil": {
+    "NAME": "Illusory Veil (super anti-sleeved synergy)",
+    "DESCRIPTION": "At the end of this turn, discard your draw pile and gain Block equal to the number of cards discarded."
+  },
+  "sumireko:Simplicity": {
+    "NAME": "Simplicity (Final is no longer an archetype.)",
+    "DESCRIPTION": "sumireko:Final. NL Gain [E] for every 6 unupgraded cards in your deck.",
+    "EXTENDED_DESCRIPTION": [
+      "sumireko:Final. NL Gain !M! [E]. NL (Gain [E] for every 6 unupgraded cards in your deck.)"
+    ]
+  },
+  "sumireko:JustAnIllusion": {
+    "NAME": "Just An Illusion",
+    "DESCRIPTION": "Take no damage for !M! turns. NL When this effect wears off, take all damage prevented. NL Exhaust."
+  },
+  "sumireko:ReleasingRitual": {
+    "NAME": "Releasing Ritual",
+    "DESCRIPTION": "At the end of your turn, if you have 5 active sumireko:Seals, make a random card in your draw pile sumireko:Occult for the rest of combat."
+  },
+  "sumireko:MurderSeal": {
+    "NAME": "Murder Seal (Doesn't make sense to have anymore.)",
+    "DESCRIPTION": "Deal !D! damage. NL sumireko:Seal: Lose !SEAL! HP."
   },
   "sumireko:TruePentagram": {
     "NAME": "True Pentagram",

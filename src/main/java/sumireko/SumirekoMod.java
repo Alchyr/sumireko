@@ -1,11 +1,14 @@
 package sumireko;
 
 import basemod.BaseMod;
+import basemod.abstracts.CustomUnlockBundle;
+import basemod.helpers.TextCodeInterpreter;
 import basemod.interfaces.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.evacipated.cardcrawl.modthespire.Loader;
+import com.evacipated.cardcrawl.modthespire.ModInfo;
 import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -26,8 +29,11 @@ import sumireko.abstracts.SealCard;
 import sumireko.blackbird.Improve;
 import sumireko.character.Sumireko;
 import sumireko.enums.CharacterEnums;
+import sumireko.patches.BlockPreview;
 import sumireko.patches.DeepDreamPatch;
 import sumireko.patches.PsychometryTrackerPatch;
+import sumireko.patches.occult.OccultFields;
+import sumireko.patches.occult.OccultPatch;
 import sumireko.relics.OccultBall;
 import sumireko.util.CardFilter;
 import sumireko.util.KeywordWithProper;
@@ -37,12 +43,34 @@ import sumireko.variables.SealVariable;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 
 import static sumireko.enums.CharacterEnums.SUMIREKO_CARD_COLOR;
+
+//TODO:
+/*
+    Commons feel a bit boring to play with.
+    Uncommons are a bit better, but not incredible.
+
+    deja vu nerf - somewhat?
+    augury power removes itself too soon - Probably Fixed
+    mirror seal not applying some stuff right? - Probably Fixed
+    3d printed gun - change upgrade to non-random? Allow it to pull from discard? Could be a nice buff.
+
+    Remove one seal and replace it with a more not-seal focused attack card?
+    Explosion seal is a bit whatever. Maybe make it even more focused on what it does, as 0 cost single target maybe?
+    preview of repression seal not correct?
+    Test out intent of repression + other seals
+
+    ok seals definitely need to be triggered later, they return to hand before deep dream ends and before hand is discarded, resulting in adding back to draw pile
+    (for eternal seal)
+
+    Minty Spire attack preview use previewintent rather than actual intent
+    compatibility with multi-attack/card attack enemies
+    block preview mod support - done
+ */
 
 @SpireInitializer
 public class SumirekoMod implements
@@ -54,21 +82,24 @@ public class SumirekoMod implements
         PostInitializeSubscriber,
         PreStartGameSubscriber,
         PostBattleSubscriber,
-        OnStartBattleSubscriber
+        OnStartBattleSubscriber,
+        OnCardUseSubscriber,
+        SetUnlocksSubscriber
 {
     public static final Logger logger = LogManager.getLogger("Sumireko");
 
     public static final String modID = "sumireko";
 
     //In-game mod info.
-    private static final String MODNAME = "${project.name}";
+    private static final String MODNAME = "Sumireko";
     private static final String AUTHOR = "Alchyr";
-    private static final String DESCRIPTION = "${project.description}";
+    private static final String DESCRIPTION = ":)";
 
     //Character Color
     public static final Color SUMIREKO_COLOR = CardHelper.getColor(88.0f, 26.0f, 150.0f);
     public static final Color SUMIREKO_COLOR_DIM = CardHelper.getColor(53.0f, 12.0f, 94.0f);
     public static final Color SUMIREKO_COLOR_BRIGHT = CardHelper.getColor(180.5f, 50.0f, 255.0f);
+    public static final Color SUMIREKO_COLOR_VERY_BRIGHT = CardHelper.getColor(200.5f, 150.0f, 255.0f);
 
     //Card Assets
     private static final String ATTACK_BACK = makeCardPath("assets/bg_attack.png");
@@ -136,10 +167,13 @@ public class SumirekoMod implements
     }
 
 
+    public static int occultPlayedThisCombat = 0;
+
 
     @SuppressWarnings("unused")
     public static void initialize() {
         new SumirekoMod();
+        TextCodeInterpreter.addAccessible("SealSystem", SealSystem.class);
     }
 
     public SumirekoMod()
@@ -169,6 +203,19 @@ public class SumirekoMod implements
 
         BaseMod.registerModBadge(badgeTexture, MODNAME, AUTHOR, DESCRIPTION, null);
 
+        if (Loader.isModLoaded("block-reminder")) {
+            BlockPreview.adjustReminder = true;
+            logger.info("Separate Block Reminder mod is enabled.");
+        }
+
+        logger.info("Prepping dream hand");
+        DeepDreamPatch.dreamHand = new DeepDreamPatch.DreamHand();
+
+        logger.info("Checking playability annotations");
+        OccultPatch.testPlayability();
+
+        TextCodeInterpreter.addAccessible(OccultPatch.class);
+
         logger.info("Done loading badge Image and mod options");
     }
 
@@ -191,6 +238,7 @@ public class SumirekoMod implements
         try
         {
             autoAddCards();
+
         }
         catch (Exception e)
         {
@@ -198,7 +246,6 @@ public class SumirekoMod implements
             logger.error(e.getMessage());
         }
     }
-
 
     @Override
     public void receiveEditStrings()
@@ -286,11 +333,20 @@ public class SumirekoMod implements
     }
 
     //This has been copied many times, now
-    private static void autoAddCards() throws URISyntaxException, IllegalAccessException, InstantiationException, NotFoundException, ClassNotFoundException
+    private static void autoAddCards() throws IllegalAccessException, InstantiationException, NotFoundException, ClassNotFoundException
     {
         ClassFinder finder = new ClassFinder();
-        URL url = SumirekoMod.class.getProtectionDomain().getCodeSource().getLocation();
-        finder.add(new File(url.toURI()));
+
+        try {
+            for (ModInfo info : Loader.MODINFOS) {
+                if (info != null && modID.equals(info.ID) && info.jarURL != null) {
+                    finder.add(new File(info.jarURL.toURI()));
+                    break;
+                }
+            }
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
 
         ClassFilter filter =
                 new AndClassFilter(
@@ -341,28 +397,59 @@ public class SumirekoMod implements
     @Override
     public void receivePreStartGame() {
         SealSystem.reset();
+        DeepDreamPatch.wakeUp();
+        PsychometryTrackerPatch.cardsPlayedLastTurn.clear();
+        occultPlayedThisCombat = 0;
     }
 
     @Override
     public void receivePostBattle(AbstractRoom abstractRoom) {
-        SealSystem.reset();
+        //SealSystem.reset(); resetPlayer method patch
         DeepDreamPatch.wakeUp();
         PsychometryTrackerPatch.cardsPlayedLastTurn.clear();
         Improve._clean();
+        occultPlayedThisCombat = 0;
     }
 
     @Override
     public void receiveOnBattleStart(AbstractRoom abstractRoom) {
         SealSystem.setPosition(); //Sets positions based on where the player is.
         PsychometryTrackerPatch.cardsPlayedLastTurn.clear();
+        occultPlayedThisCombat = 0;
         if (hasSeals(AbstractDungeon.player))
         {
             SealSystem.enabled = true;
         }
     }
 
+    @Override
+    public void receiveCardUsed(AbstractCard c) {
+        if (OccultFields.isOccult.get(c)) {
+            ++occultPlayedThisCombat;
+        }
+    }
+
     private boolean hasSeals(AbstractPlayer p) //Patch here for sumireko skillbook :)
     {
         return p instanceof Sumireko || p.masterDeck.group.stream().anyMatch((c)->c instanceof SealCard);
+    }
+
+    @Override
+    public void receiveSetUnlocks() {
+        //registerUnlockCardBundle(CharacterEnums.SUMIREKO, 0, MassSeal.ID, End.ID, EternalSeal.ID);
+    }
+
+    private static void registerUnlockCardBundle(AbstractPlayer.PlayerClass player, int index, String card1, String card2, String card3) {
+        CustomUnlockBundle currentBundle;
+
+        currentBundle = new CustomUnlockBundle(
+                card1, card2, card3
+        );
+
+        UnlockTracker.addCard(card1);
+        UnlockTracker.addCard(card2);
+        UnlockTracker.addCard(card3);
+
+        BaseMod.addUnlockBundle(currentBundle, player, index);
     }
 }

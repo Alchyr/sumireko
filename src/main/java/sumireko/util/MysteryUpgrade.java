@@ -14,6 +14,7 @@ import com.megacrit.cardcrawl.powers.WeakPower;
 import sumireko.abstracts.SealCard;
 import sumireko.cards.rare.MysterySeal;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import static sumireko.SumirekoMod.makeID;
@@ -44,7 +45,7 @@ public class MysteryUpgrade {
 
     }
 
-    public void triggerSealEffect(MysterySeal c, AbstractMonster target) {
+    public void triggerSealEffect(MysterySeal c, AbstractMonster target, ArrayList<AbstractGameAction> actions) {
 
     }
 

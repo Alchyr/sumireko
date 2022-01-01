@@ -32,12 +32,12 @@ public class ExhaustSealAction extends AbstractGameAction {
         if (isCenterCard)
         {
             SealSystem.centerCard = null;
-            SealSystem.sealIntents[4].current = null;
+            SealSystem.sealIntents[4].refresh();
         }
         else if (index >= 0 && index < 4)
         {
             SealSystem.aroundCards[index] = null;
-            SealSystem.sealIntents[index].current = null;
+            SealSystem.sealIntents[index].refresh();
         }
 
         AbstractDungeon.player.hand.moveToExhaustPile(c);

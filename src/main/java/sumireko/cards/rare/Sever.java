@@ -1,4 +1,4 @@
-package sumireko.cards.rare;
+/*package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.animations.VFXAction;
@@ -76,4 +76,4 @@ public class Sever extends BaseCard {
     public AbstractCard makeCopy() {
         return new Sever();
     }
-}
+}*/
