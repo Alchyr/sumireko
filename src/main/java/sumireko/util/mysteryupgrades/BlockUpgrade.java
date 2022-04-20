@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import com.megacrit.cardcrawl.actions.common.GainBlockAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -44,4 +44,4 @@ public class BlockUpgrade extends MysteryUpgrade {
     public void addNormalEffect(StringBuilder description) {
         description.insert(0, TEXT[1]);
     }
-}
+}*/

@@ -1,6 +1,7 @@
 package sumireko.patches;
 
 import basemod.ReflectionHacks;
+import basemod.abstracts.CustomEnergyOrb;
 import com.badlogic.gdx.Gdx;
 import com.evacipated.cardcrawl.modthespire.lib.*;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;

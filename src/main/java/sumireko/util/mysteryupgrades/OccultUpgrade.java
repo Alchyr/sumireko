@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import sumireko.cards.rare.MysterySeal;
 import sumireko.patches.occult.OccultFields;
@@ -20,3 +20,4 @@ public class OccultUpgrade extends MysteryUpgrade {
         description.insert(0, TEXT[8]);
     }
 }
+*/

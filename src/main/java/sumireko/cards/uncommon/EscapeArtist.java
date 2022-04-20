@@ -1,5 +1,6 @@
 package sumireko.cards.uncommon;
 
+import com.evacipated.cardcrawl.mod.stslib.fields.cards.AbstractCard.SoulboundField;
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -25,9 +26,12 @@ public class EscapeArtist extends BaseCard {
     private static final int UPG_MAGIC = 1;
 
     public EscapeArtist() {
-        super(cardInfo, true);
+        super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
+        setExhaust(true);
+
+        initializeDescription();
     }
 
     @Override

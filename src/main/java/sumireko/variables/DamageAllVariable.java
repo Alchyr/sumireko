@@ -1,4 +1,4 @@
-package sumireko.variables;
+/*package sumireko.variables;
 
 import basemod.abstracts.DynamicVariable;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -55,9 +55,4 @@ public class DamageAllVariable extends DynamicVariable {
         if (card instanceof MysterySeal)
             ((MysterySeal) card).isAllDamageModified = v;
     }
-
-    /*@Override
-    public Color getIncreasedValueColor() {
-        return INCREASED_COLOR;
-    }*/
-}
+}*/

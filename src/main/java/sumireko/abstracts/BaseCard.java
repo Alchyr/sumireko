@@ -258,10 +258,10 @@ public abstract class BaseCard extends CustomCard {
             if (upgradeMagic)
                 this.upgradeMagicNumber(magicUpgrade);
 
-            if (baseExhaust ^ upgExhaust) //different
+            if (baseExhaust ^ upgExhaust)
                 this.exhaust = upgExhaust;
 
-            if (baseInnate ^ upgInnate) //different
+            if (baseInnate ^ upgInnate)
                 this.isInnate = upgInnate;
 
 
@@ -271,7 +271,6 @@ public abstract class BaseCard extends CustomCard {
 
     public void initializeCard()
     {
-        //FontHelper.cardDescFont_N.getData().setScale(1.0f);
         this.initializeTitle();
         this.initializeDescription();
     }

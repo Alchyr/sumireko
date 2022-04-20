@@ -29,7 +29,6 @@ public class Strike extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-
     private static final int DAMAGE = 6;
     private static final int UPG_DAMAGE = 3;
 

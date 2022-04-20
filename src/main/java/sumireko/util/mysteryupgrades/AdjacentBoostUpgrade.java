@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import sumireko.abstracts.SealCard;
 import sumireko.cards.rare.MysterySeal;
@@ -38,3 +38,4 @@ public class AdjacentBoostUpgrade extends MysteryUpgrade {
         description.append(TEXT[7]);
     }
 }
+*/

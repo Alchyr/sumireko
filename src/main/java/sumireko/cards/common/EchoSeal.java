@@ -1,4 +1,4 @@
-package sumireko.cards.common;
+/*package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAction;
@@ -29,9 +29,6 @@ public class EchoSeal extends SealCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-
-    /*private static final int DAMAGE = 4;
-    private static final int UPG_DAMAGE = 2;*/
 
     private static final int SEAL = 7;
     private static final int UPG_SEAL = 3;
@@ -87,4 +84,4 @@ public class EchoSeal extends SealCard {
     public AbstractCard makeCopy() {
         return new EchoSeal();
     }
-}
+}*/

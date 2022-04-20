@@ -1,20 +1,16 @@
 package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.DamageAction;
-import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.AbstractCreature;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import com.megacrit.cardcrawl.powers.StrengthPower;
 import sumireko.abstracts.SealCard;
-import sumireko.actions.cards.restrainingseal.DamageActionWrapper;
-import sumireko.actions.cards.restrainingseal.DamageAllEnemiesActionWrapper;
-import sumireko.actions.general.DamageRandomConditionalEnemyAction;
 import sumireko.actions.seals.LoseStrengthThisTurnAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
+import sumireko.util.DamageUtil;
 import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
@@ -55,41 +51,16 @@ public class ConstraintSeal extends SealCard {
 
     @Override
     public void modifyAdjacentSealEffect(SealCard base, ArrayList<AbstractGameAction> actions, AbstractMonster target) {
-        ArrayList<AbstractGameAction> result = new ArrayList<>();
-        for (AbstractGameAction action : actions) {
-            if (action instanceof DamageAction) {
-                result.add(new DamageActionWrapper((DamageAction) action, (m)->addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken))));
-            }
-            else if (action instanceof DamageAllEnemiesAction) {
-                result.add(new DamageAllEnemiesActionWrapper((DamageAllEnemiesAction) action, (m)->addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken))));
-            }
-            else if (action instanceof DamageRandomConditionalEnemyAction) {
-                ((DamageRandomConditionalEnemyAction) action).useWrapper((m)->addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken)));
-                result.add(action);
-            }
-            else if (action instanceof DamageActionWrapper) {
-                Consumer<AbstractCreature> old = ((DamageActionWrapper) action).onUnblocked;
-                ((DamageActionWrapper) action).onUnblocked = (m)->{
-                    addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken));
-                    old.accept(m);
-                };
-                result.add(action);
-            }
-            else if (action instanceof DamageAllEnemiesActionWrapper) {
-                Consumer<AbstractCreature> old = ((DamageAllEnemiesActionWrapper) action).onUnblocked;
-                ((DamageAllEnemiesActionWrapper) action).onUnblocked = (m)->{
-                    addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken));
-                    old.accept(m);
-                };
-                result.add(action);
-            }
-            else {
-                result.add(action);
-            }
-        }
+        //ArrayList<AbstractGameAction> result = new ArrayList<>();
+        Consumer<AbstractCreature> strDown = (m)->addToTop(new LoseStrengthThisTurnAction(m, AbstractDungeon.player, m.lastDamageTaken));
+        /*for (AbstractGameAction action : actions) {
+            result.add(DamageWrapping.getWrappedDamageAction(action, strDown));
+        }*/
 
-        actions.clear();
-        actions.addAll(result);
+        actions.replaceAll((action)-> DamageUtil.getWrappedDamageAction(action, strDown));
+
+        /*actions.clear();
+        actions.addAll(result);*/
     }
 
     @Override

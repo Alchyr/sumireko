@@ -43,6 +43,9 @@ public class Psychexplosion extends BaseCard {
         if (OccultFields.isOccultPlayable.get(this))
         {
             this.damage *= 2;
+            if (this.damage < -32000) { //:eh:
+                this.damage = Integer.MAX_VALUE;
+            }
             this.isDamageModified = true;
         }
     }

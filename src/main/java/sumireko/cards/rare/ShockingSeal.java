@@ -7,6 +7,7 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
 import sumireko.actions.general.DamageRandomConditionalEnemyAction;
+import sumireko.actions.general.DamageWeakestEnemyAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 import sumireko.util.HealthBarRender;
@@ -29,7 +30,7 @@ public class ShockingSeal extends SealCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    private static final int SEAL = 3;
+    private static final int SEAL = 4;
 
     public ShockingSeal() {
         super(cardInfo, true);
@@ -50,7 +51,7 @@ public class ShockingSeal extends SealCard {
         ArrayList<AbstractGameAction> actions = new ArrayList<>();
         for (int i = 0; i < this.sealValue; ++i)
         {
-            actions.add(new DamageRandomConditionalEnemyAction((m)->true, new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
+            actions.add(new DamageWeakestEnemyAction(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), AbstractGameAction.AttackEffect.LIGHTNING, false));
         }
 
         return actions;
@@ -58,15 +59,22 @@ public class ShockingSeal extends SealCard {
 
     @Override
     public HealthBarRender instantSealEffect(PretendMonster target, Map<AbstractMonster, PretendMonster> pretendMonsters) {
-        if (this.sealValue > 0 && pretendMonsters.size() == 1)
+        if (this.sealValue > 0)
         {
-            for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet())
-            {
-                //there should be only one. Otherwise, the damage is not predictable.
-                for (int i = 0; i < this.sealValue; ++i)
-                {
-                    monster.getValue().sealDamage(new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS), this);
+            PretendMonster weakest;
+            DamageInfo dmg = new DamageInfo(AbstractDungeon.player, this.sealValue, DamageInfo.DamageType.THORNS);
+            for (int i = 0; i < this.sealValue; ++i) {
+                weakest = null;
+                for (Map.Entry<AbstractMonster, PretendMonster> monster : pretendMonsters.entrySet()) {
+                    if (weakest == null || monster.getValue().currentHealth < weakest.currentHealth) {
+                        weakest = monster.getValue();
+                    }
                 }
+
+                if (weakest == null)
+                    break;
+
+                weakest.sealDamage(dmg, this);
             }
         }
         return null;

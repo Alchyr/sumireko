@@ -101,15 +101,16 @@ public class DeepDreamPatch {
         Collection<String> references;
         CtMethod[] methods;
         CtConstructor[] constructors;
+        CtClass ctClass = null;
 
         outer:
         for (ClassInfo classInfo : foundClasses)
         {
-            CtClass ctClass = pool.get(classInfo.getClassName());
-            exprEditor.changed = false;
-
             try
             {
+                ctClass = pool.get(classInfo.getClassName());
+                exprEditor.changed = false;
+
                 references = ctClass.getRefClasses();
 
                 for (String s : references) {
@@ -158,7 +159,13 @@ public class DeepDreamPatch {
                         }
                     }
                 }
-            } catch(CannotCompileException e) {
+            }
+            catch (NotFoundException e) {
+                System.out.println("\t\t- Class not found: " + classInfo.getClassName());
+                System.out.println(classInfo);
+                e.printStackTrace();
+            }
+            catch (CannotCompileException e) {
                 System.out.println("\t\t- Error occurred while patching class: " + ctClass.getSimpleName() + "\n");
                 e.printStackTrace();
             }

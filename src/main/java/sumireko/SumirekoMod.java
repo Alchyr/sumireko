@@ -38,7 +38,7 @@ import sumireko.relics.OccultBall;
 import sumireko.util.CardFilter;
 import sumireko.util.KeywordWithProper;
 import sumireko.util.TextureLoader;
-import sumireko.variables.DamageAllVariable;
+//import sumireko.variables.DamageAllVariable;
 import sumireko.variables.SealVariable;
 
 import java.io.File;
@@ -59,15 +59,18 @@ import static sumireko.enums.CharacterEnums.SUMIREKO_CARD_COLOR;
     mirror seal not applying some stuff right? - Probably Fixed
     3d printed gun - change upgrade to non-random? Allow it to pull from discard? Could be a nice buff.
 
-    Remove one seal and replace it with a more not-seal focused attack card?
-    Explosion seal is a bit whatever. Maybe make it even more focused on what it does, as 0 cost single target maybe?
-    preview of repression seal not correct?
-    Test out intent of repression + other seals
+    Clairvoyance - meh.
+    Rework: Select a card type and draw a card. If the drawn card is of the chosen type, repeat this.
+    Probably too high variance.
 
-    ok seals definitely need to be triggered later, they return to hand before deep dream ends and before hand is discarded, resulting in adding back to draw pile
-    (for eternal seal)
+    Echo Seal - Lame. Replace it.
+    Deal !D! damage. Draw a card for each active Seal?
 
-    Minty Spire attack preview use previewintent rather than actual intent
+    Goodbye current version of Occult Seal.
+    Use old version of Occult Seal as an uncommon?
+    If you have no Occult cards, gain [E] [E].
+
+    Minty Spire attack preview use previewintent rather than actual intent if exists
     compatibility with multi-attack/card attack enemies
     block preview mod support - done
  */
@@ -232,7 +235,7 @@ public class SumirekoMod implements
     public void receiveEditCards() {
         //add variables
         BaseMod.addDynamicVariable(new SealVariable());
-        BaseMod.addDynamicVariable(new DamageAllVariable());
+        //BaseMod.addDynamicVariable(new DamageAllVariable());
 
         //add cards
         try
@@ -293,7 +296,7 @@ public class SumirekoMod implements
                     {
                         case "occult":
                             //may need editing to function properly for other languages
-                            KeywordWithProper.occult = modID + ":" + keyword.NAMES[0] + " NL ";
+                            KeywordWithProper.occult = modID + ":" + keyword.EXTRA[0];
                             break;
                         case "fragile":
                             KeywordWithProper.fragile = " NL " + modID + ":" + keyword.NAMES[0];

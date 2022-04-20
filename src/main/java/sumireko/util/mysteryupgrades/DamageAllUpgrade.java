@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.DamageAllEnemiesAction;
@@ -44,3 +44,4 @@ public class DamageAllUpgrade extends MysteryUpgrade {
         description.insert(0, TEXT[2]);
     }
 }
+*/

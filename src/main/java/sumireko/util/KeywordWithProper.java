@@ -9,8 +9,10 @@ public class KeywordWithProper {
     public String PROPER_NAME;
     public String DESCRIPTION;
     public String[] NAMES;
+    public String[] EXTRA;
 
     public KeywordWithProper() {
         ID = "";
+        EXTRA = new String[] {};
     }
 }

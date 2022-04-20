@@ -22,25 +22,23 @@ public class Fragment extends BaseCard {
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 15;
-    private static final int UPG_DAMAGE = 4;
+    private static final int DAMAGE = 16;
 
 
     public Fragment() {
         super(cardInfo, true);
 
-        setDamage(DAMAGE, UPG_DAMAGE);
+        setDamage(DAMAGE);
 
         this.tags.add(CustomCardTags.UNPLAYABLE);
         this.cardsToPreview = new Fragment(false);
     }
 
-    private Fragment(boolean h)
+    private Fragment(boolean h) //no preview constructor to avoid infinite recursion
     {
         super(cardInfo, true);
 
-        setDamage(DAMAGE, UPG_DAMAGE);
-        this.selfRetain = true;
+        setDamage(DAMAGE);
 
         this.tags.add(CustomCardTags.UNPLAYABLE);
     }
@@ -51,8 +49,9 @@ public class Fragment extends BaseCard {
 
     @Override
     public void upgrade() {
+        this.selfRetain = true;
         super.upgrade();
-        if (this.cardsToPreview != null)
+        if (this.cardsToPreview != null && !this.cardsToPreview.upgraded)
             this.cardsToPreview.upgrade();
     }
 

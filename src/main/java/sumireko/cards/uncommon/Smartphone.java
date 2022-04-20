@@ -33,7 +33,6 @@ public class Smartphone extends BaseCard implements SleevedCard {
         super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
-        isEthereal = true;
     }
 
     @Override

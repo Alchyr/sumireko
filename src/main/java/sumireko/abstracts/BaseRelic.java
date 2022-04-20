@@ -6,9 +6,9 @@ import sumireko.util.TextureLoader;
 import static sumireko.SumirekoMod.makeRelicPath;
 
 public abstract class BaseRelic extends CustomRelic {
-    public BaseRelic(String setId, String textureID, RelicTier tier, LandingSound sfx) {
-        super(setId, TextureLoader.getTexture(makeRelicPath(textureID + ".png")), tier, sfx);
-        outlineImg = TextureLoader.getTexture(makeRelicPath(textureID + "Outline.png"));
+    public BaseRelic(String id, String textureName, RelicTier tier, LandingSound sfx) {
+        super(id, TextureLoader.getTexture(makeRelicPath(textureName + ".png")), tier, sfx);
+        outlineImg = TextureLoader.getTextureNull(makeRelicPath(textureName + "Outline.png"));
     }
 
     @Override

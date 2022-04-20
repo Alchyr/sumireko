@@ -21,6 +21,13 @@
       ""
     ]
   },
+  "sumireko:Sleeved Relic": {
+    "NAME": "Uncommon",
+    "FLAVOR": "idk",
+    "DESCRIPTIONS": [
+      "#ysumireko:Sleeved cards also take effect while in your discard pile."
+    ]
+  },
   "sumireko:FuturisticGrimoire": {
     "NAME": "Futuristic Grimoire",
     "FLAVOR": "Isn't this yours? Though, it looks a bit different.",

@@ -7,6 +7,14 @@
       "."
     ]
   },
+  "sumireko:MentalBlock": {
+    "NAME": "MentalBlock",
+    "DESCRIPTIONS": [
+      "The third card you play next turn will be a copy of #yMental #yBlock.",
+      "The third card you play this turn will be a copy of #yMental #yBlock.",
+      "The next card you play this turn will be a copy of #yMental #yBlock."
+    ]
+  },
   "sumireko:Cornerstone": {
     "NAME": "Cornerstone",
     "DESCRIPTIONS": [

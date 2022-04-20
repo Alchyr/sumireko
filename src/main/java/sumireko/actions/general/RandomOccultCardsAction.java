@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.utility.HandCheckAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import sumireko.enums.CustomCardTags;
 import sumireko.patches.occult.OccultFields;
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import java.util.function.Predicate;
 
 public class RandomOccultCardsAction extends AbstractGameAction {
-    private Predicate<AbstractCard> condition;
+    private final Predicate<AbstractCard> condition;
+    private final CardGroup targetGroup;
 
     public RandomOccultCardsAction(int amount)
     {
@@ -20,6 +22,15 @@ public class RandomOccultCardsAction extends AbstractGameAction {
     }
     public RandomOccultCardsAction(int amount, Predicate<AbstractCard> condition)
     {
+        this(AbstractDungeon.player.hand, amount, condition);
+    }
+    public RandomOccultCardsAction(CardGroup targetGroup, int amount)
+    {
+        this(AbstractDungeon.player.hand, amount, (c)->true);
+    }
+    public RandomOccultCardsAction(CardGroup targetGroup, int amount, Predicate<AbstractCard> condition)
+    {
+        this.targetGroup = targetGroup;
         this.condition = condition;
         this.amount = amount;
         this.actionType = ActionType.CARD_MANIPULATION;
@@ -27,13 +38,13 @@ public class RandomOccultCardsAction extends AbstractGameAction {
 
     @Override
     public void update() {
-        if (AbstractDungeon.player.hand.isEmpty())
+        if (targetGroup.isEmpty())
         {
             this.isDone = true;
             return;
         }
 
-        ArrayList<AbstractCard> validCards = new ArrayList<>(AbstractDungeon.player.hand.group);
+        ArrayList<AbstractCard> validCards = new ArrayList<>(targetGroup.group);
 
         validCards.removeIf((c)->!condition.test(c) || c.hasTag(CustomCardTags.FINAL) || OccultFields.isOccult.get(c));
 
@@ -48,20 +59,19 @@ public class RandomOccultCardsAction extends AbstractGameAction {
             for (AbstractCard c : validCards)
             {
                 OccultFields.isOccult.set(c, true);
-                c.superFlash(Color.VIOLET.cpy());
+                if (targetGroup.equals(AbstractDungeon.player.hand))
+                    c.superFlash(Color.VIOLET.cpy());
                 c.initializeDescription();
             }
         }
         else
         {
-            ArrayList<AbstractCard> cards = new ArrayList<>(validCards);
-
             for (int i = 0; i < this.amount; ++i)
             {
-                if (cards.isEmpty())
+                if (validCards.isEmpty())
                     break;
 
-                AbstractCard c = cards.remove(AbstractDungeon.cardRandomRng.random(cards.size() - 1));
+                AbstractCard c = validCards.remove(AbstractDungeon.cardRandomRng.random(validCards.size() - 1));
 
                 OccultFields.isOccult.set(c, true);
                 c.superFlash(Color.VIOLET.cpy());
@@ -69,7 +79,8 @@ public class RandomOccultCardsAction extends AbstractGameAction {
             }
         }
 
-        addToTop(new HandCheckAction());
+        if (targetGroup.equals(AbstractDungeon.player.hand))
+            addToTop(new HandCheckAction());
 
         this.isDone = true;
     }

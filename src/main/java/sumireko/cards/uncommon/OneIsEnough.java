@@ -30,9 +30,10 @@ public class OneIsEnough extends BaseCard {
 
 
     public OneIsEnough() {
-        super(cardInfo, true);
+        super(cardInfo, false);
 
         setMagic(MAGIC, UPG_MAGIC);
+        initializeDescription();
     }
 
     @Override

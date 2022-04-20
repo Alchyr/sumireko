@@ -1,4 +1,4 @@
-package sumireko.cards.uncommon;
+/*package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.actions.watcher.ChooseOneAction;
@@ -168,4 +168,4 @@ public class Clairvoyance extends BaseCard {
             return new AttackChoice(this.misc);
         }
     }
-}
+}*/

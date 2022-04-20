@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import com.megacrit.cardcrawl.actions.common.DrawCardAction;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -32,3 +32,4 @@ public class DrawCardUpgrade extends MysteryUpgrade {
         description.append(TEXT[9]);
     }
 }
+*/

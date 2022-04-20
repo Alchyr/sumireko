@@ -1,4 +1,4 @@
-package sumireko.cards.rare;
+/*package sumireko.cards.rare;
 
 import basemod.abstracts.CustomSavable;
 import com.badlogic.gdx.math.MathUtils;
@@ -540,4 +540,4 @@ public class MysterySeal extends SealCard implements BranchingUpgradesCard, Cust
             refresh();
         }
     }
-}
+}*/

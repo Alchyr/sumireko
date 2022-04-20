@@ -1,4 +1,4 @@
-package sumireko.cards.common;
+/*package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.common.BetterDiscardPileToHandAction;
 import com.megacrit.cardcrawl.actions.common.PutOnDeckAction;
@@ -49,4 +49,4 @@ public class CardTrick extends BaseCard {
     public AbstractCard makeCopy() {
         return new CardTrick();
     }
-}
+}*/

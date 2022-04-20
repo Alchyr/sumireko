@@ -1,4 +1,4 @@
-package sumireko.cards.common;
+package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
@@ -15,7 +15,7 @@ public class Sight extends BaseCard {
             1,
             CardType.SKILL,
             CardTarget.NONE,
-            CardRarity.COMMON);
+            CardRarity.UNCOMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 

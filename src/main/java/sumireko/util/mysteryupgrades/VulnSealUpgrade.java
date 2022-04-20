@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.ApplyPowerAction;
@@ -54,4 +54,4 @@ public class VulnSealUpgrade extends MysteryUpgrade {
     public void addSealEffect(StringBuilder description) {
         description.append(TEXT[5]);
     }
-}
+}*/

@@ -1,21 +1,16 @@
 package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
-import com.megacrit.cardcrawl.actions.common.ModifyDamageAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import com.megacrit.cardcrawl.powers.ArtifactPower;
-import com.megacrit.cardcrawl.powers.GainStrengthPower;
-import com.megacrit.cardcrawl.powers.StrengthPower;
 import sumireko.abstracts.BaseCard;
 import sumireko.actions.cards.GirdersDamageDownAction;
-import sumireko.actions.general.IncreaseCostAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class IronGirders extends BaseCard {
+public class IronGirder extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
             "IronGirders",
             0,
@@ -26,22 +21,34 @@ public class IronGirders extends BaseCard {
 
     public static final String ID = makeID(cardInfo.cardName);
 
-    //private static final int BLOCK = 4;
-    //private static final int UPG_BLOCK = 1;
-    private static final int DAMAGE = 9 ;
+    private static final int DAMAGE = 9;
     private static final int UPG_DAMAGE = 2;
     //private static final int DEBUFF = 2;
 
 
-    public IronGirders() {
+    public IronGirder() {
         super(cardInfo, false);
 
-        //setBlock(BLOCK, UPG_BLOCK);
         setDamage(DAMAGE, UPG_DAMAGE);
-        setInnate(true);
         //setMagic(DEBUFF);
 
         this.shuffleBackIntoDrawPile = true;
+    }
+
+    @Override
+    protected void upgradeName() {
+        ++this.timesUpgraded;
+        this.upgraded = true;
+        if (timesUpgraded >= 1) {
+            this.name = cardStrings.EXTENDED_DESCRIPTION[0] + "+";
+            if (timesUpgraded > 1) { //who using infinite journal
+                this.name += this.timesUpgraded;
+            }
+        }
+        else { //somehow times upgraded was less than 0?
+            this.name = cardStrings.NAME;
+        }
+        this.initializeTitle();
     }
 
     //Some jank so that if you get deep dream and 1 strength it doesn't go infinite damage
@@ -85,6 +92,6 @@ public class IronGirders extends BaseCard {
 
     @Override
     public AbstractCard makeCopy() {
-        return new IronGirders();
+        return new IronGirder();
     }
 }

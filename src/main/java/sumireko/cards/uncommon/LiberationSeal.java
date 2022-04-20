@@ -1,16 +1,16 @@
-/*package sumireko.cards.uncommon;
+package sumireko.cards.uncommon;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.SealCard;
 import sumireko.actions.general.RandomOccultCardsAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
-import sumireko.util.PretendMonster;
 import sumireko.util.SealIntent;
 
-import java.util.Map;
+import java.util.ArrayList;
 
 import static sumireko.SumirekoMod.makeID;
 
@@ -38,25 +38,23 @@ public class LiberationSeal extends SealCard {
     }
 
     @Override
-    public void triggerSealEffect(AbstractMonster target) {
+    public ArrayList<AbstractGameAction> triggerSealEffect(AbstractMonster target) {
+        ArrayList<AbstractGameAction> actions = new ArrayList<>();
+
         if (this.sealValue > 0)
-            addToBot(new RandomOccultCardsAction(this.sealValue));
+            actions.add(new RandomOccultCardsAction(AbstractDungeon.player.drawPile, this.sealValue));
 
-        addToBot(new AbstractGameAction() {
-            @Override
-            public void update() {
-
-            }
-        });
+        return actions;
     }
 
     @Override
     public void getIntent(SealIntent i) {
-        i.intent = AbstractMonster.Intent.UNKNOWN;
+        i.addIntent(SealIntent.MAGIC);
+        i.bonusEffect(String.valueOf(this.sealValue));
     }
 
     @Override
     public AbstractCard makeCopy() {
         return new LiberationSeal();
     }
-}*/
+}

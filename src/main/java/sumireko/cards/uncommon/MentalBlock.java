@@ -4,39 +4,44 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.powers.CornerstonePower;
+import sumireko.powers.MentalBlockPower;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class Cornerstone extends BaseCard {
+public class MentalBlock extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "Cornerstone",
-            1,
-            CardType.POWER,
+            "MentalBlock",
+            0,
+            CardType.SKILL,
             CardTarget.SELF,
             CardRarity.UNCOMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int MAGIC = 6;
-    private static final int UPG_MAGIC = 3;
+    private static final int BLOCK = 5;
+    private static final int UPG_BLOCK = 3;
 
 
-    public Cornerstone() {
+    public MentalBlock() {
         super(cardInfo, false);
 
-        setMagic(MAGIC, UPG_MAGIC);
+        setBlock(BLOCK, UPG_BLOCK);
+        setExhaust(true);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        applySelf(new CornerstonePower(p, this.magicNumber));
+        block();
+
+        if (!p.hasPower(MentalBlockPower.POWER_ID)) {
+            applySelf(new MentalBlockPower(p));
+        }
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new Cornerstone();
+        return new MentalBlock();
     }
 }

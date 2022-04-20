@@ -8,13 +8,15 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.actions.cards.restrainingseal.DamageActionWrapper;
 import sumireko.actions.cards.restrainingseal.DamageAllEnemiesActionWrapper;
+import sumireko.actions.interfaces.WrappedDamage;
 import sumireko.actions.seals.LoseStrengthThisTurnAction;
+import sumireko.util.DamageUtil;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class DamageRandomConditionalEnemyAction extends AbstractGameAction {
+public class DamageRandomConditionalEnemyAction extends AbstractGameAction implements WrappedDamage {
     private Predicate<AbstractMonster> condition;
     private DamageInfo damage;
 
@@ -35,6 +37,7 @@ public class DamageRandomConditionalEnemyAction extends AbstractGameAction {
         this(condition, info, effect, true);
     }
 
+    @Override
     public void useWrapper(Consumer<AbstractCreature> onUnblocked) {
         if (this.onUnblocked == null) {
             this.onUnblocked = onUnblocked;
@@ -67,8 +70,10 @@ public class DamageRandomConditionalEnemyAction extends AbstractGameAction {
         }
         else if (validTargets.size() == 1)
         {
-            if (applyPowers)
-                damage.applyPowers(damage.owner, validTargets.get(0));
+            if (applyPowers) {
+                damage.output = DamageUtil.calcDamage(damage.base, validTargets.get(0));
+                damage.isModified = damage.output != damage.base;
+            }
 
             DamageAction a = new DamageAction(validTargets.get(0), damage, attackEffect);
             if (onUnblocked != null) {
@@ -83,8 +88,10 @@ public class DamageRandomConditionalEnemyAction extends AbstractGameAction {
         }
 
         AbstractMonster t = validTargets.get(AbstractDungeon.cardRandomRng.random(validTargets.size() - 1));
-        if (applyPowers)
-            damage.applyPowers(damage.owner, t);
+        if (applyPowers) {
+            damage.output = DamageUtil.calcDamage(damage.base, t);
+            damage.isModified = damage.output != damage.base;
+        }
 
         DamageAction a = new DamageAction(t, damage, attackEffect);
         if (onUnblocked != null) {

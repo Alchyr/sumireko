@@ -1,4 +1,4 @@
-package sumireko.util.mysteryupgrades;
+/*package sumireko.util.mysteryupgrades;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -62,4 +62,4 @@ public class RandomSealDamageUpgrade extends MysteryUpgrade {
     public void addSealEffect(StringBuilder description) {
         description.append(TEXT[3]);
     }
-}
+}*/

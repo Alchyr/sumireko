@@ -20,6 +20,7 @@ public class CornerstonePower extends BasePower implements ModifySealPower, Clon
     {
         super(NAME, TYPE, TURN_BASED, owner, null, amount);
 
+
         canGoNegative = true;
         priority = -14;
     }

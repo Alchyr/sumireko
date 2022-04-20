@@ -15,6 +15,9 @@
       "Occult.",
       "occult"
     ],
+    "EXTRA": [
+      "Occult. NL "
+    ],
     "DESCRIPTION": "Occult cards can be played disregarding any conditions for playability."
   },
   {
@@ -36,7 +39,7 @@
     "NAMES": [
       "locked"
     ],
-    "DESCRIPTION": "This card cannot be played."
+    "DESCRIPTION": "Locked cards cannot be played."
   },
   {
     "ID": "fragile",
