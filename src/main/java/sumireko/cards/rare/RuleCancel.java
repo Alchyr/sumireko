@@ -1,10 +1,10 @@
-package sumireko.cards.common;
+package sumireko.cards.rare;
 
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
 import sumireko.abstracts.BaseCard;
-import sumireko.actions.cards.RuleCancelAction;
+import sumireko.actions.cards.MakeCardInHandOccultAction;
 import sumireko.enums.CustomCardTags;
 import sumireko.util.CardInfo;
 
@@ -16,7 +16,7 @@ public class RuleCancel extends BaseCard {
             1,
             CardType.SKILL,
             CardTarget.NONE,
-            CardRarity.COMMON);
+            CardRarity.RARE);
     // skill
 
     public static final String ID = makeID(cardInfo.cardName);
@@ -38,7 +38,7 @@ public class RuleCancel extends BaseCard {
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        addToBot(new RuleCancelAction(false));
+        addToBot(new MakeCardInHandOccultAction(false));
     }
 
     @Override

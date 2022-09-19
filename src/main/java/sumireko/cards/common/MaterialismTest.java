@@ -1,50 +1,46 @@
-package sumireko.cards.basic;
+package sumireko.cards.common;
 
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
+import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.characters.AbstractPlayer;
 import com.megacrit.cardcrawl.monsters.AbstractMonster;
-import sumireko.abstracts.LockingCard;
-import sumireko.abstracts.SealCard;
-import sumireko.actions.general.LambdaDrawPileToHandAction;
-import sumireko.actions.general.YeetPlayerAction;
+import sumireko.abstracts.BaseCard;
+import sumireko.actions.general.MultiGroupMoveAction;
 import sumireko.util.CardInfo;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class Liberator extends LockingCard {
+public class MaterialismTest extends BaseCard {
     private final static CardInfo cardInfo = new CardInfo(
-            "Liberator",
-            0,
+            "MaterialismTest",
+            1,
             CardType.ATTACK,
-            CardTarget.ENEMY,
-            CardRarity.BASIC);
+            CardTarget.ALL_ENEMY,
+            CardRarity.COMMON);
 
     public static final String ID = makeID(cardInfo.cardName);
 
 
-    private static final int DAMAGE = 8;
+    private static final int DAMAGE = 9;
     private static final int UPG_DAMAGE = 3;
 
 
-    public Liberator() {
+    public MaterialismTest() {
         super(cardInfo, false);
 
         setDamage(DAMAGE, UPG_DAMAGE);
-        //setExhaust(true, false);
     }
 
     @Override
     public void use(AbstractPlayer p, AbstractMonster m) {
-        super.use(p, m);
+        damageAll(AbstractGameAction.AttackEffect.SMASH);
 
-        damageSingle(m, AbstractGameAction.AttackEffect.BLUNT_LIGHT);
-        addToBot(new LambdaDrawPileToHandAction(1, (c)->c instanceof SealCard));
-        addToBot(new YeetPlayerAction());
+        addToBot(new MultiGroupMoveAction(CardGroup.CardGroupType.DRAW_PILE, 5, true, CardGroup.CardGroupType.HAND, CardGroup.CardGroupType.DISCARD_PILE));
     }
 
     @Override
     public AbstractCard makeCopy() {
-        return new Liberator();
+        return new MaterialismTest();
     }
 }

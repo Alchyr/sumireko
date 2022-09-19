@@ -36,7 +36,7 @@ public class Materialism extends BaseCard {
     public void use(AbstractPlayer p, AbstractMonster m) {
         damageAll(AbstractGameAction.AttackEffect.SMASH);
 
-        addToBot(new MultiGroupMoveAction(CardGroup.CardGroupType.DRAW_PILE, 1, CardGroup.CardGroupType.HAND, CardGroup.CardGroupType.DISCARD_PILE));
+        addToBot(new MultiGroupMoveAction(CardGroup.CardGroupType.DRAW_PILE, 3, CardGroup.CardGroupType.HAND, CardGroup.CardGroupType.DISCARD_PILE));
     }
 
     @Override

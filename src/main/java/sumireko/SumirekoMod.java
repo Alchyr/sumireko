@@ -177,6 +177,7 @@ public class SumirekoMod implements
     public static void initialize() {
         new SumirekoMod();
         TextCodeInterpreter.addAccessible("SealSystem", SealSystem.class);
+        TextCodeInterpreter.addAccessible(Settings.class);
     }
 
     public SumirekoMod()
@@ -227,6 +228,8 @@ public class SumirekoMod implements
         logger.info("Adding relics");
 
         BaseMod.addRelicToCustomPool(new OccultBall(), SUMIREKO_CARD_COLOR);
+
+
 
         logger.info("Done adding relics!");
     }

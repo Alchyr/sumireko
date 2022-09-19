@@ -32,7 +32,7 @@
   },
   "sumireko:HasteSeal": {
     "NAME": "Haste Seal",
-    "DESCRIPTION": "Draw !M! cards. NL sumireko:Seal: Next turn, draw !SEAL! cards."
+    "DESCRIPTION": "{@@}Draw !M! cards. NL sumireko:Seal: Adjacent sumireko:Seals draw !SEAL! card{!SEAL!|>1=s} next turn."
   },
   "sumireko:PsychokineticBurst": {
     "NAME": "Psychokinetic Burst",
@@ -195,6 +195,10 @@
   "sumireko:Materialism": {
     "NAME": "Materialism",
     "DESCRIPTION": "Deal !D! damage to ALL enemies. NL Shuffle a card from your hand or discard pile into your draw pile."
+  },
+  "sumireko:MaterialismTest": {
+    "NAME": "Materialism Test",
+    "DESCRIPTION": "Deal !D! damage to ALL enemies. NL Shuffle up to 5 cards from your hand or discard pile into your draw pile."
   },
   "sumireko:RuleCancel": {
     "NAME": "Rule Cancel",

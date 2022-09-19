@@ -2,6 +2,7 @@ package sumireko.abstracts;
 
 import basemod.abstracts.CustomCard;
 import basemod.interfaces.CloneablePowerInterface;
+import com.evacipated.cardcrawl.mod.stslib.StSLib;
 import com.megacrit.cardcrawl.actions.AbstractGameAction;
 import com.megacrit.cardcrawl.actions.common.*;
 import com.megacrit.cardcrawl.cards.AbstractCard;
@@ -30,7 +31,6 @@ public abstract class BaseCard extends CustomCard {
     public static final CardColor COLOR = CharacterEnums.SUMIREKO_CARD_COLOR;
 
     protected CardStrings cardStrings;
-    protected String img;
 
     protected boolean upgradesDescription;
 

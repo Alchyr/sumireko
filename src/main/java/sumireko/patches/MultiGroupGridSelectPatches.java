@@ -8,24 +8,20 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.cards.CardGroup;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.screens.select.GridCardSelectScreen;
 import javassist.CtBehavior;
+import sumireko.actions.general.MultiGroupMoveAction;
 
 import java.util.ArrayList;
+
+import static com.megacrit.cardcrawl.ui.buttons.PeekButton.isPeeking;
 
 public class MultiGroupGridSelectPatches {
     private static final float TITLE_SPACING = 90 * Settings.scale;
     private static final float TITLE_X = 300.0f * Settings.scale;
     private static final float TITLE_Y = AbstractCard.IMG_HEIGHT * 0.75f / 2 + TITLE_SPACING / 2 + 20 * Settings.scale;
-    private static String[] TEXT;
-
-    static {
-        if (CardCrawlGame.languagePack != null) {
-            TEXT = CardCrawlGame.languagePack.getUIString("sumireko:GroupTitles").TEXT;
-        }
-    }
-
 
     @SpirePatch(
             clz = CardGroup.class,
@@ -43,13 +39,17 @@ public class MultiGroupGridSelectPatches {
         @SpirePrefixPatch
         public static SpireReturn<?> altPos(GridCardSelectScreen __instance, float ___drawStartX, float ___drawStartY, float ___currentDiffY, float ___padX, float ___padY, @ByRef AbstractCard[] ___hoveredCard) {
             ArrayList<Pair<CardGroup.CardGroupType, Integer>> groupIndexes = Fields.groupIndexes.get(__instance.targetGroup);
-            DisplayGroupTitles.titles.clear();
             if (groupIndexes != null) {
-                int lineNum = 0;
+                if (DisplayGroupTitles.titles.size() != groupIndexes.size()) {
+                    DisplayGroupTitles.titles.clear();
+                }
+
+                int lineNum = 0, group = 0;
                 ArrayList<AbstractCard> cards = __instance.targetGroup.group;
 
                 int cardIndex = 0;
                 float groupOffset = 0;
+
                 for (Pair<CardGroup.CardGroupType, Integer> groupIndex : groupIndexes) {
                     groupOffset += TITLE_SPACING;
 
@@ -63,8 +63,11 @@ public class MultiGroupGridSelectPatches {
 
                         cards.get(cardIndex).target_x = ___drawStartX + (float)mod * ___padX;
                         cards.get(cardIndex).target_y = ___drawStartY + ___currentDiffY - (float)lineNum * ___padY - groupOffset;
+                        cards.get(cardIndex).targetAngle = 0;
                         cards.get(cardIndex).fadingOut = false;
-                        cards.get(cardIndex).update();
+                        if (groupIndex.getKey() != CardGroup.CardGroupType.HAND) {
+                            cards.get(cardIndex).update(); //Avoid updating cards in the hand twice, which makes them scroll faster than the other cards.
+                        }
                         cards.get(cardIndex).updateHoverLogic();
 
                         ___hoveredCard[0] = null;
@@ -79,12 +82,18 @@ public class MultiGroupGridSelectPatches {
                         ++i;
                     }
 
-                    DisplayGroupTitles.titles.add(new GroupTitle(groupIndex.getKey(), TITLE_X, cards.get(firstGroupCardIndex).current_y + TITLE_Y));
+                    while (DisplayGroupTitles.titles.size() <= group)
+                        DisplayGroupTitles.titles.add(new GroupTitle());
+                    DisplayGroupTitles.titles.get(group).set(groupIndex.getKey(), TITLE_X, cards.get(firstGroupCardIndex).current_y + TITLE_Y);
 
                     ++lineNum;
+                    ++group;
                 }
 
                 return SpireReturn.Return();
+            }
+            else {
+                DisplayGroupTitles.titles.clear();
             }
 
             return SpireReturn.Continue();
@@ -119,25 +128,25 @@ public class MultiGroupGridSelectPatches {
     }
 
     private static class GroupTitle {
-        public String title;
-        public float x, y;
+        public String title = "";
+        public float x = 0, y = 0;
 
-        public GroupTitle(CardGroup.CardGroupType type, float x, float y){
+        public void set(CardGroup.CardGroupType type, float x, float y){
             switch (type) {
                 case HAND:
-                    title = TEXT[0];
+                    title = MultiGroupMoveAction.HAND;
                     break;
                 case DRAW_PILE:
-                    title = TEXT[1];
+                    title = MultiGroupMoveAction.DRAW_PILE;
                     break;
                 case DISCARD_PILE:
-                    title = TEXT[2];
+                    title = MultiGroupMoveAction.DISCARD_PILE;
                     break;
                 case EXHAUST_PILE:
-                    title = TEXT[3];
+                    title = MultiGroupMoveAction.EXHAUST_PILE;
                     break;
                 default:
-                    title = TEXT[4];
+                    title = MultiGroupMoveAction.UNKNOWN;
                     break;
             }
 
@@ -177,6 +186,32 @@ public class MultiGroupGridSelectPatches {
             }
 
             return SpireReturn.Continue();
+        }
+    }
+
+    @SpirePatch(
+            clz = GridCardSelectScreen.class,
+            method = "update"
+    )
+    public static class HandCardPeekPositions {
+        @SpirePrefixPatch
+        public static void resetPositions(GridCardSelectScreen __instance) {
+            if (isPeeking) {
+                ArrayList<Pair<CardGroup.CardGroupType, Integer>> groupIndexes = Fields.groupIndexes.get(__instance.targetGroup);
+
+                if (groupIndexes != null) {
+                    for (Pair<CardGroup.CardGroupType, Integer> group : groupIndexes) {
+                        if (group.getKey() == CardGroup.CardGroupType.HAND) {
+                            AbstractDungeon.player.hand.refreshHandLayout();
+                            for (AbstractCard c : AbstractDungeon.player.hand.group) {
+                                if (!__instance.selectedCards.contains(c))
+                                    c.stopGlowing();
+                            }
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 }

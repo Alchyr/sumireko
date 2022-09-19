@@ -48,6 +48,9 @@ public class MirrorSeal extends SealCard {
     public void upgrade() {
         super.upgrade();
         this.tags.remove(CustomCardTags.FRAGILE_SEAL);
+
+        if (copying != null)
+            copying.upgrade();
     }
 
     @Override

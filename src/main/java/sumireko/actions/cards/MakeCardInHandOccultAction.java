@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import static sumireko.SumirekoMod.makeID;
 
-public class RuleCancelAction extends AbstractGameAction {
+public class MakeCardInHandOccultAction extends AbstractGameAction {
     private static final UIStrings uiStrings = CardCrawlGame.languagePack.getUIString(makeID("RuleCancel"));
     public static final String[] TEXT = uiStrings.TEXT;
 
@@ -25,7 +25,7 @@ public class RuleCancelAction extends AbstractGameAction {
 
     private ArrayList<AbstractCard> invalidCards;
 
-    public RuleCancelAction(boolean optional)
+    public MakeCardInHandOccultAction(boolean optional)
     {
         p = AbstractDungeon.player;
         this.actionType = ActionType.CARD_MANIPULATION;

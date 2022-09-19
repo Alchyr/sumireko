@@ -6,8 +6,7 @@ import com.megacrit.cardcrawl.actions.utility.UseCardAction;
 import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import sumireko.abstracts.BaseRelic;
-import sumireko.actions.cards.RuleCancelAction;
-import sumireko.actions.relics.OccultBallAction;
+import sumireko.actions.cards.MakeCardInHandOccultAction;
 import sumireko.patches.occult.OccultFields;
 
 import static sumireko.SumirekoMod.makeID;
@@ -51,7 +50,7 @@ public class OccultBall extends BaseRelic {
             addToBot(new AbstractGameAction() {
                 @Override
                 public void update() { //:)
-                    addToBot(new RuleCancelAction(true));
+                    addToBot(new MakeCardInHandOccultAction(true));
                     this.isDone = true;
                 }
             });
